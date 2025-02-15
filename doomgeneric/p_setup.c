@@ -846,6 +846,9 @@ P_SetupLevel
 //
 void P_Init (void)
 {
+    extern void dg_init_info();
+    dg_init_info();
+
     P_InitSwitchList ();
     P_InitPicAnims ();
     R_InitSprites (sprnames);

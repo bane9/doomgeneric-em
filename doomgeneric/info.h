@@ -1153,8 +1153,8 @@ typedef struct
     int misc2;
 } state_t;
 
-extern state_t	states[NUMSTATES];
-extern char *sprnames[];
+extern state_t *states;
+extern const char *sprnames[];
 
 typedef enum {
     MT_PLAYER,
@@ -1326,6 +1326,6 @@ typedef struct
 
 } mobjinfo_t;
 
-extern mobjinfo_t mobjinfo[NUMMOBJTYPES];
+extern mobjinfo_t *mobjinfo;
 
 #endif
