@@ -835,7 +835,7 @@ P_SetupLevel
     if (precache)
 	R_PrecacheLevel ();
 
-    //printf ("free memory: 0x%x\n", Z_FreeMemory());
+    //doomgeneric_printf ("free memory: 0x%x\n", Z_FreeMemory());
 
 }
 

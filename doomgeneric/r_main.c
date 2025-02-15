@@ -35,7 +35,7 @@
 #include "r_local.h"
 #include "r_sky.h"
 
-
+#include "doomgeneric_syscall.h"
 
 
 
@@ -767,21 +767,21 @@ void R_ExecuteSetViewSize (void)
 void R_Init (void)
 {
     R_InitData ();
-    printf (".");
+    doomgeneric_printf (".");
     R_InitPointToAngle ();
-    printf (".");
+    doomgeneric_printf (".");
     R_InitTables ();
     // viewwidth / viewheight / detailLevel are set by the defaults
-    printf (".");
+    doomgeneric_printf (".");
 
     R_SetViewSize (screenblocks, detailLevel);
     R_InitPlanes ();
-    printf (".");
+    doomgeneric_printf (".");
     R_InitLightTables ();
-    printf (".");
+    doomgeneric_printf (".");
     R_InitSkyMap ();
     R_InitTranslationTables ();
-    printf (".");
+    doomgeneric_printf (".");
 	
     framecount = 0;
 }

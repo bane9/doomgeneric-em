@@ -36,6 +36,8 @@
 
 #include "w_wad.h"
 
+#include "doomgeneric_syscall.h"
+
 typedef struct
 {
     // Should be "IWAD" or "PWAD".
@@ -154,7 +156,7 @@ wad_file_t *W_AddFile (char *filename)
 
     if (wad_file == NULL)
     {
-		printf (" couldn't open %s\n", filename);
+		doomgeneric_printf (" couldn't open %s\n", filename);
 		return NULL;
     }
 

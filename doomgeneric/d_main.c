@@ -73,6 +73,7 @@
 #include "statdump.h"
 
 #include "d_main.h"
+#include "doomgeneric_syscall.h"
 
 //
 // D-DoomLoop()
@@ -426,7 +427,7 @@ void D_DoomLoop (void)
     if (bfgedition &&
         (demorecording || (gameaction == ga_playdemo) || netgame))
     {
-        printf(" WARNING: You are playing using one of the Doom Classic\n"
+        doomgeneric_printf(" WARNING: You are playing using one of the Doom Classic\n"
                " IWAD files shipped with the Doom 3: BFG Edition. These are\n"
                " known to be incompatible with the regular IWAD files and\n"
                " may cause demos and network games to get out of sync.\n");
@@ -657,7 +658,7 @@ static char *GetGameName(char *gamename)
             int version;
 
             // Has been replaced.
-            // We need to expand via printf to include the Doom version number
+            // We need to expand via doomgeneric_printf to include the Doom version number
             // We also need to cut off spaces to get the basic name
 
             gamename_size = strlen(deh_sub) + 10;
@@ -705,11 +706,11 @@ static void SetMissionForPackName(char *pack_name)
         }
     }
 
-    printf("Valid mission packs are:\n");
+    doomgeneric_printf("Valid mission packs are:\n");
 
     for (i = 0; i < arrlen(packs); ++i)
     {
-        printf("\t%s\n", packs[i].name);
+        doomgeneric_printf("\t%s\n", packs[i].name);
     }
 
     I_Error("Unknown mission pack name: %s", pack_name);
@@ -869,7 +870,7 @@ static boolean D_AddFile(char *filename)
 {
     wad_file_t *handle;
 
-    printf(" adding %s\n", filename);
+    doomgeneric_printf(" adding %s\n", filename);
     handle = W_AddFile(filename);
 
     return handle != NULL;
@@ -912,14 +913,14 @@ void PrintDehackedBanners(void)
 
         if (deh_s != copyright_banners[i])
         {
-            printf("%s", deh_s);
+            doomgeneric_printf("%s", deh_s);
 
             // Make sure the modified banner always ends in a newline character.
             // If it doesn't, add a newline.  This fixes av.wad.
 
             if (deh_s[strlen(deh_s) - 1] != '\n')
             {
-                printf("\n");
+                doomgeneric_printf("\n");
             }
         }
     }
@@ -973,11 +974,11 @@ static void InitGameVersion(void)
         
         if (gameversions[i].description == NULL) 
         {
-            printf("Supported game versions:\n");
+            doomgeneric_printf("Supported game versions:\n");
 
             for (i=0; gameversions[i].description != NULL; ++i)
             {
-                printf("\t%s (%s)\n", gameversions[i].cmdline,
+                doomgeneric_printf("\t%s (%s)\n", gameversions[i].cmdline,
                         gameversions[i].description);
             }
             
@@ -1055,7 +1056,7 @@ void PrintGameVersion(void)
     {
         if (gameversions[i].version == gameversion)
         {
-            printf("Emulating the behavior of the "
+            doomgeneric_printf("Emulating the behavior of the "
                    "'%s' executable.\n", gameversions[i].description);
             break;
         }
@@ -1082,7 +1083,7 @@ static void D_Endoom(void)
 
     I_Endoom(endoom);
 
-	exit(0);
+	doomgeneric_exit(0);
 }
 
 #if ORIGCODE
@@ -1188,7 +1189,7 @@ void D_DoomMain (void)
 
     if (M_CheckParm("-dedicated") > 0)
     {
-        printf("Dedicated server mode.\n");
+        doomgeneric_printf("Dedicated server mode.\n");
         NET_DedicatedServer();
 
         // Never returns
@@ -1204,7 +1205,7 @@ void D_DoomMain (void)
     if (M_CheckParm("-search"))
     {
         NET_MasterQuery();
-        exit(0);
+        doomgeneric_exit(0);
     }
 
     //!
@@ -1220,7 +1221,7 @@ void D_DoomMain (void)
     if (p)
     {
         NET_QueryAddress(myargv[p+1]);
-        exit(0);
+        doomgeneric_exit(0);
     }
 
     //!
@@ -1232,7 +1233,7 @@ void D_DoomMain (void)
     if (M_CheckParm("-localsearch"))
     {
         NET_LANQuery();
-        exit(0);
+        doomgeneric_exit(0);
     }
 
 #endif
@@ -1310,7 +1311,7 @@ void D_DoomMain (void)
 
     if (M_ParmExists("-cdrom"))
     {
-        printf(D_CDROM);
+        doomgeneric_printf(D_CDROM);
 
         M_SetConfigDir("c:\\doomdata\\");
     }
@@ -1413,7 +1414,7 @@ void D_DoomMain (void)
 
     if (W_CheckNumForName("dmenupic") >= 0)
     {
-        printf("BFG Edition: Using workarounds as needed.\n");
+        doomgeneric_printf("BFG Edition: Using workarounds as needed.\n");
         bfgedition = true;
 
         // BFG Edition changes the names of the secret levels to
@@ -1507,7 +1508,7 @@ void D_DoomMain (void)
             M_StringCopy(demolumpname, myargv[p + 1], sizeof(demolumpname));
         }
 
-        printf("Playing demo %s.\n", file);
+        doomgeneric_printf("Playing demo %s.\n", file);
     }
 
     I_AtExit((atexit_func_t) G_CheckDemoStatus, true);
@@ -1538,7 +1539,7 @@ void D_DoomMain (void)
             }
         }
 
-        printf("  loaded %i DEHACKED lumps from PWAD files.\n", loaded);
+        doomgeneric_printf("  loaded %i DEHACKED lumps from PWAD files.\n", loaded);
     }
 #endif
 
@@ -1587,7 +1588,7 @@ void D_DoomMain (void)
      || W_CheckNumForName("FF_END") >= 0)
     {
         I_PrintDivider();
-        printf(" WARNING: The loaded WAD file contains modified sprites or\n"
+        doomgeneric_printf(" WARNING: The loaded WAD file contains modified sprites or\n"
                " floor textures.  You may want to use the '-merge' command\n"
                " line option instead of '-file'.\n");
     }
@@ -1600,7 +1601,7 @@ void D_DoomMain (void)
     // message and give a link to the website.
     if (W_CheckNumForName("FREEDOOM") >= 0 && W_CheckNumForName("FREEDM") < 0)
     {
-        printf(" WARNING: You are playing using one of the Freedoom IWAD\n"
+        doomgeneric_printf(" WARNING: You are playing using one of the Freedoom IWAD\n"
                " files, which might not work in this port. See this page\n"
                " for more information on how to play using Freedoom:\n"
                "   http://www.chocolate-doom.org/wiki/index.php/Freedoom\n");
@@ -1615,7 +1616,7 @@ void D_DoomMain (void)
     I_InitMusic();
 
 #ifdef FEATURE_MULTIPLAYER
-    printf ("NET_Init: Init network subsystem.\n");
+    doomgeneric_printf ("NET_Init: Init network subsystem.\n");
     NET_Init ();
 #endif
 

@@ -37,6 +37,8 @@
 
 #include "doomstat.h"
 
+#include "doomgeneric_syscall.h"
+
 // Data.
 #include "sounds.h"
 
@@ -510,7 +512,7 @@ WI_drawOnLnode
     else
     {
 	// DEBUG
-	printf("Could not place patch on level %d", n+1); 
+	doomgeneric_printf("Could not place patch on level %d", n+1); 
     }
 }
 

@@ -35,6 +35,8 @@
 
 #include "z_zone.h"
 
+#include "doomgeneric_syscall.h"
+
 //
 // DEFAULTS
 //
@@ -1897,7 +1899,7 @@ void M_LoadDefaults (void)
     if (i)
     {
 	doom_defaults.filename = myargv[i+1];
-	printf ("	default file: %s\n",doom_defaults.filename);
+	doomgeneric_printf ("	default file: %s\n",doom_defaults.filename);
     }
     else
     {
@@ -1905,7 +1907,7 @@ void M_LoadDefaults (void)
             = M_StringJoin(configdir, default_main_config, NULL);
     }
 
-    printf("saving config in %s\n", doom_defaults.filename);
+    doomgeneric_printf("saving config in %s\n", doom_defaults.filename);
 
     //!
     // @arg <file>
@@ -1919,7 +1921,7 @@ void M_LoadDefaults (void)
     if (i)
     {
         extra_defaults.filename = myargv[i+1];
-        printf("        extra configuration file: %s\n", 
+        doomgeneric_printf("        extra configuration file: %s\n", 
                extra_defaults.filename);
     }
     else
@@ -2071,7 +2073,7 @@ void M_SetConfigDir(char *dir)
 
     if (strcmp(configdir, "") != 0)
     {
-        printf("Using %s for configuration and saves\n", configdir);
+        doomgeneric_printf("Using %s for configuration and saves\n", configdir);
     }
 
     // Make the directory if it doesn't already exist:
@@ -2119,7 +2121,7 @@ char *M_GetSaveGameDir(char *iwadname)
 
         M_MakeDirectory(savegamedir);
 
-        printf ("Using %s for savegames\n", savegamedir);
+        doomgeneric_printf ("Using %s for savegames\n", savegamedir);
 #endif
     }
 

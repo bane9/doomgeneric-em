@@ -68,7 +68,7 @@
 #include "r_data.h"
 #include "r_sky.h"
 
-
+#include "doomgeneric_syscall.h"
 
 #include "g_game.h"
 
@@ -2183,7 +2183,7 @@ void G_DoPlayDemo (void)
                         "    This appears to be %s.";
 
         //I_Error(message, demoversion, G_VanillaVersionCode(),
-        printf(message, demoversion, G_VanillaVersionCode(),
+        doomgeneric_printf(message, demoversion, G_VanillaVersionCode(),
                          DemoVersionDescription(demoversion));
     }
     

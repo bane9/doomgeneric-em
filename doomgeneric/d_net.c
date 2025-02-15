@@ -38,6 +38,8 @@
 
 #include "d_loop.h"
 
+#include "doomgeneric_syscall.h"
+
 ticcmd_t *netcmds;
 
 // Called when a player leaves the game
@@ -123,7 +125,7 @@ static void LoadGameSettings(net_gamesettings_t *settings)
 
     if (lowres_turn)
     {
-        printf("NOTE: Turning resolution is reduced; this is probably "
+        doomgeneric_printf("NOTE: Turning resolution is reduced; this is probably "
                "because there is a client recording a Vanilla demo.\n");
     }
 
@@ -273,8 +275,8 @@ void D_CheckNetGame (void)
         {
             DEH_printf("Levels will end after %d minute", timelimit);
             if (timelimit > 1)
-                printf("s");
-            printf(".\n");
+                doomgeneric_printf("s");
+            doomgeneric_printf(".\n");
         }
     }
 }

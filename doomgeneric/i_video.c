@@ -47,6 +47,8 @@ rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 
 #include <sys/types.h>
 
+#include "doomgeneric_syscall.h"
+
 int usemouse = 0;
 
 
@@ -223,7 +225,7 @@ int I_GetPaletteIndex (int r, int g, int b)
     int i;
     col_t color;
 
-    printf("I_GetPaletteIndex\n");
+    doomgeneric_printf("I_GetPaletteIndex\n");
 
     best = 0;
     best_diff = INT_MAX;

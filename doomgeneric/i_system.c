@@ -51,6 +51,8 @@
 #include "w_wad.h"
 #include "z_zone.h"
 
+#include "doomgeneric_syscall.h"
+
 #ifdef __MACOSX__
 #include <CoreFoundation/CFUserNotification.h>
 #endif
@@ -157,7 +159,7 @@ byte *I_ZoneBase (int *size)
 
     zonemem = AutoAllocMemory(size, default_ram, min_ram);
 
-    printf("zone memory: %p, %x allocated for zone\n", 
+    doomgeneric_printf("zone memory: %p, %x allocated for zone\n", 
            zonemem, *size);
 
     return zonemem;
@@ -171,7 +173,7 @@ void I_PrintBanner(char *msg)
     for (i=0; i<spaces; ++i)
         putchar(' ');
 
-    puts(msg);
+    doomgeneric_puts(msg);
 }
 
 void I_PrintDivider(void)
@@ -192,7 +194,7 @@ void I_PrintStartupBanner(char *gamedescription)
     I_PrintBanner(gamedescription);
     I_PrintDivider();
     
-    printf(
+    doomgeneric_printf(
     " " PACKAGE_NAME " is free software, covered by the GNU General Public\n"
     " License.  There is NO warranty; not even for MERCHANTABILITY or FITNESS\n"
     " FOR A PARTICULAR PURPOSE. You are welcome to change and distribute\n"
@@ -260,7 +262,7 @@ void I_Quit (void)
 #if ORIGCODE
     SDL_Quit();
 
-    exit(0);
+    doomgeneric_exit(0);
 #endif
 }
 
@@ -366,7 +368,7 @@ void I_Error (char *error, ...)
     if (already_quitting)
     {
         fprintf(stderr, "Warning: recursive call to I_Error detected.\n");
-        exit(-1);
+        doomgeneric_exit(-1);
     }
     else
     {
@@ -448,8 +450,8 @@ void I_Error (char *error, ...)
     }
 #elif defined(__DJGPP__)
     {
-        printf("%s\n", msgbuf);
-        exit(-1);
+        doomgeneric_printf("%s\n", msgbuf);
+        doomgeneric_exit(-1);
     }
 
 #else
@@ -458,7 +460,7 @@ void I_Error (char *error, ...)
     }
 #endif
 
-    exit(-1);
+    doomgeneric_exit(-1);
 }
 
 //

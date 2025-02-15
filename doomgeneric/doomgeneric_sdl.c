@@ -3,6 +3,7 @@
 #include "doomkeys.h"
 #include "m_argv.h"
 #include "doomgeneric.h"
+#include "doomgeneric_syscall.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -114,17 +115,17 @@ static void handleKeyInput(){
   SDL_Event e;
   while (SDL_PollEvent(&e)){
     if (e.type == SDL_QUIT){
-      puts("Quit requested");
+      doomgeneric_puts("Quit requested");
       atexit(SDL_Quit);
-      exit(1);
+      doomgeneric_exit(1);
     }
     if (e.type == SDL_KEYDOWN) {
       //KeySym sym = XKeycodeToKeysym(s_Display, e.xkey.keycode, 0);
-      //printf("KeyPress:%d sym:%d\n", e.xkey.keycode, sym);
+      //doomgeneric_printf("KeyPress:%d sym:%d\n", e.xkey.keycode, sym);
       addKeyToQueue(1, e.key.keysym.sym);
     } else if (e.type == SDL_KEYUP) {
       //KeySym sym = XKeycodeToKeysym(s_Display, e.xkey.keycode, 0);
-      //printf("KeyRelease:%d sym:%d\n", e.xkey.keycode, sym);
+      //doomgeneric_printf("KeyRelease:%d sym:%d\n", e.xkey.keycode, sym);
       addKeyToQueue(0, e.key.keysym.sym);
     }
   }

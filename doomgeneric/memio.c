@@ -24,6 +24,8 @@
 
 #include "z_zone.h"
 
+#include "doomgeneric_syscall.h"
+
 typedef enum {
 	MODE_READ,
 	MODE_WRITE,
@@ -61,7 +63,7 @@ size_t mem_fread(void *buf, size_t size, size_t nmemb, MEMFILE *stream)
 
 	if (stream->mode != MODE_READ)
 	{
-		printf("not a read stream\n");
+		doomgeneric_printf("not a read stream\n");
 		return -1;
 	}
 
@@ -189,7 +191,7 @@ int mem_fseek(MEMFILE *stream, signed long position, mem_rel_t whence)
 	}
 	else
 	{
-		printf("Error seeking to %i\n", newpos);
+		doomgeneric_printf("Error seeking to %i\n", newpos);
 		return -1;
 	}
 }

@@ -48,6 +48,8 @@
 #include "w_wad.h"
 #include "z_zone.h"
 
+#include "doomgeneric_syscall.h"
+
 //
 // Create a directory
 //
@@ -223,7 +225,7 @@ void M_ExtractFileBase(char *path, char *dest)
     {
         if (length >= 8)
         {
-            printf("Warning: Truncated '%s' lump name to '%.8s'.\n",
+            doomgeneric_printf("Warning: Truncated '%s' lump name to '%.8s'.\n",
                    filename, dest);
             break;
         }
