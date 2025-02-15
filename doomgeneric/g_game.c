@@ -1551,7 +1551,7 @@ void G_DoLoadGame (void)
 	 
     gameaction = ga_nothing; 
 	 
-    save_stream = fopen(savename, "rb");
+    save_stream = doomgeneric_fopen(savename, "rb");
 
     if (save_stream == NULL)
     {
@@ -1562,7 +1562,7 @@ void G_DoLoadGame (void)
 
     if (!P_ReadSaveGameHeader())
     {
-        fclose(save_stream);
+        doomgeneric_fclose(save_stream);
         return;
     }
 
@@ -1582,7 +1582,7 @@ void G_DoLoadGame (void)
     if (!P_ReadSaveGameEOF())
 	I_Error ("Bad savegame");
 
-    fclose(save_stream);
+    doomgeneric_fclose(save_stream);
     
     if (setsizeneeded)
     	R_ExecuteSetViewSize ();
@@ -1621,14 +1621,14 @@ void G_DoSaveGame (void)
     // and then rename it at the end if it was successfully written.
     // This prevents an existing savegame from being overwritten by 
     // a corrupted one, or if a savegame buffer overrun occurs.
-    save_stream = fopen(temp_savegame_file, "wb");
+    save_stream = doomgeneric_fopen(temp_savegame_file, "wb");
 
     if (save_stream == NULL)
     {
         // Failed to save the game, so we're going to have to abort. But
         // to be nice, save to somewhere else before we call I_Error().
         recovery_savegame_file = M_TempFile("recovery.dsg");
-        save_stream = fopen(recovery_savegame_file, "wb");
+        save_stream = doomgeneric_fopen(recovery_savegame_file, "wb");
         if (save_stream == NULL)
         {
             I_Error("Failed to open either '%s' or '%s' to write savegame.",
@@ -1657,7 +1657,7 @@ void G_DoSaveGame (void)
     
     // Finish up, close the savegame file.
 
-    fclose(save_stream);
+    doomgeneric_fclose(save_stream);
 
     if (recovery_savegame_file != NULL)
     {

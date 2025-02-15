@@ -57,9 +57,9 @@
 void M_MakeDirectory(char *path)
 {
 #ifdef _WIN32
-    mkdir(path);
+    doomgeneric_mkdir(path);
 #else
-    mkdir(path, 0755);
+    doomgeneric_mkdir(path, 0755);
 #endif
 }
 
@@ -69,11 +69,11 @@ boolean M_FileExists(char *filename)
 {
     FILE *fstream;
 
-    fstream = fopen(filename, "r");
+    fstream = doomgeneric_fopen(filename, "r");
 
     if (fstream != NULL)
     {
-        fclose(fstream);
+        doomgeneric_fclose(fstream);
         return true;
     }
     else
@@ -98,11 +98,11 @@ long M_FileLength(FILE *handle)
     savedpos = ftell(handle);
     
     // jump to the end and find the length
-    fseek(handle, 0, SEEK_END);
+    doomgeneric_fseek(handle, 0, SEEK_END);
     length = ftell(handle);
 
     // go back to the old location
-    fseek(handle, savedpos, SEEK_SET);
+    doomgeneric_fseek(handle, savedpos, SEEK_SET);
 
     return length;
 }
@@ -116,13 +116,13 @@ boolean M_WriteFile(char *name, void *source, int length)
     FILE *handle;
     int	count;
 	
-    handle = fopen(name, "wb");
+    handle = doomgeneric_fopen(name, "wb");
 
     if (handle == NULL)
 	return false;
 
     count = fwrite(source, 1, length, handle);
-    fclose(handle);
+    doomgeneric_fclose(handle);
 	
     if (count < length)
 	return false;
@@ -141,7 +141,7 @@ int M_ReadFile(char *name, byte **buffer)
     int	count, length;
     byte *buf;
 	
-    handle = fopen(name, "rb");
+    handle = doomgeneric_fopen(name, "rb");
     if (handle == NULL)
 	I_Error ("Couldn't read file %s", name);
 
@@ -151,8 +151,8 @@ int M_ReadFile(char *name, byte **buffer)
     length = M_FileLength(handle);
     
     buf = Z_Malloc (length, PU_STATIC, NULL);
-    count = fread(buf, 1, length, handle);
-    fclose (handle);
+    count = doomgeneric_fread(buf, 1, length, handle);
+    doomgeneric_fclose (handle);
 	
     if (count < length)
 	I_Error ("Couldn't read file %s", name);

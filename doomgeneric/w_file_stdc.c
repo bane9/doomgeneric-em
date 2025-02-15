@@ -22,6 +22,8 @@
 #include "w_file.h"
 #include "z_zone.h"
 
+#include "doomgeneric_syscall.h"
+
 typedef struct
 {
     wad_file_t wad;
@@ -35,7 +37,7 @@ static wad_file_t *W_StdC_OpenFile(char *path)
     stdc_wad_file_t *result;
     FILE *fstream;
 
-    fstream = fopen(path, "rb");
+    fstream = doomgeneric_fopen(path, "rb");
 
     if (fstream == NULL)
     {
@@ -59,7 +61,7 @@ static void W_StdC_CloseFile(wad_file_t *wad)
 
     stdc_wad = (stdc_wad_file_t *) wad;
 
-    fclose(stdc_wad->fstream);
+    doomgeneric_fclose(stdc_wad->fstream);
     Z_Free(stdc_wad);
 }
 
@@ -76,11 +78,11 @@ size_t W_StdC_Read(wad_file_t *wad, unsigned int offset,
 
     // Jump to the specified position in the file.
 
-    fseek(stdc_wad->fstream, offset, SEEK_SET);
+    doomgeneric_fseek(stdc_wad->fstream, offset, SEEK_SET);
 
     // Read into the buffer.
 
-    result = fread(buffer, 1, buffer_len, stdc_wad->fstream);
+    result = doomgeneric_fread(buffer, 1, buffer_len, stdc_wad->fstream);
 
     return result;
 }

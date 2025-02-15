@@ -17,17 +17,17 @@ extern wad_file_class_t doomgeneric_wad_file;
 static size_t dg_file_length(FILE* file) {
     size_t length;
 
-    fseek(file, 0, SEEK_END);
+    doomgeneric_fseek(file, 0, SEEK_END);
 
     length = ftell(file);
 
-    fseek(file, 0, SEEK_SET);
+    doomgeneric_fseek(file, 0, SEEK_SET);
 
     return length;
 }
 
 static wad_file_t *dg_wad_openfile(char *path) {
-    FILE* f = fopen(path, "rb");
+    FILE* f = doomgeneric_fopen(path, "rb");
 
     if (!f) {
         return NULL;
@@ -50,7 +50,7 @@ static void dg_wad_closefile(wad_file_t *path) {
 
     FILE *f = wad_file->file;
 
-    fclose(f);
+    doomgeneric_fclose(f);
 
     doomgeneric_free(path);
 }
@@ -61,9 +61,9 @@ static size_t dg_wad_read(wad_file_t *file, unsigned int offset,
 
     FILE *f = wad_file->file;
 
-    fseek(f, offset, SEEK_SET);
+    doomgeneric_fseek(f, offset, SEEK_SET);
 
-    return fread(buffer, 1, buffer_len, f);
+    return doomgeneric_fread(buffer, 1, buffer_len, f);
 }
 
 static wad_file_t *dg_wad_openfile_mem(char *path);

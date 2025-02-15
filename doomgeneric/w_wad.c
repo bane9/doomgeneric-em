@@ -508,7 +508,7 @@ void W_Profile (void)
     }
     profilecount++;
 #if ORIGCODE
-    f = fopen ("waddump.txt","w");
+    f = doomgeneric_fopen ("waddump.txt","w");
     name[8] = 0;
 
     for (i=0 ; i<numlumps ; i++)
@@ -529,7 +529,7 @@ void W_Profile (void)
 
 	fprintf (f,"\n");
     }
-    fclose (f);
+    doomgeneric_fclose (f);
 #endif
 }
 

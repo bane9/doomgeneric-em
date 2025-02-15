@@ -58,6 +58,7 @@
 
 #include "m_menu.h"
 
+#include "doomgeneric_syscall.h"
 
 extern patch_t*		hu_font[HU_FONTSIZE];
 extern boolean		message_dontfuckwithme;
@@ -510,15 +511,15 @@ void M_ReadSaveStrings(void)
     {
         M_StringCopy(name, P_SaveGameFile(i), sizeof(name));
 
-	handle = fopen(name, "rb");
+	handle = doomgeneric_fopen(name, "rb");
         if (handle == NULL)
         {
             M_StringCopy(savegamestrings[i], EMPTYSTRING, SAVESTRINGSIZE);
             LoadMenu[i].status = 0;
             continue;
         }
-	fread(&savegamestrings[i], 1, SAVESTRINGSIZE, handle);
-	fclose(handle);
+	doomgeneric_fread(&savegamestrings[i], 1, SAVESTRINGSIZE, handle);
+	doomgeneric_fclose(handle);
 	LoadMenu[i].status = 1;
     }
 }

@@ -84,7 +84,7 @@ static byte saveg_read8(void)
 {
     byte result;
 
-    if (fread(&result, 1, 1, save_stream) < 1)
+    if (doomgeneric_fread(&result, 1, 1, save_stream) < 1)
     {
         if (!savegame_error)
         {

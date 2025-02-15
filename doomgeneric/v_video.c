@@ -728,7 +728,7 @@ void WritePNGfile(char *filename, byte *data,
     FILE *handle;
     int i;
 
-    handle = fopen(filename, "wb");
+    handle = doomgeneric_fopen(filename, "wb");
     if (!handle)
     {
         return;
@@ -780,7 +780,7 @@ void WritePNGfile(char *filename, byte *data,
 
     png_write_end(ppng, pinfo);
     png_destroy_write_struct(&ppng, &pinfo);
-    fclose(handle);
+    doomgeneric_fclose(handle);
 }
 #endif
 

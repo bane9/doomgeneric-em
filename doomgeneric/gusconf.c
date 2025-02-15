@@ -201,7 +201,7 @@ static boolean WriteTimidityConfig(char *path, gus_config_t *config)
     FILE *fstream;
     unsigned int i;
 
-    fstream = fopen(path, "w");
+    fstream = doomgeneric_fopen(path, "w");
 
     if (fstream == NULL)
     {
@@ -238,7 +238,7 @@ static boolean WriteTimidityConfig(char *path, gus_config_t *config)
 
     fprintf(fstream, "\n");
 
-    fclose(fstream);
+    doomgeneric_fclose(fstream);
 
     return true;
 }

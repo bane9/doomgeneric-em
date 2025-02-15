@@ -370,7 +370,7 @@ void StatDump(void)
 
         if (strcmp(myargv[i + 1], "-") != 0)
         {
-            dumpfile = fopen(myargv[i + 1], "w");
+            dumpfile = doomgeneric_fopen(myargv[i + 1], "w");
         }
         else
         {
@@ -384,7 +384,7 @@ void StatDump(void)
 
         if (dumpfile != NULL)
         {
-            fclose(dumpfile);
+            doomgeneric_fclose(dumpfile);
         }
     }
 #endif

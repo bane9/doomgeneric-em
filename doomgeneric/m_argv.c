@@ -87,7 +87,7 @@ static void LoadResponseFile(int argv_index)
     response_filename = myargv[argv_index] + 1;
 
     // Read the response file into memory
-    handle = fopen(response_filename, "rb");
+    handle = doomgeneric_fopen(response_filename, "rb");
 
     if (handle == NULL)
     {
@@ -112,7 +112,7 @@ static void LoadResponseFile(int argv_index)
 
     while (i < size)
     {
-        k = fread(file + i, 1, size - i, handle);
+        k = doomgeneric_fread(file + i, 1, size - i, handle);
 
         if (k < 0)
         {
@@ -122,7 +122,7 @@ static void LoadResponseFile(int argv_index)
         i += k;
     }
 
-    fclose(handle);
+    doomgeneric_fclose(handle);
 
     // Create new arguments list array
 
