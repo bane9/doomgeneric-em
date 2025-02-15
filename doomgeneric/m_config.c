@@ -1736,7 +1736,7 @@ static void SetVariable(default_t *def, char *value)
     switch (def->type)
     {
         case DEFAULT_STRING:
-            * (char **) def->location = strdup(value);
+            * (char **) def->location = doomgeneric_strdup(value);
             break;
 
         case DEFAULT_INT:
@@ -2098,7 +2098,7 @@ char *M_GetSaveGameDir(char *iwadname)
 
     if (!strcmp(configdir, ""))
     {
-    	savegamedir = strdup("");
+    	savegamedir = doomgeneric_strdup("");
     }
     else
     {

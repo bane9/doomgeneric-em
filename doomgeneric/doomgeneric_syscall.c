@@ -53,6 +53,10 @@ void doomgeneric_free(void *mem) {
     free(mem);
 }
 
+char *doomgeneric_strdup(const char *str1) {
+    return strdup(str1);
+}
+
 FILE *doomgeneric_fopen(const char* filename, const char* mode) {
     return fopen(filename, mode);
 }
@@ -72,4 +76,9 @@ int doomgeneric_mkdir(const char* path, unsigned mode) {
 size_t doomgeneric_fread(void *restrict buffer, size_t size, size_t count,
                          FILE *restrict stream) {
     return fread(buffer, size, count, stream);
+}
+
+size_t doomgeneric_fwrite(const void* restrict buffer, size_t size,
+                          size_t count, FILE* restrict stream) {
+    return fwrite(buffer, size, count, stream);
 }

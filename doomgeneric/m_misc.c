@@ -121,7 +121,7 @@ boolean M_WriteFile(char *name, void *source, int length)
     if (handle == NULL)
 	return false;
 
-    count = fwrite(source, 1, length, handle);
+    count = doomgeneric_fwrite(source, 1, length, handle);
     doomgeneric_fclose(handle);
 	
     if (count < length)
@@ -287,7 +287,7 @@ char *M_StrCaseStr(char *haystack, char *needle)
 }
 
 //
-// Safe version of strdup() that checks the string was successfully
+// Safe version of doomgeneric_strdup() that checks the string was successfully
 // allocated.
 //
 
@@ -295,7 +295,7 @@ char *M_StringDuplicate(const char *orig)
 {
     char *result;
 
-    result = strdup(orig);
+    result = doomgeneric_strdup(orig);
 
     if (result == NULL)
     {

@@ -416,7 +416,7 @@ static char *CheckDirectoryHasIWAD(char *dir, char *iwadname)
 
     if (DirIsFile(dir, iwadname) && M_FileExists(dir))
     {
-        return strdup(dir);
+        return doomgeneric_strdup(dir);
     }
 
     // Construct the full path to the IWAD if it is located in
@@ -424,7 +424,7 @@ static char *CheckDirectoryHasIWAD(char *dir, char *iwadname)
 
     if (!strcmp(dir, "."))
     {
-        filename = strdup(iwadname);
+        filename = doomgeneric_strdup(iwadname);
     }
     else
     {
@@ -529,7 +529,7 @@ static void AddDoomWadPath(void)
         return;
     }
 
-    doomwadpath = strdup(doomwadpath);
+    doomwadpath = doomgeneric_strdup(doomwadpath);
 
     // Add the initial directory
 
@@ -651,7 +651,7 @@ char *D_FindWADByName(char *name)
 
         if (DirIsFile(iwad_dirs[i], name) && M_FileExists(iwad_dirs[i]))
         {
-            return strdup(iwad_dirs[i]);
+            return doomgeneric_strdup(iwad_dirs[i]);
         }
 
         // Construct a string for the full path

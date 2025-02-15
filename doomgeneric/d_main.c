@@ -1129,7 +1129,7 @@ static void LoadIwadDeh(void)
         }
         else
         {
-            chex_deh = strdup("chex.deh");
+            chex_deh = doomgeneric_strdup("chex.deh");
         }
 
         // If the dehacked patch isn't found, try searching the WAD

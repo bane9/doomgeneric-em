@@ -15,6 +15,7 @@ int doomgeneric_vsnprintf(char* restrict buffer, size_t bufsz,
 void doomgeneric_puts(const char *msg);
 void *doomgeneric_malloc(size_t size);
 void doomgeneric_free(void *mem);
+char *doomgeneric_strdup(const char *str1);
 
 FILE *doomgeneric_fopen(const char* filename, const char* mode);
 int doomgeneric_fclose(FILE *stream);
@@ -23,5 +24,7 @@ int doomgeneric_mkdir(const char* path, unsigned mode);
 int doomgeneric_mkdir(const char* path, unsigned mode);
 size_t doomgeneric_fread(void *restrict buffer, size_t size, size_t count,
                          FILE *restrict stream);
+size_t doomgeneric_fwrite(const void* restrict buffer, size_t size,
+                          size_t count, FILE* restrict stream);
 
 #endif // DOOMGENERIC_SYSCALL_H
