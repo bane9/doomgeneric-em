@@ -88,9 +88,9 @@ typedef struct
 
 typedef struct
 {
-    default_t *defaults;
+    const default_t *defaults;
     int numdefaults;
-    char *filename;
+    const char *filename;
 } default_collection_t;
 
 #define CONFIG_VARIABLE_GENERIC(name, type) {#name, NULL, type, 0, 0, false}
@@ -105,7 +105,7 @@ typedef struct
 
 //! @begin_config_file default
 
-static default_t doom_defaults_list[] = {
+static const default_t doom_defaults_list[] = {
     //!
     // Mouse sensitivity.  This value is used to multiply input mouse
     // movement to control the effect of moving the mouse.
@@ -1421,7 +1421,7 @@ static default_collection_t extra_defaults = {
 
 // Search a collection for a variable
 
-static default_t *SearchCollection(default_collection_t *collection, char *name)
+static const default_t *SearchCollection(default_collection_t *collection, char *name)
 {
     int i;
 
@@ -1593,7 +1593,7 @@ static int ParseIntParameter(char *strparm)
     return parm;
 }
 
-static void SetVariable(default_t *def, char *value)
+static void SetVariable(const default_t *def, char *value)
 {
     int intparm;
 
@@ -1616,7 +1616,7 @@ static void SetVariable(default_t *def, char *value)
             // file (save the old value in untranslated)
 
             intparm = ParseIntParameter(value);
-            def->untranslated = intparm;
+            // def->untranslated = intparm;
             if (intparm >= 0 && intparm < 128)
             {
                 intparm = scantokey[intparm];
@@ -1626,7 +1626,7 @@ static void SetVariable(default_t *def, char *value)
                 intparm = 0;
             }
 
-            def->original_translated = intparm;
+            // def->original_translated = intparm;
             *(int *) def->location = intparm;
             break;
 
@@ -1664,8 +1664,8 @@ void M_SaveDefaults(void)
 
 void M_SaveDefaultsAlternate(char *main, char *extra)
 {
-    char *orig_main;
-    char *orig_extra;
+    const char *orig_main;
+    const char *orig_extra;
 
     // Temporarily change the filenames
 
@@ -1743,9 +1743,9 @@ void M_LoadDefaults(void)
 
 // Get a configuration file variable by its name
 
-static default_t *GetDefaultForName(char *name)
+static const default_t *GetDefaultForName(char *name)
 {
-    default_t *result;
+    const default_t *result;
 
     // Try the main list and the extras
 
@@ -1772,12 +1772,12 @@ static default_t *GetDefaultForName(char *name)
 
 void M_BindVariable(char *name, void *location)
 {
-    default_t *variable;
+    // default_t *variable;
 
-    variable = GetDefaultForName(name);
+    // variable = GetDefaultForName(name);
 
-    variable->location = location;
-    variable->bound = true;
+    // variable->location = location;
+    // variable->bound = true;
 }
 
 // Set the value of a particular variable; an API function for other
@@ -1785,7 +1785,7 @@ void M_BindVariable(char *name, void *location)
 
 boolean M_SetVariable(char *name, char *value)
 {
-    default_t *variable;
+    const default_t *variable;
 
     variable = GetDefaultForName(name);
 
@@ -1803,7 +1803,7 @@ boolean M_SetVariable(char *name, char *value)
 
 int M_GetIntVariable(char *name)
 {
-    default_t *variable;
+    const default_t *variable;
 
     variable = GetDefaultForName(name);
 
@@ -1818,7 +1818,7 @@ int M_GetIntVariable(char *name)
 
 const char *M_GetStrVariable(char *name)
 {
-    default_t *variable;
+    const default_t *variable;
 
     variable = GetDefaultForName(name);
 
@@ -1833,7 +1833,7 @@ const char *M_GetStrVariable(char *name)
 
 float M_GetFloatVariable(char *name)
 {
-    default_t *variable;
+    const default_t *variable;
 
     variable = GetDefaultForName(name);
 
