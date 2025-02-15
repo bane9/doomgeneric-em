@@ -55,9 +55,6 @@ extern const fixed_t *finecosine;
 // Effective size is 4096.
 extern const fixed_t finetangent[FINEANGLES/2];
 
-// Gamma correction tables.
-extern const byte gammatable[5][256];
-
 // Binary Angle Measument, BAM.
 
 #define ANG45           0x20000000

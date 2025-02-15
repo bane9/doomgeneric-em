@@ -51,8 +51,7 @@ rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 
 int usemouse = 0;
 
-static struct color colors[256];
-
+static color colors[256];
 
 void I_GetEvent(void);
 
@@ -91,10 +90,6 @@ typedef struct
     byte g;
     byte b;
 } col_t;
-
-// Palette converted to RGB565
-
-static uint16_t rgb565_palette[256];
 
 void I_InitGraphics (void)
 {
@@ -146,15 +141,7 @@ void I_FinishUpdate (void)
             const int y2_x2_colors = y2_xsource + x2;
             const int i_x_colors = i_xdest + x;
 
-            pixel_t pixel;
-#ifdef DOOMGENERIC_FB_565
-            pixel = rgb565_palette[I_VideoBuffer[y2_x2_colors]];
-#else
-            pixel = 0;
-            memcpy(&pixel, &colors[I_VideoBuffer[y2_x2_colors]], sizeof(pixel));
-#endif
-
-            DG_ScreenBuffer[i_x_colors] = pixel;
+            DG_ScreenBuffer[i_x_colors] = colors[I_VideoBuffer[y2_x2_colors]];
         }
     }
 
@@ -177,24 +164,25 @@ void I_ReadScreen (byte* scr)
 #define GFX_RGB565_G(color)			((0x07E0 & color) >> 5)
 #define GFX_RGB565_B(color)			(0x001F & color)
 
+#define GFX_ARGB(r, g, b, a) (((a) << 24) | ((r) << 16) | ((g) << 8) | (b))
+#define GFX_RGBA(r, g, b, a) (((r) << 24) | ((g) << 16) | ((b) << 8) | (a))
+#define GFX_ABGR(r, g, b, a) (((a) << 24) | ((b) << 16) | ((g) << 8) | (r))
+#define GFX_BGRA(r, g, b, a) (((b) << 24) | ((g) << 16) | ((r) << 8) | (a))
+
 void I_SetPalette (byte* palette)
 {
-#ifdef DOOMGENERIC_FB_565
-    for (int i = 0; i < 256 ; i++)
-    {
-        uint16_t color = GFX_RGB565(palette[0], palette[1], palette[2]);
-        rgb565_palette[i] = color;
-        palette += 3;
-    }
-#else
     for (int i = 0; i < 256; i++)
     {
-        colors[i].a = 0;
-        colors[i].r = gammatable[usegamma][*palette++];
-        colors[i].g = gammatable[usegamma][*palette++];
-        colors[i].b = gammatable[usegamma][*palette++];
-    }
+        uint8_t r = *palette++;
+        uint8_t g = *palette++;
+        uint8_t b = *palette++;
+
+#ifdef DOOMGENERIC_FB_565
+        colors[i] = GFX_RGB565(r, g, b);
+#else
+        colors[i] = GFX_ARGB(r, g, b, 0);
 #endif
+    }
 }
 
 // Given an RGB value, find the closest matching palette index.
@@ -212,9 +200,9 @@ int I_GetPaletteIndex (int r, int g, int b)
 
     for (i = 0; i < 256; ++i)
     {
-        color.r = GFX_RGB565_R(rgb565_palette[i]);
-        color.g = GFX_RGB565_G(rgb565_palette[i]);
-        color.b = GFX_RGB565_B(rgb565_palette[i]);
+        color.r = GFX_RGB565_R(colors[i]);
+        color.g = GFX_RGB565_G(colors[i]);
+        color.b = GFX_RGB565_B(colors[i]);
 
         diff = (r - color.r) * (r - color.r)
              + (g - color.g) * (g - color.g)
