@@ -51,18 +51,7 @@ rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 
 int usemouse = 0;
 
-
-#ifdef CMAP256
-
-boolean palette_changed;
-struct color colors[256];
-
-#else  // CMAP256
-
 static struct color colors[256];
-
-
-#endif  // CMAP256
 
 
 void I_GetEvent(void);
@@ -157,8 +146,12 @@ void I_FinishUpdate (void)
 			const int y2_x2_colors = y2_xsource + x2;
 			const int i_x_colors = i_xdest + x;
 
-            pixel_t pixel = 0;
+            
+#ifdef DOOMGENERIC_FB_565
+            pixel_t pixel = rgb565_palette[I_VideoBuffer[y2_x2_colors]];
+#else
             memcpy(&pixel, &colors[I_VideoBuffer[y2_x2_colors]], sizeof(pixel));
+#endif
 
 			DG_ScreenBuffer[i_x_colors] = pixel;
 		}
@@ -185,36 +178,22 @@ void I_ReadScreen (byte* scr)
 
 void I_SetPalette (byte* palette)
 {
-	int i;
-	//col_t* c;
-
-	//for (i = 0; i < 256; i++)
-	//{
-	//	c = (col_t*)palette;
-
-	//	rgb565_palette[i] = GFX_RGB565(gammatable[usegamma][c->r],
-	//								   gammatable[usegamma][c->g],
-	//								   gammatable[usegamma][c->b]);
-
-	//	palette += 3;
-	//}
-    
-
-    /* performance boost:
-     * map to the right pixel format over here! */
-
-    for (i=0; i<256; ++i ) {
+#ifdef DOOMGENERIC_FB_565
+    for (int i = 0; i < 256 ; i++)
+	{
+		uint16_t color = GFX_RGB565(palette[0], palette[1], palette[2]);
+		rgb565_palette[i] = color;
+		palette += 3;
+	}
+#else
+    for (int i = 0; i < 256; i++)
+    {
         colors[i].a = 0;
         colors[i].r = gammatable[usegamma][*palette++];
         colors[i].g = gammatable[usegamma][*palette++];
         colors[i].b = gammatable[usegamma][*palette++];
     }
-
-#ifdef CMAP256
-
-    palette_changed = true;
-
-#endif  // CMAP256
+#endif
 }
 
 // Given an RGB value, find the closest matching palette index.
