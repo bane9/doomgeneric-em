@@ -50,7 +50,6 @@
 #include "m_menu.h"
 #include "p_saveg.h"
 
-#include "i_endoom.h"
 #include "i_joystick.h"
 #include "i_system.h"
 #include "i_timer.h"
@@ -1063,8 +1062,6 @@ static void D_Endoom(void)
     }
 
     endoom = W_CacheLumpName(DEH_String("ENDOOM"), PU_STATIC);
-
-    I_Endoom(endoom);
 
 	doomgeneric_exit(0);
 }
