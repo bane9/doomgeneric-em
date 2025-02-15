@@ -25,7 +25,6 @@
 #include "doomkeys.h"
 #include "doomtype.h"
 #include "i_joystick.h"
-#include "i_scale.h"
 #include "i_swap.h"
 #include "i_system.h"
 #include "i_timer.h"
@@ -218,16 +217,6 @@ static const char shiftxform[] = {
 static unsigned char TranslateKey(unsigned char key)
 {
     return key;
-
-    /*
-  if (key < sizeof(at_to_doom))
-    return at_to_doom[key];
-  else
-    return 0x0;
-    */
-
-    // default:
-    //   return tolower(key);
 }
 
 // Get the equivalent ASCII (Unicode?) character for a keypress.
@@ -317,16 +306,6 @@ void I_GetEvent(void)
             break;
         }
     }
-
-    /*
-  case SDL_MOUSEMOTION:
-    event.type = ev_mouse;
-    event.data1 = mouse_button_state;
-    event.data2 = AccelerateMouse(sdlevent.motion.xrel);
-    event.data3 = -AccelerateMouse(sdlevent.motion.yrel);
-    D_PostEvent(&event);
-    break;
-    */
 }
 
 void I_InitInput(void)

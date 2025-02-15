@@ -23,9 +23,6 @@
 
 #include <stdarg.h>
 
-// #include <sys/time.h>
-// #include <unistd.h>
-
 //
 // I_GetTime
 // returns time in 1/35th second tics
@@ -72,20 +69,13 @@ int I_GetTimeMS(void)
 
 void I_Sleep(int ms)
 {
-    // SDL_Delay(ms);
-    // usleep (ms * 1000);
-
     DG_SleepMs(ms);
 }
 
 void I_WaitVBL(int count)
 {
-    // I_Sleep((count * 1000) / 70);
 }
 
 void I_InitTimer(void)
 {
-    // initialize timer
-
-    // SDL_Init(SDL_INIT_TIMER);
 }

@@ -992,60 +992,6 @@ static default_t extra_defaults_list[] = {
 
     CONFIG_VARIABLE_INT(dclick_use),
 
-#ifdef FEATURE_SOUND
-
-    //!
-    // Controls whether libsamplerate support is used for performing
-    // sample rate conversions of sound effects.  Support for this
-    // must be compiled into the program.
-    //
-    // If zero, libsamplerate support is disabled.  If non-zero,
-    // libsamplerate is enabled. Increasing values roughly correspond
-    // to higher quality conversion; the higher the quality, the
-    // slower the conversion process.  Linear conversion = 1;
-    // Zero order hold = 2; Fast Sinc filter = 3; Medium quality
-    // Sinc filter = 4; High quality Sinc filter = 5.
-    //
-
-    CONFIG_VARIABLE_INT(use_libsamplerate),
-
-    //!
-    // Scaling factor used by libsamplerate. This is used when converting
-    // sounds internally back into integer form; normally it should not
-    // be necessary to change it from the default value. The only time
-    // it might be needed is if a PWAD file is loaded that contains very
-    // loud sounds, in which case the conversion may cause sound clipping
-    // and the scale factor should be reduced. The lower the value, the
-    // quieter the sound effects become, so it should be set as high as is
-    // possible without clipping occurring.
-
-    CONFIG_VARIABLE_FLOAT(libsamplerate_scale),
-
-    //!
-    // Full path to a Timidity configuration file to use for MIDI
-    // playback. The file will be evaluated from the directory where
-    // it is evaluated, so there is no need to add "dir" commands
-    // into it.
-    //
-
-    CONFIG_VARIABLE_STRING(timidity_cfg_path),
-
-    //!
-    // Path to GUS patch files to use when operating in GUS emulation
-    // mode.
-    //
-
-    CONFIG_VARIABLE_STRING(gus_patch_path),
-
-    //!
-    // Number of kilobytes of RAM to use in GUS emulation mode. Valid
-    // values are 256, 512, 768 or 1024.
-    //
-
-    CONFIG_VARIABLE_INT(gus_ram_kb),
-
-#endif
-
     //!
     // Key to pause or unpause the game.
     //
