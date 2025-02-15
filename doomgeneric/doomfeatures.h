@@ -19,18 +19,4 @@
 #ifndef DOOM_FEATURES_H
 #define DOOM_FEATURES_H
 
-// Enables wad merging (the '-merge' command line parameter)
-
-#undef FEATURE_WAD_MERGE
-
-// Enables dehacked support ('-deh')
-
-#undef FEATURE_DEHACKED
-
-// Enables multiplayer support (network games)
-
-#undef FEATURE_MULTIPLAYER
-
 #endif /* #ifndef DOOM_FEATURES_H */
-
-
