@@ -47,32 +47,6 @@ rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 
 #include <sys/types.h>
 
-//#define CMAP256
-
-struct FB_BitField
-{
-	uint32_t offset;			/* beginning of bitfield	*/
-	uint32_t length;			/* length of bitfield		*/
-};
-
-struct FB_ScreenInfo
-{
-	uint32_t xres;			/* visible resolution		*/
-	uint32_t yres;
-	uint32_t xres_virtual;		/* virtual resolution		*/
-	uint32_t yres_virtual;
-
-	uint32_t bits_per_pixel;		/* guess what			*/
-	
-							/* >1 = FOURCC			*/
-	struct FB_BitField red;		/* bitfield in s_Fb mem if true color, */
-	struct FB_BitField green;	/* else only length is significant */
-	struct FB_BitField blue;
-	struct FB_BitField transp;	/* transparency			*/
-};
-
-static struct FB_ScreenInfo s_Fb;
-int fb_scaling = 1;
 int usemouse = 0;
 
 
@@ -131,106 +105,8 @@ typedef struct
 
 static uint16_t rgb565_palette[256];
 
-void cmap_to_rgb565(uint16_t * out, uint8_t * in, int in_pixels)
-{
-    int i, j;
-    struct color c;
-    uint16_t r, g, b;
-
-    for (i = 0; i < in_pixels; i++)
-    {
-        c = colors[*in]; 
-        r = ((uint16_t)(c.r >> 3)) << 11;
-        g = ((uint16_t)(c.g >> 2)) << 5;
-        b = ((uint16_t)(c.b >> 3)) << 0;
-        *out = (r | g | b);
-
-        in++;
-        for (j = 0; j < fb_scaling; j++) {
-            out++;
-        }
-    }
-}
-
-void cmap_to_fb(uint8_t * out, uint8_t * in, int in_pixels)
-{
-    int i, j, k;
-    struct color c;
-    uint32_t pix;
-    uint16_t r, g, b;
-
-    for (i = 0; i < in_pixels; i++)
-    {
-        c = colors[*in];  /* R:8 G:8 B:8 format! */
-        r = (uint16_t)(c.r >> (8 - s_Fb.red.length));
-        g = (uint16_t)(c.g >> (8 - s_Fb.green.length));
-        b = (uint16_t)(c.b >> (8 - s_Fb.blue.length));
-        pix = r << s_Fb.red.offset;
-        pix |= g << s_Fb.green.offset;
-        pix |= b << s_Fb.blue.offset;
-
-        for (k = 0; k < fb_scaling; k++) {
-            for (j = 0; j < s_Fb.bits_per_pixel/8; j++) {
-                *out = (pix >> (j*8));
-                out++;
-            }
-        }
-        in++;
-    }
-}
-
 void I_InitGraphics (void)
 {
-    int i;
-
-	memset(&s_Fb, 0, sizeof(struct FB_ScreenInfo));
-	s_Fb.xres = DOOMGENERIC_RESX;
-	s_Fb.yres = DOOMGENERIC_RESY;
-	s_Fb.xres_virtual = s_Fb.xres;
-	s_Fb.yres_virtual = s_Fb.yres;
-
-#ifdef CMAP256
-
-	s_Fb.bits_per_pixel = 8;
-
-#else  // CMAP256
-
-	s_Fb.bits_per_pixel = 32;
-
-	s_Fb.blue.length = 8;
-	s_Fb.green.length = 8;
-	s_Fb.red.length = 8;
-	s_Fb.transp.length = 8;
-
-	s_Fb.blue.offset = 0;
-	s_Fb.green.offset = 8;
-	s_Fb.red.offset = 16;
-	s_Fb.transp.offset = 24;
-	
-#endif  // CMAP256
-
-    printf("I_InitGraphics: framebuffer: x_res: %d, y_res: %d, x_virtual: %d, y_virtual: %d, bpp: %d\n",
-            s_Fb.xres, s_Fb.yres, s_Fb.xres_virtual, s_Fb.yres_virtual, s_Fb.bits_per_pixel);
-
-    printf("I_InitGraphics: framebuffer: RGBA: %d%d%d%d, red_off: %d, green_off: %d, blue_off: %d, transp_off: %d\n",
-            s_Fb.red.length, s_Fb.green.length, s_Fb.blue.length, s_Fb.transp.length, s_Fb.red.offset, s_Fb.green.offset, s_Fb.blue.offset, s_Fb.transp.offset);
-
-    printf("I_InitGraphics: DOOM screen size: w x h: %d x %d\n", SCREENWIDTH, SCREENHEIGHT);
-
-
-    i = M_CheckParmWithArgs("-scaling", 1);
-    if (i > 0) {
-        i = atoi(myargv[i + 1]);
-        fb_scaling = i;
-        printf("I_InitGraphics: Scaling factor: %d\n", fb_scaling);
-    } else {
-        fb_scaling = s_Fb.xres / SCREENWIDTH;
-        if (s_Fb.yres / SCREENHEIGHT < fb_scaling)
-            fb_scaling = s_Fb.yres / SCREENHEIGHT;
-        printf("I_InitGraphics: Auto-scaling factor: %d\n", fb_scaling);
-    }
-
-
     /* Allocate screen to draw to */
 	I_VideoBuffer = (byte*)Z_Malloc (SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL);  // For DOOM to draw on
 
@@ -265,51 +141,26 @@ void I_UpdateNoBlit (void)
 
 void I_FinishUpdate (void)
 {
-    int y;
-    int x_offset, y_offset, x_offset_end;
-    unsigned char *line_in, *line_out;
+    const int x_ratio = (SCREENWIDTH << 16) / DOOMGENERIC_RESX;
+	const int y_ratio = (SCREENHEIGHT << 16) / DOOMGENERIC_RESY;
 
-    /* Offsets in case FB is bigger than DOOM */
-    /* 600 = s_Fb heigt, 200 screenheight */
-    /* 600 = s_Fb heigt, 200 screenheight */
-    /* 2048 =s_Fb width, 320 screenwidth */
-    y_offset     = (((s_Fb.yres - (SCREENHEIGHT * fb_scaling)) * s_Fb.bits_per_pixel/8)) / 2;
-    x_offset     = (((s_Fb.xres - (SCREENWIDTH  * fb_scaling)) * s_Fb.bits_per_pixel/8)) / 2; // XXX: siglent FB hack: /4 instead of /2, since it seems to handle the resolution in a funny way
-    //x_offset     = 0;
-    x_offset_end = ((s_Fb.xres - (SCREENWIDTH  * fb_scaling)) * s_Fb.bits_per_pixel/8) - x_offset;
+	for (int y = 0; y < DOOMGENERIC_RESY; y++)
+	{
+		const int y2_xsource = ((y * y_ratio) >> 16) * SCREENWIDTH;
+		const int i_xdest = y * DOOMGENERIC_RESX;
 
-    /* DRAW SCREEN */
-    line_in  = (unsigned char *) I_VideoBuffer;
-    line_out = (unsigned char *) DG_ScreenBuffer;
+		for (int x = 0; x < DOOMGENERIC_RESX; x++)
+		{
+			const int x2 = ((x * x_ratio) >> 16);
+			const int y2_x2_colors = y2_xsource + x2;
+			const int i_x_colors = i_xdest + x;
 
-    y = SCREENHEIGHT;
+            pixel_t pixel = 0;
+            memcpy(&pixel, &colors[I_VideoBuffer[y2_x2_colors]], sizeof(pixel));
 
-    while (y--)
-    {
-        int i;
-        for (i = 0; i < fb_scaling; i++) {
-            line_out += x_offset;
-#ifdef CMAP256
-            if (fb_scaling == 1) {
-                memcpy(line_out, line_in, SCREENWIDTH); /* fb_width is bigger than Doom SCREENWIDTH... */
-            } else {
-                int j;
-
-                for (j = 0; j < SCREENWIDTH; j++) {
-                    int k;
-                    for (k = 0; k < fb_scaling; k++) {
-                        line_out[j * fb_scaling + k] = line_in[j];
-                    }
-                }
-            }
-#else
-            //cmap_to_rgb565((void*)line_out, (void*)line_in, SCREENWIDTH);
-            cmap_to_fb((void*)line_out, (void*)line_in, SCREENWIDTH);
-#endif
-            line_out += (SCREENWIDTH * fb_scaling * (s_Fb.bits_per_pixel/8)) + x_offset_end;
-        }
-        line_in += SCREENWIDTH;
-    }
+			DG_ScreenBuffer[i_x_colors] = pixel;
+		}
+	}
 
 	DG_DrawFrame();
 }
