@@ -82,9 +82,6 @@ int main(int argc, char **argv)
 }
 ```
 
-# sound
-Sound is much harder to implement! If you need sound, take a look at SDL port. It fully supports sound and music! Where to start? Define FEATURE_SOUND, assign DG_sound_module and DG_music_module.
-
 # platforms
 Ported platforms include Windows, X11, SDL, emscripten. Just look at (doomgeneric_win.c, doomgeneric_xlib.c, doomgeneric_sdl.c).
 Makefiles provided for each platform.
@@ -92,6 +89,4 @@ Makefiles provided for each platform.
 ## emscripten
 You can try it directly here:
 https://ozkl.github.io/doomgeneric/
-
-emscripten port is based on SDL port, so it supports sound and music! For music, timidity backend is used.
 

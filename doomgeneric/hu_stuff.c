@@ -33,13 +33,10 @@
 #include "m_misc.h"
 #include "w_wad.h"
 
-#include "s_sound.h"
-
 #include "doomstat.h"
 
 // Data.
 #include "dstrings.h"
-#include "sounds.h"
 
 //
 // Locally used constants, shortcuts.
@@ -457,10 +454,6 @@ void HU_Ticker(void)
 			    message_nottobefuckedwith = true;
 			    message_on = true;
 			    message_counter = HU_MSGTIMEOUT;
-			    if ( gamemode == commercial )
-			      S_StartSound(0, sfx_radio);
-			    else
-			      S_StartSound(0, sfx_tink);
 			}
 			HUlib_resetIText(&w_inputbuffer[i]);
 		    }

@@ -24,12 +24,12 @@
 
 #include "doomdef.h"
 #include "p_local.h"
-#include "sounds.h"
+
 
 #include "st_stuff.h"
 #include "hu_stuff.h"
 
-#include "s_sound.h"
+
 
 #include "doomstat.h"
 
@@ -93,9 +93,6 @@ void P_ExplodeMissile (mobj_t* mo)
 	mo->tics = 1;
 
     mo->flags &= ~MF_MISSILE;
-
-    if (mo->info->deathsound)
-	S_StartSound (mo, mo->info->deathsound);
 }
 
 
@@ -320,7 +317,6 @@ void P_ZMovement (mobj_t* mo)
 		// after hitting the ground (hard),
 		// and utter appropriate sound.
 		mo->player->deltaviewheight = mo->momz>>3;
-		S_StartSound (mo, sfx_oof);
 	    }
 	    mo->momz = 0;
 	}
@@ -402,14 +398,11 @@ P_NightmareRespawn (mobj_t* mobj)
 		      mobj->y,
 		      mobj->subsector->sector->floorheight , MT_TFOG); 
     // initiate teleport sound
-    S_StartSound (mo, sfx_telept);
 
     // spawn a teleport fog at the new spot
     ss = R_PointInSubsector (x,y); 
 
     mo = P_SpawnMobj (x, y, ss->sector->floorheight , MT_TFOG); 
-
-    S_StartSound (mo, sfx_telept);
 
     // spawn the new monster
     mthing = &mobj->spawnpoint;
@@ -584,12 +577,8 @@ void P_RemoveMobj (mobj_t* mobj)
 	if (iquehead == iquetail)
 	    iquetail = (iquetail+1)&(ITEMQUESIZE-1);
     }
-	
-    // unlink from sector and block lists
+
     P_UnsetThingPosition (mobj);
-    
-    // stop any playing sound
-    S_StopSound (mobj);
     
     // free block
     P_RemoveThinker ((thinker_t*)mobj);
@@ -633,7 +622,6 @@ void P_RespawnSpecials (void)
     // spawn a teleport fog at the new spot
     ss = R_PointInSubsector (x,y); 
     mo = P_SpawnMobj (x, y, ss->sector->floorheight , MT_IFOG); 
-    S_StartSound (mo, sfx_itmbk);
 
     // find which type to spawn
     for (i=0 ; i< NUMMOBJTYPES ; i++)
@@ -960,9 +948,6 @@ P_SpawnMissile
     th = P_SpawnMobj (source->x,
 		      source->y,
 		      source->z + 4*8*FRACUNIT, type);
-    
-    if (th->info->seesound)
-	S_StartSound (th, th->info->seesound);
 
     th->target = source;	// where it came from
     an = R_PointToAngle2 (source->x, source->y, dest->x, dest->y);
@@ -1033,9 +1018,6 @@ P_SpawnPlayerMissile
     z = source->z + 4*8*FRACUNIT;
 	
     th = P_SpawnMobj (x,y,z, type);
-
-    if (th->info->seesound)
-	S_StartSound (th, th->info->seesound);
 
     th->target = source;
     th->angle = an;

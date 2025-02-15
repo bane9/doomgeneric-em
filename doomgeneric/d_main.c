@@ -32,14 +32,12 @@
 
 #include "dstrings.h"
 #include "doomfeatures.h"
-#include "sounds.h"
 
 #include "d_iwad.h"
 
 #include "z_zone.h"
 #include "w_main.h"
 #include "w_wad.h"
-#include "s_sound.h"
 #include "v_video.h"
 
 #include "f_finale.h"
@@ -99,10 +97,6 @@ boolean		devparm;	// started game with -devparm
 boolean         nomonsters;	// checkparm of -nomonsters
 boolean         respawnparm;	// checkparm of -respawn
 boolean         fastparm;	// checkparm of -fast
-
-//extern int soundVolume;
-//extern  int	sfxVolume;
-//extern  int	musicVolume;
 
 extern  boolean	inhelpscreens;
 
@@ -341,7 +335,6 @@ void D_BindVariables(void)
 
     I_BindVideoVariables();
     I_BindJoystickVariables();
-    I_BindSoundVariables();
 
     M_BindBaseControls();
     M_BindWeaponControls();
@@ -359,12 +352,9 @@ void D_BindVariables(void)
 #endif
 
     M_BindVariable("mouse_sensitivity",      &mouseSensitivity);
-    M_BindVariable("sfx_volume",             &sfxVolume);
-    M_BindVariable("music_volume",           &musicVolume);
     M_BindVariable("show_messages",          &showMessages);
     M_BindVariable("screenblocks",           &screenblocks);
     M_BindVariable("detaillevel",            &detailLevel);
-    M_BindVariable("snd_channels",           &snd_channels);
     M_BindVariable("vanilla_savegame_limit", &vanilla_savegame_limit);
     M_BindVariable("vanilla_demo_limit",     &vanilla_demo_limit);
     M_BindVariable("show_endoom",            &show_endoom);
@@ -409,8 +399,6 @@ void doomgeneric_Tick()
     I_StartFrame ();
 
     TryRunTics (); // will run at least one tic
-
-    S_UpdateSounds (players[consoleplayer].mo);// move positional sounds
 
     // Update display, next frame, with current state.
     if (screenvisible)
@@ -535,10 +523,6 @@ void D_DoAdvanceDemo (void)
 	    pagetic = 170;
 	gamestate = GS_DEMOSCREEN;
 	pagename = DEH_String("TITLEPIC");
-	if ( gamemode == commercial )
-	  S_StartMusic(mus_dm2ttl);
-	else
-	  S_StartMusic (mus_intro);
 	break;
       case 1:
 	G_DeferedPlayDemo(DEH_String("demo1"));
@@ -557,7 +541,6 @@ void D_DoAdvanceDemo (void)
 	{
 	    pagetic = TICRATE * 11;
 	    pagename = DEH_String("TITLEPIC");
-	    S_StartMusic(mus_dm2ttl);
 	}
 	else
 	{
@@ -1612,8 +1595,6 @@ void D_DoomMain (void)
     I_CheckIsScreensaver();
     I_InitTimer();
     I_InitJoystick();
-    I_InitSound(true);
-    I_InitMusic();
 
 #ifdef FEATURE_MULTIPLAYER
     doomgeneric_printf ("NET_Init: Init network subsystem.\n");
@@ -1766,9 +1747,6 @@ void D_DoomMain (void)
 
     DEH_printf("\nP_Init: Init Playloop state.\n");
     P_Init ();
-
-    DEH_printf("S_Init: Setting up sound.\n");
-    S_Init (sfxVolume * 8, musicVolume * 8);
 
     DEH_printf("D_CheckNetGame: Checking network game status.\n");
     D_CheckNetGame ();

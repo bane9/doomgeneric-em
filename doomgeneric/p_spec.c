@@ -39,13 +39,13 @@
 
 #include "g_game.h"
 
-#include "s_sound.h"
+
 
 // State.
 #include "r_state.h"
 
 // Data.
-#include "sounds.h"
+
 
 
 //
@@ -1158,7 +1158,6 @@ void P_UpdateSpecials (void)
 			buttonlist[i].btexture;
 		    break;
 		}
-		S_StartSound(&buttonlist[i].soundorg,sfx_swtchn);
 		memset(&buttonlist[i],0,sizeof(button_t));
 	    }
 	}

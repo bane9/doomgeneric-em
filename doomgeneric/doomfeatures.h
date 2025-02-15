@@ -31,10 +31,6 @@
 
 #undef FEATURE_MULTIPLAYER
 
-// Enables sound output
-
-//#undef FEATURE_SOUND
-
 #endif /* #ifndef DOOM_FEATURES_H */
 
 

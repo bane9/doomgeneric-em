@@ -58,11 +58,8 @@
 
 #include "p_local.h" 
 
-#include "s_sound.h"
-
 // Data.
 #include "dstrings.h"
-#include "sounds.h"
 
 // SKY handling - still the wrong place.
 #include "r_data.h"
@@ -974,11 +971,7 @@ void G_Ticker (void)
 		switch (players[i].cmd.buttons & BT_SPECIALMASK) 
 		{ 
 		  case BTS_PAUSE: 
-		    paused ^= 1; 
-		    if (paused) 
-			S_PauseSound (); 
-		    else 
-			S_ResumeSound (); 
+		    paused ^= 1;
 		    break; 
 					 
 		  case BTS_SAVEGAME:
@@ -1213,9 +1206,6 @@ G_CheckSpot
                          ss->sector->floorheight, MT_TFOG);
     }
 
-    if (players[consoleplayer].viewz != 1) 
-	S_StartSound (mo, sfx_telept);	// don't start sound on first frame 
- 
     return true; 
 } 
 
@@ -1742,7 +1732,6 @@ G_InitNew
     if (paused)
     {
 	paused = false;
-	S_ResumeSound ();
     }
 
     /*

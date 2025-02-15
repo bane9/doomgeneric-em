@@ -130,12 +130,6 @@ static default_t	doom_defaults_list[] =
     CONFIG_VARIABLE_INT(sfx_volume),
 
     //!
-    // Volume of in-game music, range 0-15.
-    //
-
-    CONFIG_VARIABLE_INT(music_volume),
-
-    //!
     // @game strife
     //
     // If non-zero, dialogue text is displayed over characters' pictures
@@ -519,52 +513,6 @@ static default_t	doom_defaults_list[] =
     CONFIG_VARIABLE_INT(detaillevel),
 
     //!
-    // Number of sounds that will be played simultaneously.
-    //
-
-    CONFIG_VARIABLE_INT(snd_channels),
-
-    //!
-    // Music output device.  A non-zero value gives MIDI sound output,
-    // while a value of zero disables music.
-    //
-
-    CONFIG_VARIABLE_INT(snd_musicdevice),
-
-    //!
-    // Sound effects device.  A value of zero disables in-game sound
-    // effects, a value of 1 enables PC speaker sound effects, while
-    // a value in the range 2-9 enables the "normal" digital sound
-    // effects.
-    //
-
-    CONFIG_VARIABLE_INT(snd_sfxdevice),
-
-    //!
-    // SoundBlaster I/O port. Unused.
-    //
-
-    CONFIG_VARIABLE_INT(snd_sbport),
-
-    //!
-    // SoundBlaster IRQ.  Unused.
-    //
-
-    CONFIG_VARIABLE_INT(snd_sbirq),
-
-    //!
-    // SoundBlaster DMA channel.  Unused.
-    //
-
-    CONFIG_VARIABLE_INT(snd_sbdma),
-
-    //!
-    // Output port to use for OPL MIDI playback.  Unused.
-    //
-
-    CONFIG_VARIABLE_INT(snd_mport),
-
-    //!
     // Gamma correction level.  A value of zero disables gamma
     // correction, while a value in the range 1-4 gives increasing
     // levels of gamma correction.
@@ -804,21 +752,6 @@ static default_t extra_defaults_list[] =
     // 35fps timer).
 
     CONFIG_VARIABLE_INT(snd_maxslicetime_ms),
-
-    //!
-    // External command to invoke to perform MIDI playback. If set to
-    // the empty string, SDL_mixer's internal MIDI playback is used.
-    // This only has any effect when snd_musicdevice is set to General
-    // MIDI output.
-
-    CONFIG_VARIABLE_STRING(snd_musiccmd),
-
-    //!
-    // The I/O port to use to access the OPL chip.  Only relevant when
-    // using native OPL music playback.
-    //
-
-    CONFIG_VARIABLE_INT_HEX(opl_io_port),
 
     //!
     // @game doom heretic strife

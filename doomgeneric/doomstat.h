@@ -107,29 +107,6 @@ extern  boolean	netgame;
 // 0=Cooperative; 1=Deathmatch; 2=Altdeath
 extern int deathmatch;
 
-// -------------------------
-// Internal parameters for sound rendering.
-// These have been taken from the DOS version,
-//  but are not (yet) supported with Linux
-//  (e.g. no sound volume adjustment with menu.
-
-// From m_menu.c:
-//  Sound FX volume has default, 0 - 15
-//  Music volume has default, 0 - 15
-// These are multiplied by 8.
-extern int sfxVolume;
-extern int musicVolume;
-
-// Current music/sfx card - index useless
-//  w/o a reference LUT in a sound module.
-// Ideally, this would use indices found
-//  in: /usr/include/linux/soundcard.h
-extern int snd_MusicDevice;
-extern int snd_SfxDevice;
-// Config file? Same disclaimer as above.
-extern int snd_DesiredMusicDevice;
-extern int snd_DesiredSfxDevice;
-
 
 // -------------------------
 // Status flags for refresh.

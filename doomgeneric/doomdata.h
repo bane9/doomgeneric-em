@@ -122,9 +122,6 @@ typedef struct
 // In AutoMap: don't map as two sided: IT'S A SECRET!
 #define ML_SECRET		32
 
-// Sound rendering: don't let sound cross two of these.
-#define ML_SOUNDBLOCK		64
-
 // Don't draw on the automap at all.
 #define ML_DONTDRAW		128
 
