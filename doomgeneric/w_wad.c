@@ -91,7 +91,7 @@ static void ExtendLumpInfo(int newnumlumps)
     lumpinfo_t *newlumpinfo;
     unsigned int i;
 
-    newlumpinfo = calloc(newnumlumps, sizeof(lumpinfo_t));
+    newlumpinfo = doomgeneric_calloc(newnumlumps, sizeof(lumpinfo_t));
 
     if (newlumpinfo == NULL)
     {

@@ -49,6 +49,10 @@ void *doomgeneric_malloc(size_t size) {
     return malloc(size);
 }
 
+void *doomgeneric_calloc(size_t num, size_t size) {
+    return calloc(num, size);
+}
+
 void doomgeneric_free(void *mem) {
     free(mem);
 }
