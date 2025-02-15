@@ -44,9 +44,10 @@ static unsigned char convertToDoomKey(unsigned int key){
       break;
     case SDLK_LCTRL:
     case SDLK_RCTRL:
+    case SDLK_SPACE:
       key = KEY_FIRE;
       break;
-    case SDLK_SPACE:
+    case 'e':
       key = KEY_USE;
       break;
     case SDLK_LSHIFT:

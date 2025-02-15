@@ -341,13 +341,13 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
     // fraggle: support the old "joyb_speed = 31" hack which
     // allowed an autorun effect
 
-#if !DOOMGENERIC_ALWAYS_RUN
     speed = key_speed >= NUMKEYS
          || joybspeed >= MAX_JOY_BUTTONS
          || gamekeydown[key_speed] 
          || joybuttons[joybspeed];
-#else
-    speed = 1;
+
+#if DOOMGENERIC_ALWAYS_RUN
+    speed = !speed;
 #endif
  
     forward = side = 0;
