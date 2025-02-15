@@ -13,7 +13,7 @@ It features:
 - Bare file available for porting
 - Sprint always enabled by default
 - A lot of unnecessary code removed
-    - Saved around 47 KiB of RAM and 48 KiB of ROM compared to base doomgeneric
+    - Saved around 64 KiB of RAM and 80 KiB of ROM compared to base doomgeneric
     - Sound code is completely removed which changes how ticking works. This breaks demos but gameplay itself works fine.
 
 And probably more that I forgot.
