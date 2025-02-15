@@ -23,6 +23,7 @@
 #include "doomtype.h"
 #include "d_ticcmd.h"
 #include "sha1.h"
+#include "doomdef.h"
 
 // Absolute maximum number of "nodes" in the game.  This is different to
 // NET_MAXPLAYERS, as there may be observers that are not participating
@@ -34,7 +35,7 @@
 // This is the maximum supported by the networking code; individual games
 // have their own values for MAXPLAYERS that can be smaller.
 
-#define NET_MAXPLAYERS 8
+#define NET_MAXPLAYERS (MAXPLAYERS * 2)
 
 // Maximum length of a player's name.
 

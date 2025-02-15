@@ -43,7 +43,7 @@
 
 // The maximum number of players, multiplayer/networking.
 #ifndef MAXPLAYERS
-#define MAXPLAYERS 4
+#define MAXPLAYERS 2
 #endif
 
 // The current state of the game: whether we are
