@@ -87,9 +87,9 @@ int usegamma = 0;
 
 typedef struct
 {
-	byte r;
-	byte g;
-	byte b;
+    byte r;
+    byte g;
+    byte b;
 } col_t;
 
 // Palette converted to RGB565
@@ -99,9 +99,9 @@ static uint16_t rgb565_palette[256];
 void I_InitGraphics (void)
 {
     /* Allocate screen to draw to */
-	I_VideoBuffer = (byte*)Z_Malloc (SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL);  // For DOOM to draw on
+    I_VideoBuffer = (byte*)Z_Malloc (SCREENWIDTH * SCREENHEIGHT, PU_STATIC, NULL);  // For DOOM to draw on
 
-	screenvisible = true;
+    screenvisible = true;
 
     extern void I_InitInput(void);
     I_InitInput();
@@ -109,7 +109,7 @@ void I_InitGraphics (void)
 
 void I_ShutdownGraphics (void)
 {
-	Z_Free (I_VideoBuffer);
+    Z_Free (I_VideoBuffer);
 }
 
 void I_StartFrame (void)
@@ -119,7 +119,7 @@ void I_StartFrame (void)
 
 void I_StartTic (void)
 {
-	I_GetEvent();
+    I_GetEvent();
 }
 
 void I_UpdateNoBlit (void)
@@ -133,31 +133,32 @@ void I_UpdateNoBlit (void)
 void I_FinishUpdate (void)
 {
     const int x_ratio = (SCREENWIDTH << 16) / DOOMGENERIC_RESX;
-	const int y_ratio = (SCREENHEIGHT << 16) / DOOMGENERIC_RESY;
+    const int y_ratio = (SCREENHEIGHT << 16) / DOOMGENERIC_RESY;
 
-	for (int y = 0; y < DOOMGENERIC_RESY; y++)
-	{
-		const int y2_xsource = ((y * y_ratio) >> 16) * SCREENWIDTH;
-		const int i_xdest = y * DOOMGENERIC_RESX;
+    for (int y = 0; y < DOOMGENERIC_RESY; y++)
+    {
+        const int y2_xsource = ((y * y_ratio) >> 16) * SCREENWIDTH;
+        const int i_xdest = y * DOOMGENERIC_RESX;
 
-		for (int x = 0; x < DOOMGENERIC_RESX; x++)
-		{
-			const int x2 = ((x * x_ratio) >> 16);
-			const int y2_x2_colors = y2_xsource + x2;
-			const int i_x_colors = i_xdest + x;
+        for (int x = 0; x < DOOMGENERIC_RESX; x++)
+        {
+            const int x2 = ((x * x_ratio) >> 16);
+            const int y2_x2_colors = y2_xsource + x2;
+            const int i_x_colors = i_xdest + x;
 
-            
+            pixel_t pixel;
 #ifdef DOOMGENERIC_FB_565
-            pixel_t pixel = rgb565_palette[I_VideoBuffer[y2_x2_colors]];
+            pixel = rgb565_palette[I_VideoBuffer[y2_x2_colors]];
 #else
+            pixel = 0;
             memcpy(&pixel, &colors[I_VideoBuffer[y2_x2_colors]], sizeof(pixel));
 #endif
 
-			DG_ScreenBuffer[i_x_colors] = pixel;
-		}
-	}
+            DG_ScreenBuffer[i_x_colors] = pixel;
+        }
+    }
 
-	DG_DrawFrame();
+    DG_DrawFrame();
 }
 
 //
@@ -180,11 +181,11 @@ void I_SetPalette (byte* palette)
 {
 #ifdef DOOMGENERIC_FB_565
     for (int i = 0; i < 256 ; i++)
-	{
-		uint16_t color = GFX_RGB565(palette[0], palette[1], palette[2]);
-		rgb565_palette[i] = color;
-		palette += 3;
-	}
+    {
+        uint16_t color = GFX_RGB565(palette[0], palette[1], palette[2]);
+        rgb565_palette[i] = color;
+        palette += 3;
+    }
 #else
     for (int i = 0; i < 256; i++)
     {
@@ -211,9 +212,9 @@ int I_GetPaletteIndex (int r, int g, int b)
 
     for (i = 0; i < 256; ++i)
     {
-    	color.r = GFX_RGB565_R(rgb565_palette[i]);
-    	color.g = GFX_RGB565_G(rgb565_palette[i]);
-    	color.b = GFX_RGB565_B(rgb565_palette[i]);
+        color.r = GFX_RGB565_R(rgb565_palette[i]);
+        color.g = GFX_RGB565_G(rgb565_palette[i]);
+        color.b = GFX_RGB565_B(rgb565_palette[i]);
 
         diff = (r - color.r) * (r - color.r)
              + (g - color.g) * (g - color.g)
@@ -244,7 +245,7 @@ void I_EndRead (void)
 
 void I_SetWindowTitle (char *title)
 {
-	DG_SetWindowTitle(title);
+    DG_SetWindowTitle(title);
 }
 
 void I_GraphicsCheckCommandLine (void)
