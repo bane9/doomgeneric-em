@@ -1,3 +1,44 @@
+# Embedded friendly Doomgeneric port
+
+This repo has QOL fixes that make embedded ports easier.
+
+It features:
+- Isolation of (hopefully) all syscalls into doomgeneric_syscalls.c file
+- Easy support for serialization of .wad files into C arrays
+- Support for arbitrary resolutions and apsect ratios
+- RGB565 support (along with RGB888)
+- Can set MAXPLAYERS 1-4
+- The large arrays inside info.c can dynamically allocated if needed
+- Switched to CMake
+- Bare file available for porting
+- Sprint always enabled by default
+
+And probably more that I forgot.
+
+## Prepocessor defines for porting
+I won't give detailed guide into port friendly defines, instead check out the following inside the code:
+- DOOMGENERC_IWAD_MEMMAPPED
+- DOOMGENERIC_RESX
+- DOOMGENERIC_RESY
+- DOOMGENERIC_FB_565
+- DOOMGENERIC_ALWAYS_RUN
+- DOOMGENERIC_INFO_DYN
+- MAXPLAYERS
+
+## Serializing IWAD files
+
+To serialize an IWAD file, first compile `bin_to_c`:
+```bash
+gcc -O3 bin_to_c.c -o bin_to_c.o
+```
+Then, serialize your iwad file via:
+```bash
+./bin_to_c.o doom.iwad
+```
+Make sure both `bin_to_c.o` and your iwad file are at the root of this git directory.
+
+At the end, make sure to globally define `DOOMGENERC_IWAD_MEMMAPPED`
+_____
 # doomgeneric
 The purpose of doomgeneric is to make porting Doom easier.
 Of course Doom is already portable but with doomgeneric it is possible with just a few functions.
@@ -54,14 +95,3 @@ https://ozkl.github.io/doomgeneric/
 
 emscripten port is based on SDL port, so it supports sound and music! For music, timidity backend is used.
 
-## Windows
-![Windows](screenshots/windows.png)
-
-## X11 - Ubuntu
-![Ubuntu](screenshots/ubuntu.png)
-
-## X11 - FreeBSD
-![FreeBSD](screenshots/freebsd.png)
-
-## SDL
-![SDL](screenshots/sdl.png)
