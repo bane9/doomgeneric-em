@@ -23,7 +23,7 @@ static size_t dg_file_length(FILE* file) {
 
     doomgeneric_fseek(file, 0, SEEK_END);
 
-    length = ftell(file);
+    length = doomgeneric_ftell(file);
 
     doomgeneric_fseek(file, 0, SEEK_SET);
 
@@ -95,12 +95,12 @@ static void dg_wad_closefile_mem(wad_file_t *path) {
 static size_t dg_wad_read_mem(wad_file_t *file, unsigned int offset,
                               void *buffer, size_t buffer_len) {
 #ifndef DOOMGENERC_IWAD_MEMMAPPED
-    char *doom_iwad_ptr = NULL; // NOTE: dummy value
-#endif
-
+    return 0;
+#else
     memcpy(buffer, doom_iwad_ptr + offset, buffer_len);
 
     return buffer_len;
+#endif
 }
 
 #ifdef DOOMGENERC_IWAD_MEMMAPPED

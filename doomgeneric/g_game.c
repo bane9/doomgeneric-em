@@ -1655,7 +1655,7 @@ void G_DoSaveGame (void)
     // Enforce the same savegame size limit as in Vanilla Doom, 
     // except if the vanilla_savegame_limit setting is turned off.
 
-    if (vanilla_savegame_limit && ftell(save_stream) > SAVEGAMESIZE)
+    if (vanilla_savegame_limit && doomgeneric_ftell(save_stream) > SAVEGAMESIZE)
     {
         I_Error ("Savegame buffer overrun");
     }

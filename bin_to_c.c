@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 
     FILE *fp = fopen(infile, "rb");
     fseek(fp, 0, SEEK_END);
-    size_t size = ftell(fp);
+    size_t size = doomgeneric_ftell(fp);
     fseek(fp, 0, SEEK_SET);
 
     uint8_t *data = (uint8_t *)malloc(size);

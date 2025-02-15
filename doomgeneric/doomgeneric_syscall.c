@@ -77,6 +77,10 @@ int doomgeneric_mkdir(const char* path, unsigned mode) {
     return mkdir(path, mode);
 }
 
+long doomgeneric_ftell(FILE *stream) {
+    return ftell(stream);
+}
+
 size_t doomgeneric_fread(void *restrict buffer, size_t size, size_t count,
                          FILE *restrict stream) {
     return fread(buffer, size, count, stream);

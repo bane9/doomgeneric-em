@@ -155,7 +155,7 @@ static void saveg_read_pad(void)
     int padding;
     int i;
 
-    pos = ftell(save_stream);
+    pos = doomgeneric_ftell(save_stream);
 
     padding = (4 - (pos & 3)) & 3;
 
@@ -171,7 +171,7 @@ static void saveg_write_pad(void)
     int padding;
     int i;
 
-    pos = ftell(save_stream);
+    pos = doomgeneric_ftell(save_stream);
 
     padding = (4 - (pos & 3)) & 3;
 

@@ -95,11 +95,11 @@ long M_FileLength(FILE *handle)
     long length;
 
     // save the current position in the file
-    savedpos = ftell(handle);
+    savedpos = doomgeneric_ftell(handle);
     
     // jump to the end and find the length
     doomgeneric_fseek(handle, 0, SEEK_END);
-    length = ftell(handle);
+    length = doomgeneric_ftell(handle);
 
     // go back to the old location
     doomgeneric_fseek(handle, savedpos, SEEK_SET);

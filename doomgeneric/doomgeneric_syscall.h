@@ -25,7 +25,7 @@ FILE *doomgeneric_fopen(const char* filename, const char* mode);
 int doomgeneric_fclose(FILE *stream);
 int doomgeneric_fseek(FILE *stream, long offset, int origin);
 int doomgeneric_mkdir(const char* path, unsigned mode);
-int doomgeneric_mkdir(const char* path, unsigned mode);
+long doomgeneric_ftell(FILE *stream);
 size_t doomgeneric_fread(void *restrict buffer, size_t size, size_t count,
                          FILE *restrict stream);
 size_t doomgeneric_fwrite(const void* restrict buffer, size_t size,
