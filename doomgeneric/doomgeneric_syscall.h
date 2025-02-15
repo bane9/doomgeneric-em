@@ -4,6 +4,9 @@
 #include <stddef.h>
 #include <stdio.h>
 
+#define DG_STRINGIFY(x) #x
+#define DG_EXPAND_AND_STRINGIFY(x) DG_STRINGIFY(x)
+
 void doomgeneric_exit(int status);
 void doomgeneric_printf(const char *fmt, ...);
 void doomgeneric_snprintf(char* restrict buffer, size_t bufsz,

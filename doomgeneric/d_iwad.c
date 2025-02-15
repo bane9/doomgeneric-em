@@ -34,6 +34,10 @@
 
 #include "doomgeneric_syscall.h"
 
+#ifdef DOOMGENERC_IWAD_MEMMAPPED
+#include "dg_iwad_serized.h"
+#endif
+
 static const iwad_t iwads[] =
 {
     { "doom2.wad",    doom2,     commercial, "Doom II" },
@@ -716,6 +720,7 @@ char *D_FindIWAD(int mask, GameMission_t *mission)
     // @arg <file>
     //
 
+#ifndef DOOMGENERC_IWAD_MEMMAPPED
     iwadparm = M_CheckParmWithArgs("-iwad", 1);
 
     if (iwadparm)
@@ -733,6 +738,13 @@ char *D_FindIWAD(int mask, GameMission_t *mission)
         
         *mission = IdentifyIWADByName(result, mask);
     }
+#else
+    if (1)
+    {
+        *mission = IdentifyIWADByName(DOOM_FILENAME, mask);
+        result = DOOM_FILENAME;
+    }
+#endif
     else
     {
         // Search through the list and look for an IWAD

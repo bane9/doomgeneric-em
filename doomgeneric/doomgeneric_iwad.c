@@ -2,6 +2,10 @@
 #include "doomgeneric_syscall.h"
 #include "w_file.h"
 
+#ifdef DOOMGENERC_IWAD_MEMMAPPED
+#include "dg_iwad_serized.h"
+#endif
+
 static wad_file_t *dg_wad_openfile(char *path);
 static void dg_wad_closefile(wad_file_t *path);
 static size_t dg_wad_read(wad_file_t *file, unsigned int offset,
@@ -72,7 +76,14 @@ static size_t dg_wad_read_mem(wad_file_t *file, unsigned int offset,
                               void *buffer, size_t buffer_len);
 
 static wad_file_t *dg_wad_openfile_mem(char *path) {
-    static wad_file_t wad_file = {0};
+    static wad_file_t wad_file = {
+        .file_class = &doomgeneric_wad_file
+    };
+
+#ifdef DOOMGENERC_IWAD_MEMMAPPED
+       wad_file.mapped = (byte*) doom_iwad_ptr;
+       wad_file.length = DOOM_SIZE;
+#endif
 
     return &wad_file;
 }
@@ -83,16 +94,16 @@ static void dg_wad_closefile_mem(wad_file_t *path) {
 
 static size_t dg_wad_read_mem(wad_file_t *file, unsigned int offset,
                               void *buffer, size_t buffer_len) {
-#ifndef DOOMGENERIC_WAD_MEMBUFFER
-    char *DOOMGENERIC_WAD_MEMBUFFER = NULL; // NOTE: dummy value
+#ifndef DOOMGENERC_IWAD_MEMMAPPED
+    char *doom_iwad_ptr = NULL; // NOTE: dummy value
 #endif
 
-    memcpy(buffer, DOOMGENERIC_WAD_MEMBUFFER + offset, buffer_len);
+    memcpy(buffer, doom_iwad_ptr + offset, buffer_len);
 
     return buffer_len;
 }
 
-#ifdef DOOMGENERIC_MMAPED_WAD
+#ifdef DOOMGENERC_IWAD_MEMMAPPED
 wad_file_class_t doomgeneric_wad_file = {
     .OpenFile = dg_wad_openfile_mem,
     .CloseFile = dg_wad_closefile_mem,
