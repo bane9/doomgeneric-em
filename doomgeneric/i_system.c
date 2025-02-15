@@ -366,9 +366,7 @@ void I_Error (char *error, ...)
     if (already_quitting)
     {
         fprintf(stderr, "Warning: recursive call to I_Error detected.\n");
-#if ORIGCODE
         exit(-1);
-#endif
     }
     else
     {
@@ -460,16 +458,7 @@ void I_Error (char *error, ...)
     }
 #endif
 
-    // abort();
-#if ORIGCODE
-    SDL_Quit();
-
     exit(-1);
-#else
-    while (true)
-    {
-    }
-#endif
 }
 
 //

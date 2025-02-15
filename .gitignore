@@ -8,3 +8,7 @@
 .vs/
 Debug/
 Release/
+*.iwad
+*.wad
+.vscode/
+build/
