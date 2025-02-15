@@ -19,6 +19,9 @@ typedef uint16_t pixel_t;
 typedef uint32_t pixel_t;
 #endif
 
+#ifndef DOOMGENERIC_ALWAYS_RUN
+#define DOOMGENERIC_ALWAYS_RUN 1
+#endif
 
 extern pixel_t* DG_ScreenBuffer;
 

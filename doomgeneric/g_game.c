@@ -68,6 +68,7 @@
 #include "r_data.h"
 #include "r_sky.h"
 
+#include "doomgeneric.h"
 #include "doomgeneric_syscall.h"
 
 #include "g_game.h"
@@ -340,10 +341,14 @@ void G_BuildTiccmd (ticcmd_t* cmd, int maketic)
     // fraggle: support the old "joyb_speed = 31" hack which
     // allowed an autorun effect
 
+#if !DOOMGENERIC_ALWAYS_RUN
     speed = key_speed >= NUMKEYS
          || joybspeed >= MAX_JOY_BUTTONS
          || gamekeydown[key_speed] 
          || joybuttons[joybspeed];
+#else
+    speed = 1;
+#endif
  
     forward = side = 0;
     
