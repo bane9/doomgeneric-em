@@ -24,17 +24,8 @@
 // #define macros to provide functions missing in Windows.
 // Outside Windows, we use strings.h for str[n]casecmp.
 
-
-#ifdef _WIN32
-
-#define strcasecmp _stricmp
-#define strncasecmp _strnicmp
-
-#else
-
 #include <strings.h>
 
-#endif
 
 
 //
@@ -83,19 +74,9 @@ typedef uint8_t byte;
 
 #include <limits.h>
 
-#if defined(_WIN32) || defined(__DJGPP__)
-
-#define DIR_SEPARATOR '\\'
-#define DIR_SEPARATOR_S "\\"
-#define PATH_SEPARATOR ';'
-
-#else
-
 #define DIR_SEPARATOR '/'
 #define DIR_SEPARATOR_S "/"
 #define PATH_SEPARATOR ':'
-
-#endif
 
 #define arrlen(array) (sizeof(array) / sizeof(*array))
 

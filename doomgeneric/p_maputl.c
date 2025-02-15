@@ -543,8 +543,6 @@ divline_t 	trace;
 boolean 	earlyout;
 int		ptflags;
 
-static void InterceptsOverrun(int num_intercepts, intercept_t *intercept);
-
 //
 // PIT_AddLineIntercepts.
 // Looks for lines in the given block
@@ -600,7 +598,6 @@ PIT_AddLineIntercepts (line_t* ld)
     intercept_p->frac = frac;
     intercept_p->isaline = true;
     intercept_p->d.line = ld;
-    InterceptsOverrun(intercept_p - intercepts, intercept_p);
     intercept_p++;
 
     return true;	// continue
@@ -666,7 +663,6 @@ boolean PIT_AddThingIntercepts (mobj_t* thing)
     intercept_p->frac = frac;
     intercept_p->isaline = false;
     intercept_p->d.thing = thing;
-    InterceptsOverrun(intercept_p - intercepts, intercept_p);
     intercept_p++;
 
     return true;		// keep going
@@ -705,19 +701,7 @@ P_TraverseIntercepts
 	}
 	
 	if (dist > maxfrac)
-	    return true;	// checked everything in range		
-
-#if 0  // UNUSED
-    {
-	// don't check these yet, there may be others inserted
-	in = scan = intercepts;
-	for ( scan = intercepts ; scan<intercept_p ; scan++)
-	    if (scan->frac > maxfrac)
-		*in++ = *scan;
-	intercept_p = in;
-	return false;
-    }
-#endif
+	    return true;	// checked everything in range
 
         if ( !func (in) )
 	    return false;	// don't bother going farther
@@ -821,34 +805,6 @@ static void InterceptsMemoryOverrun(int location, int value)
         ++i;
     }
 }
-
-// Emulate overruns of the intercepts[] array.
-
-static void InterceptsOverrun(int num_intercepts, intercept_t *intercept)
-{
-    int location;
-
-    if (num_intercepts <= MAXINTERCEPTS_ORIGINAL)
-    {
-        // No overrun
-
-        return;
-    }
-
-    location = (num_intercepts - MAXINTERCEPTS_ORIGINAL - 1) * 12;
-
-    // Overwrite memory that is overwritten in Vanilla Doom, using
-    // the values from the intercept structure.
-    //
-    // Note: the ->d.{thing,line} member should really have its
-    // address translated into the correct address value for 
-    // Vanilla Doom.
-
-    InterceptsMemoryOverrun(location, intercept->frac);
-    InterceptsMemoryOverrun(location + 4, intercept->isaline);
-    InterceptsMemoryOverrun(location + 8, (int) intercept->d.thing);
-}
-
 
 //
 // P_PathTraverse

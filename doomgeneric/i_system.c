@@ -23,16 +23,7 @@
 
 #include <stdarg.h>
 
-#ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#else
 #include <unistd.h>
-#endif
-
-#ifdef ORIGCODE
-#include "SDL.h"
-#endif
 
 #include "config.h"
 
@@ -210,16 +201,7 @@ void I_PrintStartupBanner(char *gamedescription)
 
 boolean I_ConsoleStdout(void)
 {
-#ifdef _WIN32
-    // SDL "helpfully" always redirects stdout to a file.
-    return 0;
-#else
-#if ORIGCODE
-    return isatty(fileno(stdout));
-#else
 	return 0;
-#endif
-#endif
 }
 
 //
@@ -257,12 +239,6 @@ void I_Quit (void)
         entry->func();
         entry = entry->next;
     }
-
-#if ORIGCODE
-    SDL_Quit();
-
-    doomgeneric_exit(0);
-#endif
 }
 
 #if !defined(_WIN32) && !defined(__MACOSX__) && !defined(__DJGPP__)
@@ -272,7 +248,7 @@ void I_Quit (void)
 
 static int ZenityAvailable(void)
 {
-    return system(ZENITY_BINARY " --help >/dev/null 2>&1") == 0;
+    return 0;
 }
 
 // Escape special characters in the given string so that they can be
@@ -408,56 +384,9 @@ void I_Error (char *error, ...)
     // game was not run from the console (and the user will
     // therefore be unable to otherwise see the message).
     if (exit_gui_popup && !I_ConsoleStdout())
-#ifdef _WIN32
-    {
-        wchar_t wmsgbuf[512];
-
-        MultiByteToWideChar(CP_ACP, 0,
-                            msgbuf, strlen(msgbuf) + 1,
-                            wmsgbuf, sizeof(wmsgbuf));
-
-        MessageBoxW(NULL, wmsgbuf, L"", MB_OK);
-    }
-#elif defined(__MACOSX__)
-    {
-        CFStringRef message;
-	int i;
-
-	// The CoreFoundation message box wraps text lines, so replace
-	// newline characters with spaces so that multiline messages
-	// are continuous.
-
-	for (i = 0; msgbuf[i] != '\0'; ++i)
-        {
-            if (msgbuf[i] == '\n')
-            {
-                msgbuf[i] = ' ';
-            }
-        }
-
-        message = CFStringCreateWithCString(NULL, msgbuf,
-                                            kCFStringEncodingUTF8);
-
-        CFUserNotificationDisplayNotice(0,
-                                        kCFUserNotificationCautionAlertLevel,
-                                        NULL,
-                                        NULL,
-                                        NULL,
-                                        CFSTR(PACKAGE_STRING),
-                                        message,
-                                        NULL);
-    }
-#elif defined(__DJGPP__)
-    {
-        doomgeneric_printf("%s\n", msgbuf);
-        doomgeneric_exit(-1);
-    }
-
-#else
     {
         ZenityErrorBox(msgbuf);
     }
-#endif
 
     doomgeneric_exit(-1);
 }
