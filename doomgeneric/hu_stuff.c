@@ -89,7 +89,7 @@ static boolean headsupactive = false;
 // The actual names can be found in DStrings.h.
 //
 
-char *mapnames[] = // DOOM shareware/registered/retail (Ultimate) names.
+const char *mapnames[] = // DOOM shareware/registered/retail (Ultimate) names.
     {
 
         HUSTR_E1M1, HUSTR_E1M2, HUSTR_E1M3, HUSTR_E1M4, HUSTR_E1M5,
@@ -113,7 +113,7 @@ char *mapnames[] = // DOOM shareware/registered/retail (Ultimate) names.
 // the layout in the Vanilla executable, where it is possible to
 // overflow the end of one array into the next.
 
-char *mapnames_commercial[] = {
+const char *mapnames_commercial[] = {
     // DOOM 2 map names.
 
     HUSTR_1, HUSTR_2, HUSTR_3, HUSTR_4, HUSTR_5, HUSTR_6, HUSTR_7, HUSTR_8,
@@ -172,7 +172,7 @@ void HU_Start(void)
 {
 
     int i;
-    char *s;
+    const char *s;
 
     if (headsupactive)
         HU_Stop();

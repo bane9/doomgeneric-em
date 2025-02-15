@@ -7,13 +7,13 @@ It features:
 - Easy support for serialization of .wad files into C arrays
 - Support for arbitrary resolutions and aspect ratios
 - RGB565 support (along with RGB888)
-- Can set MAXPLAYERS 1-4
+- Can set MAXPLAYERS 1-4 (currently set to 2)
 - The large arrays inside info.c can dynamically allocated if needed
 - Switched to CMake
 - Bare file available for porting
 - Sprint always enabled by default
 - A lot of unnecessary code removed
-    - Saved around 32 KiB of RAM and 42 KiB of ROM compared to base doomgeneric
+    - Saved around 47 KiB of RAM and 48 KiB of ROM compared to base doomgeneric
     - Sound code is completely removed which changes how ticking works. This breaks demos but gameplay itself works fine.
 
 And probably more that I forgot.

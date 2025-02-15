@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 #define OUT_DIR "doomgeneric/"
-#define OUT_FILE "dg_iwad_serized"
+#define OUT_FILE "dg_iwad_serialized"
 
 int main(int argc, char *argv[])
 {
