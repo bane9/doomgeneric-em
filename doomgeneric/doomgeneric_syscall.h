@@ -6,6 +6,12 @@
 
 void doomgeneric_exit(int status);
 void doomgeneric_printf(const char *fmt, ...);
+void doomgeneric_snprintf(char* restrict buffer, size_t bufsz,
+                          const char* restrict format, ...);
+void doomgeneric_fprintf(FILE* restrict stream,
+                         const char* restrict format, ...);
+int doomgeneric_vsnprintf(char* restrict buffer, size_t bufsz,
+                           const char* restrict format, va_list vlist);
 void doomgeneric_puts(const char *msg);
 void *doomgeneric_malloc(size_t size);
 void doomgeneric_free(void *mem);

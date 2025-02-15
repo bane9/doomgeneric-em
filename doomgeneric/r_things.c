@@ -87,7 +87,7 @@ int		numsprites;
 
 spriteframe_t	sprtemp[29];
 int		maxframe;
-char*		spritename;
+const char*		spritename;
 
 
 
@@ -170,7 +170,7 @@ R_InstallSpriteLump
 //
 void R_InitSpriteDefs (const char** namelist) 
 { 
-    char**	check;
+    const char**	check;
     int		i;
     int		l;
     int		frame;
@@ -184,7 +184,7 @@ void R_InitSpriteDefs (const char** namelist)
     while (*check != NULL)
 	check++;
 
-    numsprites = ((const char**)check)-namelist;
+    numsprites = check-namelist;
 	
     if (!numsprites)
 	return;

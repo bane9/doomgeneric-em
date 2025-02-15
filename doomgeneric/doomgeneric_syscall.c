@@ -18,6 +18,29 @@ void doomgeneric_printf(const char *fmt, ...) {
     va_end(args);
 }
 
+void doomgeneric_snprintf(char* restrict buffer, size_t bufsz,
+                          const char* restrict format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    vsnprintf(buffer, bufsz, format, args);
+    va_end(args);
+}
+
+void doomgeneric_fprintf(FILE* restrict stream,
+                         const char* restrict format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    vfprintf(stream, format, args);
+    va_end(args);
+}
+
+int doomgeneric_vsnprintf(char* restrict buffer, size_t bufsz,
+                          const char* restrict format, va_list vlist) {
+    return vsnprintf(buffer, bufsz, format, vlist);
+}
+
 void doomgeneric_puts(const char *msg) {
     puts(msg);
 }
