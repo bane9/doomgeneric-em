@@ -5,7 +5,7 @@ This repo has QOL fixes that make embedded ports easier.
 It features:
 - Isolation of (hopefully) all syscalls into doomgeneric_syscalls.c file
 - Easy support for serialization of .wad files into C arrays
-- Support for arbitrary resolutions and apsect ratios
+- Support for arbitrary resolutions and aspect ratios
 - RGB565 support (along with RGB888)
 - Can set MAXPLAYERS 1-4
 - The large arrays inside info.c can dynamically allocated if needed
