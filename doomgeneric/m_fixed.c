@@ -16,8 +16,6 @@
 //	Fixed point implementation.
 //
 
-
-
 #include "stdlib.h"
 
 #include "doomtype.h"
