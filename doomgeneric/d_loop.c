@@ -158,7 +158,7 @@ static boolean BuildNewTic(void)
        // If playing single player, do not allow tics to buffer
        // up very far
 
-       if (!net_client_connected && maketic - gameticdiv > 2)
+       if (maketic - gameticdiv > 2)
            return false;
 
        // Never go more than ~200ms ahead
@@ -395,17 +395,6 @@ static boolean PlayersInGame(void)
     boolean result = false;
     unsigned int i;
 
-    // If we are connected to a server, check if there are any players
-    // in the game.
-
-    if (net_client_connected)
-    {
-        for (i = 0; i < NET_MAXPLAYERS; ++i)
-        {
-            result = result || local_playeringame[i];
-        }
-    }
-
     // Whether single or multi-player, unless we are running as a drone,
     // we are in the game.
 
@@ -503,11 +492,6 @@ void TryRunTics (void)
 
         if (counts < 1)
             counts = 1;
-
-        if (net_client_connected)
-        {
-            OldNetSync();
-        }
     }
 
     if (counts < 1)
@@ -547,10 +531,7 @@ void TryRunTics (void)
 
         set = &ticdata[(gametic / ticdup) % BACKUPTICS];
 
-        if (!net_client_connected)
-        {
-            SinglePlayerClear(set);
-        }
+        SinglePlayerClear(set);
 
 	for (i=0 ; i<ticdup ; i++)
 	{
