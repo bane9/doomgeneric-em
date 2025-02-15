@@ -33,6 +33,8 @@
 #include "m_misc.h"
 #include "r_state.h"
 
+#include "doomgeneric_syscall.h"
+
 #define SAVEGAME_EOF 0x1d
 #define VERSIONSIZE 16 
 
@@ -67,7 +69,7 @@ char *P_SaveGameFile(int slot)
     if (filename == NULL)
     {
         filename_size = strlen(savegamedir) + 32;
-        filename = malloc(filename_size);
+        filename = doomgeneric_malloc(filename_size);
     }
 
     DEH_snprintf(basename, 32, SAVEGAMENAME "%d.dsg", slot);

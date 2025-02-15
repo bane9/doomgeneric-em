@@ -76,7 +76,7 @@ void I_AtExit(atexit_func_t func, boolean run_on_error)
 {
     atexit_listentry_t *entry;
 
-    entry = malloc(sizeof(*entry));
+    entry = doomgeneric_malloc(sizeof(*entry));
 
     entry->func = func;
     entry->run_on_error = run_on_error;
@@ -118,7 +118,7 @@ static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)
 
         *size = default_ram * 1024 * 1024;
 
-        zonemem = malloc(*size);
+        zonemem = doomgeneric_malloc(*size);
 
         // Failed to allocate?  Reduce zone size until we reach a size
         // that is acceptable.
@@ -285,7 +285,7 @@ static char *EscapeShellString(char *string)
     char *r, *s;
 
     // In the worst case, every character might be escaped.
-    result = malloc(strlen(string) * 2 + 3);
+    result = doomgeneric_malloc(strlen(string) * 2 + 3);
     r = result;
 
     // Enclosing quotes.
@@ -337,14 +337,14 @@ static int ZenityErrorBox(char *message)
     escaped_message = EscapeShellString(message);
 
     errorboxpath_size = strlen(ZENITY_BINARY) + strlen(escaped_message) + 19;
-    errorboxpath = malloc(errorboxpath_size);
+    errorboxpath = doomgeneric_malloc(errorboxpath_size);
     M_snprintf(errorboxpath, errorboxpath_size, "%s --error --text=%s",
                ZENITY_BINARY, escaped_message);
 
     result = system(errorboxpath);
 
-    free(errorboxpath);
-    free(escaped_message);
+    doomgeneric_free(errorboxpath);
+    doomgeneric_free(escaped_message);
 
     return result;
 }

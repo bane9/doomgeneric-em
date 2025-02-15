@@ -123,7 +123,7 @@ static void ParseLine(gus_config_t *config, char *line)
     instr_id = atoi(fields[0]);
     mapped_id = atoi(fields[MappingIndex()]);
 
-    free(config->patch_names[instr_id]);
+    doomgeneric_free(config->patch_names[instr_id]);
     config->patch_names[instr_id] = strdup(fields[5]);
     config->mapping[instr_id] = mapped_id;
 }
@@ -170,7 +170,7 @@ static void FreeDMXConfig(gus_config_t *config)
 
     for (i = 0; i < MAX_INSTRUMENTS; ++i)
     {
-        free(config->patch_names[i]);
+        doomgeneric_free(config->patch_names[i]);
     }
 }
 

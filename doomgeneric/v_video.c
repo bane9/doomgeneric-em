@@ -754,7 +754,7 @@ void WritePNGfile(char *filename, byte *data,
                  8, PNG_COLOR_TYPE_PALETTE, PNG_INTERLACE_NONE,
                  PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
 
-    pcolor = malloc(sizeof(*pcolor) * 256);
+    pcolor = doomgeneric_malloc(sizeof(*pcolor) * 256);
     if (!pcolor)
     {
         png_destroy_write_struct(&ppng, &pinfo);
@@ -769,7 +769,7 @@ void WritePNGfile(char *filename, byte *data,
     }
 
     png_set_PLTE(ppng, pinfo, pcolor, 256);
-    free(pcolor);
+    doomgeneric_free(pcolor);
 
     png_write_info(ppng, pinfo);
 

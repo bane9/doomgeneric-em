@@ -2044,7 +2044,7 @@ float M_GetFloatVariable(char *name)
 
 static char *GetDefaultConfigDir(void)
 {
-    char *result = (char *)malloc(2);
+    char *result = (char *)doomgeneric_malloc(2);
     result[0] = '.';
     result[1] = '\0';
 
@@ -2115,7 +2115,7 @@ char *M_GetSaveGameDir(char *iwadname)
 
         M_MakeDirectory(savegamedir);
 
-        free(topdir);
+        doomgeneric_free(topdir);
 #else
         savegamedir = M_StringJoin(configdir, DIR_SEPARATOR_S, ".savegame/", NULL);
 

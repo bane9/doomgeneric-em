@@ -19,3 +19,11 @@ void doomgeneric_printf(const char *fmt, ...) {
 void doomgeneric_puts(const char *msg) {
     puts(msg);
 }
+
+void *doomgeneric_malloc(size_t size) {
+    return malloc(size);
+}
+
+void doomgeneric_free(void *mem) {
+    free(mem);
+}

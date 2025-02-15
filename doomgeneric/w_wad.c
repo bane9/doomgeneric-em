@@ -120,7 +120,7 @@ static void ExtendLumpInfo(int newnumlumps)
     }
 
     // All done.
-    free(lumpinfo);
+    doomgeneric_free(lumpinfo);
     lumpinfo = newlumpinfo;
     numlumps = newnumlumps;
 }
