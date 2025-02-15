@@ -14,14 +14,13 @@
 //
 // DESCRIPTION:
 //      Miscellaneous.
-//    
-
+//
 
 #ifndef __M_MISC__
 #define __M_MISC__
 
-#include <stdio.h>
 #include <stdarg.h>
+#include <stdio.h>
 
 #include "doomtype.h"
 
@@ -48,4 +47,3 @@ int M_snprintf(char *buf, size_t buf_len, const char *s, ...);
 char *M_OEMToUTF8(const char *ansi);
 
 #endif
-

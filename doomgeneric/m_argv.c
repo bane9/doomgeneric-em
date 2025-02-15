@@ -15,7 +15,6 @@
 // DESCRIPTION:
 //
 
-
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,14 +22,11 @@
 
 #include "doomtype.h"
 #include "i_system.h"
+#include "m_argv.h" // haleyjd 20110212: warning fix
 #include "m_misc.h"
-#include "m_argv.h"  // haleyjd 20110212: warning fix
 
-int		myargc;
-char**		myargv;
-
-
-
+int myargc;
+char **myargv;
 
 //
 // M_CheckParm
@@ -46,8 +42,8 @@ int M_CheckParmWithArgs(char *check, int num_args)
 
     for (i = 1; i < myargc - num_args; i++)
     {
-	if (!strcasecmp(check, myargv[i]))
-	    return i;
+        if (!strcasecmp(check, myargv[i]))
+            return i;
     }
 
     return 0;
@@ -70,7 +66,7 @@ int M_CheckParm(char *check)
     return M_CheckParmWithArgs(check, 0);
 }
 
-#define MAXARGVS        100
+#define MAXARGVS 100
 
 static void LoadResponseFile(int argv_index)
 {
@@ -82,7 +78,7 @@ static void LoadResponseFile(int argv_index)
 
 void M_FindResponseFile(void)
 {
-    int             i;
+    int i;
 
     for (i = 1; i < myargc; i++)
     {
@@ -110,4 +106,3 @@ char *M_GetExecutableName(void)
         return sep + 1;
     }
 }
-

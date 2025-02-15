@@ -17,18 +17,17 @@
 //    Configuration file interface.
 //
 
-
+#include <ctype.h>
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
-#include <errno.h>
 
 #include "config.h"
 
-#include "doomtype.h"
-#include "doomkeys.h"
 #include "doomfeatures.h"
+#include "doomkeys.h"
+#include "doomtype.h"
 #include "i_system.h"
 #include "m_argv.h"
 #include "m_misc.h"
@@ -41,7 +40,7 @@
 // DEFAULTS
 //
 
-// Location where all configuration data is stored - 
+// Location where all configuration data is stored -
 // default.cfg, savegames, etc.
 
 char *configdir;
@@ -51,7 +50,7 @@ char *configdir;
 static char *default_main_config;
 static char *default_extra_config;
 
-typedef enum 
+typedef enum
 {
     DEFAULT_INT,
     DEFAULT_INT_HEX,
@@ -76,7 +75,7 @@ typedef struct
     // If zero, we didn't read this value from a config file.
     int untranslated;
 
-    // The value we translated the scancode into when we read the 
+    // The value we translated the scancode into when we read the
     // config file on startup.  If the variable value is different from
     // this, it has been changed and needs to be converted; otherwise,
     // use the 'untranslated' value.
@@ -94,24 +93,19 @@ typedef struct
     char *filename;
 } default_collection_t;
 
-#define CONFIG_VARIABLE_GENERIC(name, type) \
-    { #name, NULL, type, 0, 0, false }
+#define CONFIG_VARIABLE_GENERIC(name, type) {#name, NULL, type, 0, 0, false}
 
-#define CONFIG_VARIABLE_KEY(name) \
-    CONFIG_VARIABLE_GENERIC(name, DEFAULT_KEY)
-#define CONFIG_VARIABLE_INT(name) \
-    CONFIG_VARIABLE_GENERIC(name, DEFAULT_INT)
-#define CONFIG_VARIABLE_INT_HEX(name) \
+#define CONFIG_VARIABLE_KEY(name) CONFIG_VARIABLE_GENERIC(name, DEFAULT_KEY)
+#define CONFIG_VARIABLE_INT(name) CONFIG_VARIABLE_GENERIC(name, DEFAULT_INT)
+#define CONFIG_VARIABLE_INT_HEX(name)                                          \
     CONFIG_VARIABLE_GENERIC(name, DEFAULT_INT_HEX)
-#define CONFIG_VARIABLE_FLOAT(name) \
-    CONFIG_VARIABLE_GENERIC(name, DEFAULT_FLOAT)
-#define CONFIG_VARIABLE_STRING(name) \
+#define CONFIG_VARIABLE_FLOAT(name) CONFIG_VARIABLE_GENERIC(name, DEFAULT_FLOAT)
+#define CONFIG_VARIABLE_STRING(name)                                           \
     CONFIG_VARIABLE_GENERIC(name, DEFAULT_STRING)
 
 //! @begin_config_file default
 
-static default_t	doom_defaults_list[] =
-{
+static default_t doom_defaults_list[] = {
     //!
     // Mouse sensitivity.  This value is used to multiply input mouse
     // movement to control the effect of moving the mouse.
@@ -622,8 +616,7 @@ static default_t	doom_defaults_list[] =
     CONFIG_VARIABLE_INT(comport),
 };
 
-static default_collection_t doom_defaults =
-{
+static default_collection_t doom_defaults = {
     doom_defaults_list,
     arrlen(doom_defaults_list),
     NULL,
@@ -631,8 +624,7 @@ static default_collection_t doom_defaults =
 
 //! @begin_config_file extended
 
-static default_t extra_defaults_list[] =
-{
+static default_t extra_defaults_list[] = {
     //!
     // @game heretic hexen strife
     //
@@ -1475,8 +1467,7 @@ static default_t extra_defaults_list[] =
     CONFIG_VARIABLE_KEY(key_multi_msgplayer8),
 };
 
-static default_collection_t extra_defaults =
-{
+static default_collection_t extra_defaults = {
     extra_defaults_list,
     arrlen(extra_defaults_list),
     NULL,
@@ -1488,7 +1479,7 @@ static default_t *SearchCollection(default_collection_t *collection, char *name)
 {
     int i;
 
-    for (i=0; i<collection->numdefaults; ++i) 
+    for (i = 0; i < collection->numdefaults; ++i)
     {
         if (!strcmp(name, collection->defaults[i].name))
         {
@@ -1509,26 +1500,134 @@ static default_t *SearchCollection(default_collection_t *collection, char *name)
 //    sends an interrupt). So I added a fake scan code of 126 for it.
 //    The presence of this is important so we can bind PrintScreen as
 //    a screenshot key.
-static const int scantokey[128] =
-{
-    0  ,    27,     '1',    '2',    '3',    '4',    '5',    '6',
-    '7',    '8',    '9',    '0',    '-',    '=',    KEY_BACKSPACE, 9,
-    'q',    'w',    'e',    'r',    't',    'y',    'u',    'i',
-    'o',    'p',    '[',    ']',    13,		KEY_RCTRL, 'a',    's',
-    'd',    'f',    'g',    'h',    'j',    'k',    'l',    ';',
-    '\'',   '`',    KEY_RSHIFT,'\\',   'z',    'x',    'c',    'v',
-    'b',    'n',    'm',    ',',    '.',    '/',    KEY_RSHIFT,KEYP_MULTIPLY,
-    KEY_RALT,  ' ',  KEY_CAPSLOCK,KEY_F1,  KEY_F2,   KEY_F3,   KEY_F4,   KEY_F5,
-    KEY_F6,   KEY_F7,   KEY_F8,   KEY_F9,   KEY_F10,  /*KEY_NUMLOCK?*/KEY_PAUSE,KEY_SCRLCK,KEY_HOME,
-    KEY_UPARROW,KEY_PGUP,KEY_MINUS,KEY_LEFTARROW,KEYP_5,KEY_RIGHTARROW,KEYP_PLUS,KEY_END,
-    KEY_DOWNARROW,KEY_PGDN,KEY_INS,KEY_DEL,0,   0,      0,      KEY_F11,
-    KEY_F12,  0,      0,      0,      0,      0,      0,      0,
-    0,      0,      0,      0,      0,      0,      0,      0,
-    0,      0,      0,      0,      0,      0,      0,      0,
-    0,      0,      0,      0,      0,      0,      0,      0,
-    0,      0,      0,      0,      0,      0,      KEY_PRTSCR, 0
-};
-
+static const int scantokey[128] = {0,
+                                   27,
+                                   '1',
+                                   '2',
+                                   '3',
+                                   '4',
+                                   '5',
+                                   '6',
+                                   '7',
+                                   '8',
+                                   '9',
+                                   '0',
+                                   '-',
+                                   '=',
+                                   KEY_BACKSPACE,
+                                   9,
+                                   'q',
+                                   'w',
+                                   'e',
+                                   'r',
+                                   't',
+                                   'y',
+                                   'u',
+                                   'i',
+                                   'o',
+                                   'p',
+                                   '[',
+                                   ']',
+                                   13,
+                                   KEY_RCTRL,
+                                   'a',
+                                   's',
+                                   'd',
+                                   'f',
+                                   'g',
+                                   'h',
+                                   'j',
+                                   'k',
+                                   'l',
+                                   ';',
+                                   '\'',
+                                   '`',
+                                   KEY_RSHIFT,
+                                   '\\',
+                                   'z',
+                                   'x',
+                                   'c',
+                                   'v',
+                                   'b',
+                                   'n',
+                                   'm',
+                                   ',',
+                                   '.',
+                                   '/',
+                                   KEY_RSHIFT,
+                                   KEYP_MULTIPLY,
+                                   KEY_RALT,
+                                   ' ',
+                                   KEY_CAPSLOCK,
+                                   KEY_F1,
+                                   KEY_F2,
+                                   KEY_F3,
+                                   KEY_F4,
+                                   KEY_F5,
+                                   KEY_F6,
+                                   KEY_F7,
+                                   KEY_F8,
+                                   KEY_F9,
+                                   KEY_F10,
+                                   /*KEY_NUMLOCK?*/ KEY_PAUSE,
+                                   KEY_SCRLCK,
+                                   KEY_HOME,
+                                   KEY_UPARROW,
+                                   KEY_PGUP,
+                                   KEY_MINUS,
+                                   KEY_LEFTARROW,
+                                   KEYP_5,
+                                   KEY_RIGHTARROW,
+                                   KEYP_PLUS,
+                                   KEY_END,
+                                   KEY_DOWNARROW,
+                                   KEY_PGDN,
+                                   KEY_INS,
+                                   KEY_DEL,
+                                   0,
+                                   0,
+                                   0,
+                                   KEY_F11,
+                                   KEY_F12,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   0,
+                                   KEY_PRTSCR,
+                                   0};
 
 static void SaveDefaultCollection(default_collection_t *collection)
 {
@@ -1541,7 +1640,7 @@ static int ParseIntParameter(char *strparm)
     int parm;
 
     if (strparm[0] == '0' && strparm[1] == 'x')
-        sscanf(strparm+2, "%x", &parm);
+        sscanf(strparm + 2, "%x", &parm);
     else
         sscanf(strparm, "%i", &parm);
 
@@ -1557,12 +1656,12 @@ static void SetVariable(default_t *def, char *value)
     switch (def->type)
     {
         case DEFAULT_STRING:
-            * (char **) def->location = doomgeneric_strdup(value);
+            *(char **) def->location = doomgeneric_strdup(value);
             break;
 
         case DEFAULT_INT:
         case DEFAULT_INT_HEX:
-            * (int *) def->location = ParseIntParameter(value);
+            *(int *) def->location = ParseIntParameter(value);
             break;
 
         case DEFAULT_KEY:
@@ -1582,11 +1681,11 @@ static void SetVariable(default_t *def, char *value)
             }
 
             def->original_translated = intparm;
-            * (int *) def->location = intparm;
+            *(int *) def->location = intparm;
             break;
 
         case DEFAULT_FLOAT:
-            * (float *) def->location = (float) atof(value);
+            *(float *) def->location = (float) atof(value);
             break;
     }
 }
@@ -1607,7 +1706,7 @@ void M_SetConfigFilenames(char *main_config, char *extra_config)
 // M_SaveDefaults
 //
 
-void M_SaveDefaults (void)
+void M_SaveDefaults(void)
 {
     SaveDefaultCollection(&doom_defaults);
     SaveDefaultCollection(&extra_defaults);
@@ -1642,10 +1741,10 @@ void M_SaveDefaultsAlternate(char *main, char *extra)
 // M_LoadDefaults
 //
 
-void M_LoadDefaults (void)
+void M_LoadDefaults(void)
 {
     int i;
- 
+
     // check for a custom default file
 
     //!
@@ -1660,13 +1759,13 @@ void M_LoadDefaults (void)
 
     if (i)
     {
-	doom_defaults.filename = myargv[i+1];
-	doomgeneric_printf ("	default file: %s\n",doom_defaults.filename);
+        doom_defaults.filename = myargv[i + 1];
+        doomgeneric_printf("	default file: %s\n", doom_defaults.filename);
     }
     else
     {
-        doom_defaults.filename
-            = M_StringJoin(configdir, default_main_config, NULL);
+        doom_defaults.filename =
+            M_StringJoin(configdir, default_main_config, NULL);
     }
 
     doomgeneric_printf("saving config in %s\n", doom_defaults.filename);
@@ -1682,14 +1781,14 @@ void M_LoadDefaults (void)
 
     if (i)
     {
-        extra_defaults.filename = myargv[i+1];
-        doomgeneric_printf("        extra configuration file: %s\n", 
-               extra_defaults.filename);
+        extra_defaults.filename = myargv[i + 1];
+        doomgeneric_printf("        extra configuration file: %s\n",
+                           extra_defaults.filename);
     }
     else
     {
-        extra_defaults.filename
-            = M_StringJoin(configdir, default_extra_config, NULL);
+        extra_defaults.filename =
+            M_StringJoin(configdir, default_extra_config, NULL);
     }
 
     LoadDefaultCollection(&doom_defaults);
@@ -1762,8 +1861,8 @@ int M_GetIntVariable(char *name)
 
     variable = GetDefaultForName(name);
 
-    if (variable == NULL || !variable->bound
-     || (variable->type != DEFAULT_INT && variable->type != DEFAULT_INT_HEX))
+    if (variable == NULL || !variable->bound ||
+        (variable->type != DEFAULT_INT && variable->type != DEFAULT_INT_HEX))
     {
         return 0;
     }
@@ -1777,8 +1876,8 @@ const char *M_GetStrVariable(char *name)
 
     variable = GetDefaultForName(name);
 
-    if (variable == NULL || !variable->bound
-     || variable->type != DEFAULT_STRING)
+    if (variable == NULL || !variable->bound ||
+        variable->type != DEFAULT_STRING)
     {
         return NULL;
     }
@@ -1792,8 +1891,7 @@ float M_GetFloatVariable(char *name)
 
     variable = GetDefaultForName(name);
 
-    if (variable == NULL || !variable->bound
-     || variable->type != DEFAULT_FLOAT)
+    if (variable == NULL || !variable->bound || variable->type != DEFAULT_FLOAT)
     {
         return 0;
     }
@@ -1806,14 +1904,14 @@ float M_GetFloatVariable(char *name)
 
 static char *GetDefaultConfigDir(void)
 {
-    char *result = (char *)doomgeneric_malloc(2);
+    char *result = (char *) doomgeneric_malloc(2);
     result[0] = '.';
     result[1] = '\0';
 
     return result;
 }
 
-// 
+//
 // SetConfigDir:
 //
 // Sets the location of the configuration directory, where configuration
@@ -1857,17 +1955,17 @@ char *M_GetSaveGameDir(char *iwadname)
 
     if (!strcmp(configdir, ""))
     {
-    	savegamedir = doomgeneric_strdup("");
+        savegamedir = doomgeneric_strdup("");
     }
     else
     {
-        savegamedir = M_StringJoin(configdir, DIR_SEPARATOR_S, ".savegame/", NULL);
+        savegamedir =
+            M_StringJoin(configdir, DIR_SEPARATOR_S, ".savegame/", NULL);
 
         M_MakeDirectory(savegamedir);
 
-        doomgeneric_printf ("Using %s for savegames\n", savegamedir);
+        doomgeneric_printf("Using %s for savegames\n", savegamedir);
     }
 
     return savegamedir;
 }
-

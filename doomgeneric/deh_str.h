@@ -30,4 +30,3 @@
 #define DEH_snprintf doomgeneric_snprintf
 
 #endif /* #ifndef DEH_STR_H */
-

@@ -19,8 +19,8 @@
 // Events can be discarded if no responder claims them
 //
 
-#include <stdlib.h>
 #include "d_event.h"
+#include <stdlib.h>
 
 #define MAXEVENTS 64
 
@@ -32,7 +32,7 @@ static int eventtail;
 // D_PostEvent
 // Called by the I/O functions when input is detected
 //
-void D_PostEvent (event_t* ev)
+void D_PostEvent(event_t *ev)
 {
     events[eventhead] = *ev;
     eventhead = (eventhead + 1) % MAXEVENTS;
@@ -50,7 +50,7 @@ event_t *D_PopEvent(void)
     {
         return NULL;
     }
-    
+
     result = &events[eventtail];
 
     // Advance to the next event in the queue.
@@ -59,5 +59,3 @@ event_t *D_PopEvent(void)
 
     return result;
 }
-
-

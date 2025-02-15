@@ -15,10 +15,8 @@
 // DESCRIPTION:
 //
 
-
-
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include <stdarg.h>
@@ -29,12 +27,12 @@
 
 #include "deh_str.h"
 #include "doomtype.h"
-#include "m_argv.h"
-#include "m_config.h"
-#include "m_misc.h"
 #include "i_joystick.h"
 #include "i_timer.h"
 #include "i_video.h"
+#include "m_argv.h"
+#include "m_config.h"
+#include "m_misc.h"
 
 #include "i_system.h"
 
@@ -44,8 +42,7 @@
 #include "doomgeneric_syscall.h"
 
 #define DEFAULT_RAM 6 /* MiB */
-#define MIN_RAM     6  /* MiB */
-
+#define MIN_RAM 6     /* MiB */
 
 typedef struct atexit_listentry_s atexit_listentry_t;
 
@@ -118,7 +115,7 @@ static byte *AutoAllocMemory(int *size, int default_ram, int min_ram)
     return zonemem;
 }
 
-byte *I_ZoneBase (int *size)
+byte *I_ZoneBase(int *size)
 {
     byte *zonemem;
     int min_ram, default_ram;
@@ -134,7 +131,7 @@ byte *I_ZoneBase (int *size)
 
     if (p > 0)
     {
-        default_ram = atoi(myargv[p+1]);
+        default_ram = atoi(myargv[p + 1]);
         min_ram = default_ram;
     }
     else
@@ -145,8 +142,8 @@ byte *I_ZoneBase (int *size)
 
     zonemem = AutoAllocMemory(size, default_ram, min_ram);
 
-    doomgeneric_printf("zone memory: %p, %x allocated for zone\n", 
-           zonemem, *size);
+    doomgeneric_printf("zone memory: %p, %x allocated for zone\n", zonemem,
+                       *size);
 
     return zonemem;
 }
@@ -156,7 +153,7 @@ void I_PrintBanner(char *msg)
     int i;
     int spaces = 35 - (strlen(msg) / 2);
 
-    for (i=0; i<spaces; ++i)
+    for (i = 0; i < spaces; ++i)
         putchar(' ');
 
     doomgeneric_puts(msg);
@@ -166,7 +163,7 @@ void I_PrintDivider(void)
 {
     int i;
 
-    for (i=0; i<75; ++i)
+    for (i = 0; i < 75; ++i)
     {
         putchar('=');
     }
@@ -179,17 +176,20 @@ void I_PrintStartupBanner(char *gamedescription)
     I_PrintDivider();
     I_PrintBanner(gamedescription);
     I_PrintDivider();
-    
+
     doomgeneric_printf(
-    " " PACKAGE_NAME " is free software, covered by the GNU General Public\n"
-    " License.  There is NO warranty; not even for MERCHANTABILITY or FITNESS\n"
-    " FOR A PARTICULAR PURPOSE. You are welcome to change and distribute\n"
-    " copies under certain conditions. See the source for more information.\n");
+        " " PACKAGE_NAME
+        " is free software, covered by the GNU General Public\n"
+        " License.  There is NO warranty; not even for MERCHANTABILITY or "
+        "FITNESS\n"
+        " FOR A PARTICULAR PURPOSE. You are welcome to change and distribute\n"
+        " copies under certain conditions. See the source for more "
+        "information.\n");
 
     I_PrintDivider();
 }
 
-// 
+//
 // I_ConsoleStdout
 //
 // Returns true if stdout is a real console, false if it is a file
@@ -197,7 +197,7 @@ void I_PrintStartupBanner(char *gamedescription)
 
 boolean I_ConsoleStdout(void)
 {
-	return 0;
+    return 0;
 }
 
 //
@@ -222,13 +222,13 @@ void I_BindVariables(void)
 // I_Quit
 //
 
-void I_Quit (void)
+void I_Quit(void)
 {
     atexit_listentry_t *entry;
 
     // Run through all exit functions
- 
-    entry = exit_funcs; 
+
+    entry = exit_funcs;
 
     while (entry != NULL)
     {
@@ -322,14 +322,13 @@ static int ZenityErrorBox(char *message)
 
 #endif /* !defined(_WIN32) && !defined(__MACOSX__) && !defined(__DJGPP__) */
 
-
 //
 // I_Error
 //
 
 static boolean already_quitting = false;
 
-void I_Error (char *error, ...)
+void I_Error(char *error, ...)
 {
     char msgbuf[512];
     va_list argptr;
@@ -348,7 +347,7 @@ void I_Error (char *error, ...)
 
     // Message first.
     va_start(argptr, error);
-    //fprintf(stderr, "\nError: ");
+    // fprintf(stderr, "\nError: ");
     vfprintf(stderr, error, argptr);
     fprintf(stderr, "\n\n");
     va_end(argptr);
@@ -408,11 +407,11 @@ void I_Error (char *error, ...)
 #define DOS_MEM_DUMP_SIZE 10
 
 static const unsigned char mem_dump_dos622[DOS_MEM_DUMP_SIZE] = {
-  0x57, 0x92, 0x19, 0x00, 0xF4, 0x06, 0x70, 0x00, 0x16, 0x00};
+    0x57, 0x92, 0x19, 0x00, 0xF4, 0x06, 0x70, 0x00, 0x16, 0x00};
 static const unsigned char mem_dump_win98[DOS_MEM_DUMP_SIZE] = {
-  0x9E, 0x0F, 0xC9, 0x00, 0x65, 0x04, 0x70, 0x00, 0x16, 0x00};
+    0x9E, 0x0F, 0xC9, 0x00, 0x65, 0x04, 0x70, 0x00, 0x16, 0x00};
 static const unsigned char mem_dump_dosbox[DOS_MEM_DUMP_SIZE] = {
-  0x00, 0x00, 0x00, 0xF1, 0x00, 0x00, 0x00, 0x00, 0x07, 0x00};
+    0x00, 0x00, 0x00, 0xF1, 0x00, 0x00, 0x00, 0x00, 0x07, 0x00};
 static unsigned char mem_dump_custom[DOS_MEM_DUMP_SIZE];
 
 static const unsigned char *dos_mem_dump = mem_dump_dos622;
@@ -475,21 +474,20 @@ boolean I_GetMemoryValue(unsigned int offset, void *value, int size)
 
     switch (size)
     {
-    case 1:
-        *((unsigned char *) value) = dos_mem_dump[offset];
-        return true;
-    case 2:
-        *((unsigned short *) value) = dos_mem_dump[offset]
-                                    | (dos_mem_dump[offset + 1] << 8);
-        return true;
-    case 4:
-        *((unsigned int *) value) = dos_mem_dump[offset]
-                                  | (dos_mem_dump[offset + 1] << 8)
-                                  | (dos_mem_dump[offset + 2] << 16)
-                                  | (dos_mem_dump[offset + 3] << 24);
-        return true;
+        case 1:
+            *((unsigned char *) value) = dos_mem_dump[offset];
+            return true;
+        case 2:
+            *((unsigned short *) value) =
+                dos_mem_dump[offset] | (dos_mem_dump[offset + 1] << 8);
+            return true;
+        case 4:
+            *((unsigned int *) value) = dos_mem_dump[offset] |
+                                        (dos_mem_dump[offset + 1] << 8) |
+                                        (dos_mem_dump[offset + 2] << 16) |
+                                        (dos_mem_dump[offset + 3] << 24);
+            return true;
     }
 
     return false;
 }
-

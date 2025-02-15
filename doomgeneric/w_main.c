@@ -16,10 +16,10 @@
 //     Common code to parse command line, identifying WAD files to load.
 //
 
-#include "doomfeatures.h"
-#include "d_iwad.h"
-#include "m_argv.h"
 #include "w_main.h"
+#include "d_iwad.h"
+#include "doomfeatures.h"
+#include "m_argv.h"
 #include "w_merge.h"
 #include "w_wad.h"
 #include "z_zone.h"
@@ -41,25 +41,24 @@ boolean W_ParseCommandLine(void)
     // Load the specified PWAD files.
     //
 
-    p = M_CheckParmWithArgs ("-file", 1);
+    p = M_CheckParmWithArgs("-file", 1);
     if (p)
     {
-	// the parms after p are wadfile/lump names,
-	// until end of parms or another - preceded parm
-	modifiedgame = true;            // homebrew levels
-	while (++p != myargc && myargv[p][0] != '-')
+        // the parms after p are wadfile/lump names,
+        // until end of parms or another - preceded parm
+        modifiedgame = true; // homebrew levels
+        while (++p != myargc && myargv[p][0] != '-')
         {
             char *filename;
 
             filename = D_TryFindWADByName(myargv[p]);
 
             doomgeneric_printf(" adding %s\n", filename);
-	    W_AddFile(filename);
+            W_AddFile(filename);
         }
     }
 
-//    W_PrintDirectory();
+    //    W_PrintDirectory();
 
     return modifiedgame;
 }
-

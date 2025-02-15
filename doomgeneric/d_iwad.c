@@ -16,15 +16,15 @@
 //     to the IWAD type.
 //
 
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include <string.h>
 
 #include "config.h"
+#include "d_iwad.h"
 #include "deh_str.h"
 #include "doomkeys.h"
-#include "d_iwad.h"
 #include "i_system.h"
 #include "m_argv.h"
 #include "m_config.h"
@@ -38,23 +38,23 @@
 #include "dg_iwad_serized.h"
 #endif
 
-static const iwad_t iwads[] =
-{
-    { "doom2.wad",    doom2,     commercial, "Doom II" },
-    { "plutonia.wad", pack_plut, commercial, "Final Doom: Plutonia Experiment" },
-    { "tnt.wad",      pack_tnt,  commercial, "Final Doom: TNT: Evilution" },
-    { "doom.wad",     doom,      retail,     "Doom" },
-    { "doom1.wad",    doom,      shareware,  "Doom Shareware" },
-    { "chex.wad",     pack_chex, shareware,  "Chex Quest" },
-    { "hacx.wad",     pack_hacx, commercial, "Hacx" },
-    { "freedm.wad",   doom2,     commercial, "FreeDM" },
-    { "freedoom2.wad", doom2,    commercial, "Freedoom: Phase 2" },
-    { "freedoom1.wad", doom,     retail,     "Freedoom: Phase 1" },
-    { "heretic.wad",  heretic,   retail,     "Heretic" },
-    { "heretic1.wad", heretic,   shareware,  "Heretic Shareware" },
-    { "hexen.wad",    hexen,     commercial, "Hexen" },
-    //{ "strife0.wad",  strife,    commercial, "Strife" }, // haleyjd: STRIFE-FIXME
-    { "strife1.wad",  strife,    commercial, "Strife" },
+static const iwad_t iwads[] = {
+    {"doom2.wad", doom2, commercial, "Doom II"},
+    {"plutonia.wad", pack_plut, commercial, "Final Doom: Plutonia Experiment"},
+    {"tnt.wad", pack_tnt, commercial, "Final Doom: TNT: Evilution"},
+    {"doom.wad", doom, retail, "Doom"},
+    {"doom1.wad", doom, shareware, "Doom Shareware"},
+    {"chex.wad", pack_chex, shareware, "Chex Quest"},
+    {"hacx.wad", pack_hacx, commercial, "Hacx"},
+    {"freedm.wad", doom2, commercial, "FreeDM"},
+    {"freedoom2.wad", doom2, commercial, "Freedoom: Phase 2"},
+    {"freedoom1.wad", doom, retail, "Freedoom: Phase 1"},
+    {"heretic.wad", heretic, retail, "Heretic"},
+    {"heretic1.wad", heretic, shareware, "Heretic Shareware"},
+    {"hexen.wad", hexen, commercial, "Hexen"},
+    //{ "strife0.wad",  strife,    commercial, "Strife" }, // haleyjd:
+    // STRIFE-FIXME
+    {"strife1.wad", strife, commercial, "Strife"},
 };
 
 // Array of locations to search for IWAD files
@@ -87,9 +87,9 @@ static boolean DirIsFile(char *path, char *filename)
     path_len = strlen(path);
     filename_len = strlen(filename);
 
-    return path_len >= filename_len + 1
-        && path[path_len - filename_len - 1] == DIR_SEPARATOR
-        && !strcasecmp(&path[path_len - filename_len], filename);
+    return path_len >= filename_len + 1 &&
+           path[path_len - filename_len - 1] == DIR_SEPARATOR &&
+           !strcasecmp(&path[path_len - filename_len], filename);
 }
 
 // Check if the specified directory contains the specified IWAD
@@ -98,7 +98,7 @@ static boolean DirIsFile(char *path, char *filename)
 
 static char *CheckDirectoryHasIWAD(char *dir, char *iwadname)
 {
-    char *filename; 
+    char *filename;
 
     // As a special case, the "directory" may refer directly to an
     // IWAD file if the path comes from DOOMWADDIR or DOOMWADPATH.
@@ -140,7 +140,7 @@ static char *SearchDirectoryForIWAD(char *dir, int mask, GameMission_t *mission)
     char *filename;
     size_t i;
 
-    for (i=0; i<arrlen(iwads); ++i) 
+    for (i = 0; i < arrlen(iwads); ++i)
     {
         if (((1 << iwads[i].mission) & mask) == 0)
         {
@@ -178,7 +178,7 @@ static GameMission_t IdentifyIWADByName(char *name, int mask)
 
     mission = none;
 
-    for (i=0; i<arrlen(iwads); ++i)
+    for (i = 0; i < arrlen(iwads); ++i)
     {
         // Check if the filename is this IWAD name.
 
@@ -205,7 +205,7 @@ static GameMission_t IdentifyIWADByName(char *name, int mask)
 
 static void BuildIWADDirList(void)
 {
-    AddIWADDir (FILES_DIR);
+    AddIWADDir(FILES_DIR);
 
     // Don't run this function again.
 
@@ -214,13 +214,13 @@ static void BuildIWADDirList(void)
 
 //
 // Searches WAD search paths for an WAD with a specific filename.
-// 
+//
 
 char *D_FindWADByName(char *name)
 {
     char *path;
     int i;
-    
+
     // Absolute path?
 
     if (M_FileExists(name))
@@ -232,7 +232,7 @@ char *D_FindWADByName(char *name)
 
     // Search through all IWAD paths for a file with the given name.
 
-    for (i=0; i<num_iwad_dirs; ++i)
+    for (i = 0; i < num_iwad_dirs; ++i)
     {
         // As a special case, if this is in DOOMWADDIR or DOOMWADPATH,
         // the "directory" may actually refer directly to an IWAD
@@ -320,7 +320,7 @@ char *D_FindIWAD(int mask, GameMission_t *mission)
         {
             I_Error("IWAD file '%s' not found!", iwadfile);
         }
-        
+
         *mission = IdentifyIWADByName(result, mask);
     }
 #else
@@ -339,8 +339,8 @@ char *D_FindIWAD(int mask, GameMission_t *mission)
         result = NULL;
 
         BuildIWADDirList();
-    
-        for (i=0; result == NULL && i<num_iwad_dirs; ++i)
+
+        for (i = 0; result == NULL && i < num_iwad_dirs; ++i)
         {
             result = SearchDirectoryForIWAD(iwad_dirs[i], mask, mission);
         }
@@ -363,7 +363,7 @@ const iwad_t **D_FindAllIWADs(int mask)
 
     // Try to find all IWADs
 
-    for (i=0; i<arrlen(iwads); ++i)
+    for (i = 0; i < arrlen(iwads); ++i)
     {
         if (((1 << iwads[i].mission) & mask) == 0)
         {
@@ -401,7 +401,7 @@ char *D_SaveGameIWADName(GameMission_t gamemission)
     // This ensures that doom1.wad and doom.wad saves are stored
     // in the same place.
 
-    for (i=0; i<arrlen(iwads); ++i)
+    for (i = 0; i < arrlen(iwads); ++i)
     {
         if (gamemission == iwads[i].mission)
         {
@@ -435,8 +435,8 @@ char *D_SuggestGameName(GameMission_t mission, GameMode_t mode)
 
     for (i = 0; i < arrlen(iwads); ++i)
     {
-        if (iwads[i].mission == mission
-         && (mode == indetermined || iwads[i].mode == mode))
+        if (iwads[i].mission == mission &&
+            (mode == indetermined || iwads[i].mode == mode))
         {
             return iwads[i].description;
         }
@@ -444,4 +444,3 @@ char *D_SuggestGameName(GameMission_t mission, GameMode_t mode)
 
     return "Unknown game?";
 }
-

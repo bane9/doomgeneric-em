@@ -13,24 +13,23 @@
 // GNU General Public License for more details.
 //
 
-
-#include <stdlib.h>
 #include <ctype.h>
-#include <math.h>
-#include <string.h>
 #include <fcntl.h>
+#include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "config.h"
 #include "deh_str.h"
-#include "doomtype.h"
 #include "doomkeys.h"
+#include "doomtype.h"
 #include "i_joystick.h"
-#include "i_system.h"
+#include "i_scale.h"
 #include "i_swap.h"
+#include "i_system.h"
 #include "i_timer.h"
 #include "i_video.h"
-#include "i_scale.h"
 #include "m_argv.h"
 #include "m_config.h"
 #include "m_misc.h"
@@ -48,8 +47,7 @@ int vanilla_keyboard_mapping = 1;
 static int shiftdown = 0;
 
 // Lookup table for mapping AT keycodes to their doom keycode
-static const char at_to_doom[] =
-{
+static const char at_to_doom[] = {
     /* 0x00 */ 0x00,
     /* 0x01 */ KEY_ESCAPE,
     /* 0x02 */ '1',
@@ -177,19 +175,17 @@ static const char at_to_doom[] =
     /* 0x7c */ 0x0,
     /* 0x7d */ 0x0,
     /* 0x7e */ 0x0,
-    /* 0x7f */ KEY_FIRE, //KEY_RCTRL,
+    /* 0x7f */ KEY_FIRE, // KEY_RCTRL,
 };
 
 // Lookup table for mapping ASCII characters to their equivalent when
 // shift is pressed on an American layout keyboard:
-static const char shiftxform[] =
-{
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-    11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-    21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
-    31, ' ', '!', '"', '#', '$', '%', '&',
+static const char shiftxform[] = {
+    0,    1,   2,   3,   4,   5,   6,   7,   8,   9,   10,  11,  12,  13,  14,
+    15,   16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,
+    30,   31,  ' ', '!', '"', '#', '$', '%', '&',
     '"', // shift-'
-    '(', ')', '*', '+',
+    '(',  ')', '*', '+',
     '<', // shift-,
     '_', // shift--
     '>', // shift-.
@@ -208,33 +204,30 @@ static const char shiftxform[] =
     ':', // shift-;
     '<',
     '+', // shift-=
-    '>', '?', '@',
-    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
-    'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+    '>',  '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+    'M',  'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
     '[', // shift-[
     '!', // shift-backslash - OH MY GOD DOES WATCOM SUCK
     ']', // shift-]
-    '"', '_',
+    '"',  '_',
     '\'', // shift-`
-    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
-    'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-    '{', '|', '}', '~', 127
-};
-
+    'A',  'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
+    'P',  'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '{', '|', '}', '~',
+    127};
 
 static unsigned char TranslateKey(unsigned char key)
 {
-	return key;
+    return key;
 
-	/*
-    if (key < sizeof(at_to_doom))
-        return at_to_doom[key];
-    else
-        return 0x0;
-	*/
+    /*
+  if (key < sizeof(at_to_doom))
+    return at_to_doom[key];
+  else
+    return 0x0;
+    */
 
-    //default:
-    //  return tolower(key);
+    // default:
+    //   return tolower(key);
 }
 
 // Get the equivalent ASCII (Unicode?) character for a keypress.
@@ -264,17 +257,20 @@ static void UpdateShiftStatus(int pressed, unsigned char key)
 {
     int change;
 
-    if (pressed) {
+    if (pressed)
+    {
         change = 1;
-    } else {
+    }
+    else
+    {
         change = -1;
     }
 
-    if (key == KEY_RSHIFT) {
+    if (key == KEY_RSHIFT)
+    {
         shiftdown += change;
     }
 }
-
 
 void I_GetEvent(void)
 {
@@ -282,13 +278,12 @@ void I_GetEvent(void)
     int pressed;
     unsigned char key;
 
-    
-	while (DG_GetKey(&pressed, &key))
+    while (DG_GetKey(&pressed, &key))
     {
         UpdateShiftStatus(pressed, key);
 
         // process event
-        
+
         if (pressed)
         {
             // data1 has the key pressed, data2 has the character
@@ -323,19 +318,17 @@ void I_GetEvent(void)
         }
     }
 
-
-                /*
-            case SDL_MOUSEMOTION:
-                event.type = ev_mouse;
-                event.data1 = mouse_button_state;
-                event.data2 = AccelerateMouse(sdlevent.motion.xrel);
-                event.data3 = -AccelerateMouse(sdlevent.motion.yrel);
-                D_PostEvent(&event);
-                break;
-                */
+    /*
+  case SDL_MOUSEMOTION:
+    event.type = ev_mouse;
+    event.data1 = mouse_button_state;
+    event.data2 = AccelerateMouse(sdlevent.motion.xrel);
+    event.data3 = -AccelerateMouse(sdlevent.motion.yrel);
+    D_PostEvent(&event);
+    break;
+    */
 }
 
 void I_InitInput(void)
 {
 }
-

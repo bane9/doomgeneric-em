@@ -20,11 +20,10 @@
 //     DMXGUS lump into an equivalent Timidity configuration file.
 //
 
-
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
 #include "w_wad.h"
 #include "z_zone.h"
@@ -216,11 +215,11 @@ static boolean WriteTimidityConfig(char *path, gus_config_t *config)
 
     for (i = 0; i < 128; ++i)
     {
-        if (config->mapping[i] >= 0 && config->mapping[i] < MAX_INSTRUMENTS
-         && config->patch_names[config->mapping[i]] != NULL)
+        if (config->mapping[i] >= 0 && config->mapping[i] < MAX_INSTRUMENTS &&
+            config->patch_names[config->mapping[i]] != NULL)
         {
-            fprintf(fstream, "%i %s\n",
-                    i, config->patch_names[config->mapping[i]]);
+            fprintf(fstream, "%i %s\n", i,
+                    config->patch_names[config->mapping[i]]);
         }
     }
 
@@ -228,11 +227,11 @@ static boolean WriteTimidityConfig(char *path, gus_config_t *config)
 
     for (i = 128 + 25; i < MAX_INSTRUMENTS; ++i)
     {
-        if (config->mapping[i] >= 0 && config->mapping[i] < MAX_INSTRUMENTS
-         && config->patch_names[config->mapping[i]] != NULL)
+        if (config->mapping[i] >= 0 && config->mapping[i] < MAX_INSTRUMENTS &&
+            config->patch_names[config->mapping[i]] != NULL)
         {
-            fprintf(fstream, "%i %s\n",
-                    i - 128, config->patch_names[config->mapping[i]]);
+            fprintf(fstream, "%i %s\n", i - 128,
+                    config->patch_names[config->mapping[i]]);
         }
     }
 
@@ -253,9 +252,9 @@ boolean GUS_WriteConfig(char *path)
     {
         doomgeneric_printf("You haven't configured gus_patch_path.\n");
         doomgeneric_printf("gus_patch_path needs to point to the location of "
-               "your GUS patch set.\n"
-               "To get a copy of the \"standard\" GUS patches, "
-               "download a copy of dgguspat.zip.\n");
+                           "your GUS patch set.\n"
+                           "To get a copy of the \"standard\" GUS patches, "
+                           "download a copy of dgguspat.zip.\n");
 
         return false;
     }
@@ -270,4 +269,3 @@ boolean GUS_WriteConfig(char *path)
 
     return result;
 }
-

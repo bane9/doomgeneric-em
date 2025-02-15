@@ -15,12 +15,12 @@
 //       SDL Joystick code.
 //
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-#include "doomtype.h"
 #include "d_event.h"
+#include "doomtype.h"
 #include "i_joystick.h"
 #include "i_system.h"
 
@@ -61,9 +61,8 @@ static int joystick_strafe_invert = 0;
 
 // Virtual to physical button joystick button mapping. By default this
 // is a straight mapping.
-static int joystick_physical_buttons[NUM_VIRTUAL_BUTTONS] = {
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9
-};
+static int joystick_physical_buttons[NUM_VIRTUAL_BUTTONS] = {0, 1, 2, 3, 4,
+                                                             5, 6, 7, 8, 9};
 
 void I_ShutdownJoystick(void)
 {
@@ -81,14 +80,14 @@ void I_BindJoystickVariables(void)
 {
     int i;
 
-    M_BindVariable("use_joystick",          &usejoystick);
-    M_BindVariable("joystick_index",        &joystick_index);
-    M_BindVariable("joystick_x_axis",       &joystick_x_axis);
-    M_BindVariable("joystick_y_axis",       &joystick_y_axis);
-    M_BindVariable("joystick_strafe_axis",  &joystick_strafe_axis);
-    M_BindVariable("joystick_x_invert",     &joystick_x_invert);
-    M_BindVariable("joystick_y_invert",     &joystick_y_invert);
-    M_BindVariable("joystick_strafe_invert",&joystick_strafe_invert);
+    M_BindVariable("use_joystick", &usejoystick);
+    M_BindVariable("joystick_index", &joystick_index);
+    M_BindVariable("joystick_x_axis", &joystick_x_axis);
+    M_BindVariable("joystick_y_axis", &joystick_y_axis);
+    M_BindVariable("joystick_strafe_axis", &joystick_strafe_axis);
+    M_BindVariable("joystick_x_invert", &joystick_x_invert);
+    M_BindVariable("joystick_y_invert", &joystick_y_invert);
+    M_BindVariable("joystick_strafe_invert", &joystick_strafe_invert);
 
     for (i = 0; i < NUM_VIRTUAL_BUTTONS; ++i)
     {
@@ -97,4 +96,3 @@ void I_BindJoystickVariables(void)
         M_BindVariable(name, &joystick_physical_buttons[i]);
     }
 }
-
