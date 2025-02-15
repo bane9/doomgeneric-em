@@ -33,10 +33,8 @@
 #include "m_fixed.h"
 
 #include "net_client.h"
-#include "net_gui.h"
 #include "net_io.h"
 #include "net_query.h"
-#include "net_server.h"
 #include "net_loop.h"
 
 #include "doomgeneric_syscall.h"

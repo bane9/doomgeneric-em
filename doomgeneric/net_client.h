@@ -22,18 +22,6 @@
 #include "sha1.h"
 #include "net_defs.h"
 
-boolean NET_CL_Connect(net_addr_t *addr, net_connect_data_t *data);
-void NET_CL_Disconnect(void);
-void NET_CL_Run(void);
-void NET_CL_Init(void);
-void NET_CL_LaunchGame(void);
-void NET_CL_StartGame(net_gamesettings_t *settings);
-void NET_CL_SendTiccmd(ticcmd_t *ticcmd, int maketic);
-boolean NET_CL_GetSettings(net_gamesettings_t *_settings);
-void NET_Init(void);
-
-void NET_BindVariables(void);
-
 extern boolean net_client_connected;
 extern boolean net_client_received_wait_data;
 extern net_waitdata_t net_client_wait_data;

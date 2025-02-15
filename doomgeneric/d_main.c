@@ -62,7 +62,6 @@
 #include "st_stuff.h"
 #include "am_map.h"
 #include "net_client.h"
-#include "net_dedicated.h"
 #include "net_query.h"
 
 #include "p_setup.h"
