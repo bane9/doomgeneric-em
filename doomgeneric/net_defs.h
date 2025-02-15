@@ -149,7 +149,6 @@ typedef struct
     int gamemode;
     int gamemission;
     int lowres_turn;
-    int drone;
     int max_players;
     int is_freedoom;
     sha1_digest_t wad_sha1sum;
@@ -233,7 +232,6 @@ typedef struct
 typedef struct
 {
     int num_players;
-    int num_drones;
     int ready_players;
     int max_players;
     int is_controller;

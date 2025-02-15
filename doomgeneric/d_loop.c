@@ -32,11 +32,6 @@
 #include "m_argv.h"
 #include "m_fixed.h"
 
-#include "net_client.h"
-#include "net_io.h"
-#include "net_query.h"
-#include "net_loop.h"
-
 #include "doomgeneric_syscall.h"
 
 // The complete set of data for a particular tic.
@@ -146,13 +141,6 @@ static boolean BuildNewTic(void)
 
     loop_interface->RunMenu();
 
-    if (drone)
-    {
-        // In drone mode, do not generate any ticcmds.
-
-        return false;
-    }
-
     if (new_sync)
     {
        // If playing single player, do not allow tics to buffer
@@ -233,13 +221,6 @@ void NetUpdate (void)
 
 static void D_Disconnected(void)
 {
-    // In drone mode, the game cannot continue once disconnected.
-
-    if (drone)
-    {
-        I_Error("Disconnected from server in drone mode.");
-    }
-
     // disconnected from server
 
     doomgeneric_printf("Disconnected from server.\n");
@@ -264,7 +245,7 @@ void D_ReceiveTic(ticcmd_t *ticcmds, boolean *players_mask)
 
     for (i = 0; i < NET_MAXPLAYERS; ++i)
     {
-        if (!drone && i == localplayer)
+        if (i == localplayer)
         {
             // This is us.  Don't overwrite it.
         }
@@ -395,13 +376,7 @@ static boolean PlayersInGame(void)
     boolean result = false;
     unsigned int i;
 
-    // Whether single or multi-player, unless we are running as a drone,
-    // we are in the game.
-
-    if (!drone)
-    {
-        result = true;
-    }
+    result = true;
 
     return result;
 }

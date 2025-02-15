@@ -61,8 +61,6 @@
 #include "wi_stuff.h"
 #include "st_stuff.h"
 #include "am_map.h"
-#include "net_client.h"
-#include "net_query.h"
 
 #include "p_setup.h"
 #include "r_local.h"
@@ -372,11 +370,6 @@ void D_BindVariables(void)
 
 boolean D_GrabMouseCallback(void)
 {
-    // Drone players don't need mouse focus
-
-    if (drone)
-        return false;
-
     // when menu is active or game is paused, release the mouse 
  
     if (menuactive || paused)
