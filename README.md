@@ -9,7 +9,7 @@ It features:
 - RGB565 support (along with RGB888)
 - Can set MAXPLAYERS 1-4 (currently set to 2)
 - A lot of unnecessary code removed
-    - Saved around 64 KiB of RAM and 80 KiB of ROM compared to base doomgeneric
+    - Saved around 32 KiB of RAM and 77 KiB of ROM compared to base doomgeneric
     - Sound code is completely removed which changes how ticking works. This breaks demos but gameplay itself works fine.
 - Switched to CMake
 - The large arrays inside info.c can dynamically allocated if needed
