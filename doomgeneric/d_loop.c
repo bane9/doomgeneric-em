@@ -218,7 +218,6 @@ void NetUpdate(void)
     }
 }
 
-
 //
 // Start game loop
 //

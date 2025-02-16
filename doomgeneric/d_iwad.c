@@ -376,4 +376,3 @@ char *D_SaveGameIWADName(GameMission_t gamemission)
 
     return "unknown.wad";
 }
-

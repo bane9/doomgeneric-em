@@ -329,4 +329,3 @@ void Z_ChangeUser(void *ptr, void **user)
     block->user = user;
     *user = ptr;
 }
-

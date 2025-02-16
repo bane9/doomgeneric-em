@@ -98,7 +98,7 @@ void I_InitGraphics(void)
 
     extern void I_InitInput(void);
     I_InitInput();
-}\
+}
 void I_StartFrame(void)
 {
 }

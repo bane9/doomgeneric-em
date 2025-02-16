@@ -472,7 +472,4 @@ void W_GenerateHashTable(void)
             lumphash[hash] = &lumpinfo[i];
         }
     }
-
-    // All done!
 }
-
