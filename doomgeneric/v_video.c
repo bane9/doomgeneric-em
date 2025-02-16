@@ -111,21 +111,6 @@ void V_CopyRect(int srcx, int srcy, byte *source, int width, int height,
 }
 
 //
-// V_SetPatchClipCallback
-//
-// haleyjd 08/28/10: Added for Strife support.
-// By calling this function, you can setup runtime error checking for patch
-// clipping. Strife never caused errors by drawing patches partway off-screen.
-// Some versions of vanilla DOOM also behaved differently than the default
-// implementation, so this could possibly be extended to those as well for
-// accurate emulation.
-//
-void V_SetPatchClipCallback(vpatchclipfunc_t func)
-{
-    patchclip_callback = func;
-}
-
-//
 // V_DrawPatch
 // Masks a column based masked pic to the screen.
 //
@@ -263,224 +248,6 @@ void V_DrawPatchDirect(int x, int y, patch_t *patch)
 }
 
 //
-// V_DrawTLPatch
-//
-// Masks a column based translucent masked pic to the screen.
-//
-
-void V_DrawTLPatch(int x, int y, patch_t *patch)
-{
-    int count, col;
-    column_t *column;
-    byte *desttop, *dest, *source;
-    int w;
-
-    y -= SHORT(patch->topoffset);
-    x -= SHORT(patch->leftoffset);
-
-    if (x < 0 || x + SHORT(patch->width) > SCREENWIDTH || y < 0 ||
-        y + SHORT(patch->height) > SCREENHEIGHT)
-    {
-        I_Error("Bad V_DrawTLPatch");
-    }
-
-    col = 0;
-    desttop = dest_screen + y * SCREENWIDTH + x;
-
-    w = SHORT(patch->width);
-    for (; col < w; x++, col++, desttop++)
-    {
-        column = (column_t *) ((byte *) patch + LONG(patch->columnofs[col]));
-
-        // step through the posts in a column
-
-        while (column->topdelta != 0xff)
-        {
-            source = (byte *) column + 3;
-            dest = desttop + column->topdelta * SCREENWIDTH;
-            count = column->length;
-
-            while (count--)
-            {
-                *dest = tinttable[((*dest) << 8) + *source++];
-                dest += SCREENWIDTH;
-            }
-            column = (column_t *) ((byte *) column + column->length + 4);
-        }
-    }
-}
-
-//
-// V_DrawXlaPatch
-//
-// villsa [STRIFE] Masks a column based translucent masked pic to the screen.
-//
-
-void V_DrawXlaPatch(int x, int y, patch_t *patch)
-{
-    int count, col;
-    column_t *column;
-    byte *desttop, *dest, *source;
-    int w;
-
-    y -= SHORT(patch->topoffset);
-    x -= SHORT(patch->leftoffset);
-
-    if (patchclip_callback)
-    {
-        if (!patchclip_callback(patch, x, y))
-            return;
-    }
-
-    col = 0;
-    desttop = dest_screen + y * SCREENWIDTH + x;
-
-    w = SHORT(patch->width);
-    for (; col < w; x++, col++, desttop++)
-    {
-        column = (column_t *) ((byte *) patch + LONG(patch->columnofs[col]));
-
-        // step through the posts in a column
-
-        while (column->topdelta != 0xff)
-        {
-            source = (byte *) column + 3;
-            dest = desttop + column->topdelta * SCREENWIDTH;
-            count = column->length;
-
-            while (count--)
-            {
-                *dest = xlatab[*dest + ((*source) << 8)];
-                source++;
-                dest += SCREENWIDTH;
-            }
-            column = (column_t *) ((byte *) column + column->length + 4);
-        }
-    }
-}
-
-//
-// V_DrawAltTLPatch
-//
-// Masks a column based translucent masked pic to the screen.
-//
-
-void V_DrawAltTLPatch(int x, int y, patch_t *patch)
-{
-    int count, col;
-    column_t *column;
-    byte *desttop, *dest, *source;
-    int w;
-
-    y -= SHORT(patch->topoffset);
-    x -= SHORT(patch->leftoffset);
-
-    if (x < 0 || x + SHORT(patch->width) > SCREENWIDTH || y < 0 ||
-        y + SHORT(patch->height) > SCREENHEIGHT)
-    {
-        I_Error("Bad V_DrawAltTLPatch");
-    }
-
-    col = 0;
-    desttop = dest_screen + y * SCREENWIDTH + x;
-
-    w = SHORT(patch->width);
-    for (; col < w; x++, col++, desttop++)
-    {
-        column = (column_t *) ((byte *) patch + LONG(patch->columnofs[col]));
-
-        // step through the posts in a column
-
-        while (column->topdelta != 0xff)
-        {
-            source = (byte *) column + 3;
-            dest = desttop + column->topdelta * SCREENWIDTH;
-            count = column->length;
-
-            while (count--)
-            {
-                *dest = tinttable[((*dest) << 8) + *source++];
-                dest += SCREENWIDTH;
-            }
-            column = (column_t *) ((byte *) column + column->length + 4);
-        }
-    }
-}
-
-//
-// V_DrawShadowedPatch
-//
-// Masks a column based masked pic to the screen.
-//
-
-void V_DrawShadowedPatch(int x, int y, patch_t *patch)
-{
-    int count, col;
-    column_t *column;
-    byte *desttop, *dest, *source;
-    byte *desttop2, *dest2;
-    int w;
-
-    y -= SHORT(patch->topoffset);
-    x -= SHORT(patch->leftoffset);
-
-    if (x < 0 || x + SHORT(patch->width) > SCREENWIDTH || y < 0 ||
-        y + SHORT(patch->height) > SCREENHEIGHT)
-    {
-        I_Error("Bad V_DrawShadowedPatch");
-    }
-
-    col = 0;
-    desttop = dest_screen + y * SCREENWIDTH + x;
-    desttop2 = dest_screen + (y + 2) * SCREENWIDTH + x + 2;
-
-    w = SHORT(patch->width);
-    for (; col < w; x++, col++, desttop++, desttop2++)
-    {
-        column = (column_t *) ((byte *) patch + LONG(patch->columnofs[col]));
-
-        // step through the posts in a column
-
-        while (column->topdelta != 0xff)
-        {
-            source = (byte *) column + 3;
-            dest = desttop + column->topdelta * SCREENWIDTH;
-            dest2 = desttop2 + column->topdelta * SCREENWIDTH;
-            count = column->length;
-
-            while (count--)
-            {
-                *dest2 = tinttable[((*dest2) << 8)];
-                dest2 += SCREENWIDTH;
-                *dest = *source++;
-                dest += SCREENWIDTH;
-            }
-            column = (column_t *) ((byte *) column + column->length + 4);
-        }
-    }
-}
-
-//
-// Load tint table from TINTTAB lump.
-//
-
-void V_LoadTintTable(void)
-{
-    tinttable = W_CacheLumpName("TINTTAB", PU_STATIC);
-}
-
-//
-// V_LoadXlaTable
-//
-// villsa [STRIFE] Load xla table from XLATAB lump.
-//
-
-void V_LoadXlaTable(void)
-{
-    xlatab = W_CacheLumpName("XLATAB", PU_STATIC);
-}
-
-//
 // V_DrawBlock
 // Draw a linear block of pixels into the view buffer.
 //
@@ -561,33 +328,6 @@ void V_DrawBox(int x, int y, int w, int h, int c)
     V_DrawHorizLine(x, y + h - 1, w, c);
     V_DrawVertLine(x, y, h, c);
     V_DrawVertLine(x + w - 1, y, h, c);
-}
-
-//
-// Draw a "raw" screen (lump containing raw data to blit directly
-// to the screen)
-//
-
-void V_DrawRawScreen(byte *raw)
-{
-    memcpy(dest_screen, raw, SCREENWIDTH * SCREENHEIGHT);
-}
-
-//
-// V_Init
-//
-void V_Init(void)
-{
-    // no-op!
-    // There used to be separate screens that could be drawn to; these are
-    // now handled in the upper layers.
-}
-
-// Set the buffer that the code draws to.
-
-void V_UseBuffer(byte *buffer)
-{
-    dest_screen = buffer;
 }
 
 // Restore screen buffer to the i_video screen buffer.
@@ -683,86 +423,6 @@ void WritePCXfile(char *filename, byte *data, int width, int height,
     Z_Free(pcx);
 }
 
-#ifdef HAVE_LIBPNG
-//
-// WritePNGfile
-//
-
-static void error_fn(png_structp p, png_const_charp s)
-{
-    doomgeneric_printf("libpng error: %s\n", s);
-}
-
-static void warning_fn(png_structp p, png_const_charp s)
-{
-    doomgeneric_printf("libpng warning: %s\n", s);
-}
-
-void WritePNGfile(char *filename, byte *data, int width, int height,
-                  byte *palette)
-{
-    png_structp ppng;
-    png_infop pinfo;
-    png_colorp pcolor;
-    FILE *handle;
-    int i;
-
-    handle = doomgeneric_fopen(filename, "wb");
-    if (!handle)
-    {
-        return;
-    }
-
-    ppng = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, error_fn,
-                                   warning_fn);
-    if (!ppng)
-    {
-        return;
-    }
-
-    pinfo = png_create_info_struct(ppng);
-    if (!pinfo)
-    {
-        png_destroy_write_struct(&ppng, NULL);
-        return;
-    }
-
-    png_init_io(ppng, handle);
-
-    png_set_IHDR(ppng, pinfo, width, height, 8, PNG_COLOR_TYPE_PALETTE,
-                 PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT,
-                 PNG_FILTER_TYPE_DEFAULT);
-
-    pcolor = doomgeneric_malloc(sizeof(*pcolor) * 256);
-    if (!pcolor)
-    {
-        png_destroy_write_struct(&ppng, &pinfo);
-        return;
-    }
-
-    for (i = 0; i < 256; i++)
-    {
-        pcolor[i].red = *(palette + 3 * i);
-        pcolor[i].green = *(palette + 3 * i + 1);
-        pcolor[i].blue = *(palette + 3 * i + 2);
-    }
-
-    png_set_PLTE(ppng, pinfo, pcolor, 256);
-    doomgeneric_free(pcolor);
-
-    png_write_info(ppng, pinfo);
-
-    for (i = 0; i < SCREENHEIGHT; i++)
-    {
-        png_write_row(ppng, data + i * SCREENWIDTH);
-    }
-
-    png_write_end(ppng, pinfo);
-    png_destroy_write_struct(&ppng, &pinfo);
-    doomgeneric_fclose(handle);
-}
-#endif
-
 //
 // V_ScreenShot
 //
@@ -802,19 +462,16 @@ void V_ScreenShot(char *format)
         I_Error("V_ScreenShot: Couldn't create a PCX");
     }
 
-#ifdef HAVE_LIBPNG
-    if (png_screenshots)
-    {
-        WritePNGfile(lbmname, I_VideoBuffer, SCREENWIDTH, SCREENHEIGHT,
-                     W_CacheLumpName(DEH_String("PLAYPAL"), PU_CACHE));
-    }
-    else
-#endif
     {
         // save the pcx file
         WritePCXfile(lbmname, I_VideoBuffer, SCREENWIDTH, SCREENHEIGHT,
                      W_CacheLumpName(DEH_String("PLAYPAL"), PU_CACHE));
     }
+}
+
+void V_UseBuffer(byte *buffer)
+{
+    dest_screen = buffer;
 }
 
 #define MOUSE_SPEED_BOX_WIDTH 120

@@ -236,14 +236,6 @@ wad_file_t *W_AddFile(char *filename)
 }
 
 //
-// W_NumLumps
-//
-int W_NumLumps(void)
-{
-    return numlumps;
-}
-
-//
 // W_CheckNumForName
 // Returns -1 if name not found.
 //
@@ -509,18 +501,6 @@ void W_CheckCorrectIWAD(GameMission_t mission)
         if (mission != unique_lumps[i].mission)
         {
             lumpnum = W_CheckNumForName(unique_lumps[i].lumpname);
-
-            if (lumpnum >= 0)
-            {
-                I_Error(
-                    "\nYou are trying to use a %s IWAD file with "
-                    "the %s%s binary.\nThis isn't going to work.\n"
-                    "You probably want to use the %s%s binary.",
-                    D_SuggestGameName(unique_lumps[i].mission, indetermined),
-                    PROGRAM_PREFIX, D_GameMissionString(mission),
-                    PROGRAM_PREFIX,
-                    D_GameMissionString(unique_lumps[i].mission));
-            }
         }
     }
 }

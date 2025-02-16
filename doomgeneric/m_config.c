@@ -1419,24 +1419,6 @@ static default_collection_t extra_defaults = {
     NULL,
 };
 
-// Search a collection for a variable
-
-static const default_t *SearchCollection(default_collection_t *collection,
-                                         char *name)
-{
-    int i;
-
-    for (i = 0; i < collection->numdefaults; ++i)
-    {
-        if (!strcmp(name, collection->defaults[i].name))
-        {
-            return &collection->defaults[i];
-        }
-    }
-
-    return NULL;
-}
-
 // Mapping from DOS keyboard scan code to internal key code (as defined
 // in doomkey.h). I think I (fraggle) reused this from somewhere else
 // but I can't find where. Anyway, notes:
@@ -1580,63 +1562,6 @@ static void SaveDefaultCollection(default_collection_t *collection)
 {
 }
 
-// Parses integer values in the configuration file
-
-static int ParseIntParameter(char *strparm)
-{
-    int parm;
-
-    if (strparm[0] == '0' && strparm[1] == 'x')
-        sscanf(strparm + 2, "%x", &parm);
-    else
-        sscanf(strparm, "%i", &parm);
-
-    return parm;
-}
-
-static void SetVariable(const default_t *def, char *value)
-{
-    int intparm;
-
-    // parameter found
-
-    switch (def->type)
-    {
-        case DEFAULT_STRING:
-            *(char **) def->location = doomgeneric_strdup(value);
-            break;
-
-        case DEFAULT_INT:
-        case DEFAULT_INT_HEX:
-            *(int *) def->location = ParseIntParameter(value);
-            break;
-
-        case DEFAULT_KEY:
-
-            // translate scancodes read from config
-            // file (save the old value in untranslated)
-
-            intparm = ParseIntParameter(value);
-            // def->untranslated = intparm;
-            if (intparm >= 0 && intparm < 128)
-            {
-                intparm = scantokey[intparm];
-            }
-            else
-            {
-                intparm = 0;
-            }
-
-            // def->original_translated = intparm;
-            *(int *) def->location = intparm;
-            break;
-
-        case DEFAULT_FLOAT:
-            *(float *) def->location = (float) atof(value);
-            break;
-    }
-}
-
 static void LoadDefaultCollection(default_collection_t *collection)
 {
 }
@@ -1657,31 +1582,6 @@ void M_SaveDefaults(void)
 {
     SaveDefaultCollection(&doom_defaults);
     SaveDefaultCollection(&extra_defaults);
-}
-
-//
-// Save defaults to alternate filenames
-//
-
-void M_SaveDefaultsAlternate(char *main, char *extra)
-{
-    const char *orig_main;
-    const char *orig_extra;
-
-    // Temporarily change the filenames
-
-    orig_main = doom_defaults.filename;
-    orig_extra = extra_defaults.filename;
-
-    doom_defaults.filename = main;
-    extra_defaults.filename = extra;
-
-    M_SaveDefaults();
-
-    // Restore normal filenames
-
-    doom_defaults.filename = orig_main;
-    extra_defaults.filename = orig_extra;
 }
 
 //
@@ -1742,31 +1642,6 @@ void M_LoadDefaults(void)
     LoadDefaultCollection(&extra_defaults);
 }
 
-// Get a configuration file variable by its name
-
-static const default_t *GetDefaultForName(char *name)
-{
-    const default_t *result;
-
-    // Try the main list and the extras
-
-    result = SearchCollection(&doom_defaults, name);
-
-    if (result == NULL)
-    {
-        result = SearchCollection(&extra_defaults, name);
-    }
-
-    // Not found? Internal error.
-
-    if (result == NULL)
-    {
-        I_Error("Unknown configuration variable: '%s'", name);
-    }
-
-    return result;
-}
-
 //
 // Bind a variable to a given configuration file variable, by name.
 //
@@ -1779,71 +1654,6 @@ void M_BindVariable(char *name, void *location)
 
     // variable->location = location;
     // variable->bound = true;
-}
-
-// Set the value of a particular variable; an API function for other
-// parts of the program to assign values to config variables by name.
-
-boolean M_SetVariable(char *name, char *value)
-{
-    const default_t *variable;
-
-    variable = GetDefaultForName(name);
-
-    if (variable == NULL || !variable->bound)
-    {
-        return false;
-    }
-
-    SetVariable(variable, value);
-
-    return true;
-}
-
-// Get the value of a variable.
-
-int M_GetIntVariable(char *name)
-{
-    const default_t *variable;
-
-    variable = GetDefaultForName(name);
-
-    if (variable == NULL || !variable->bound ||
-        (variable->type != DEFAULT_INT && variable->type != DEFAULT_INT_HEX))
-    {
-        return 0;
-    }
-
-    return *((int *) variable->location);
-}
-
-const char *M_GetStrVariable(char *name)
-{
-    const default_t *variable;
-
-    variable = GetDefaultForName(name);
-
-    if (variable == NULL || !variable->bound ||
-        variable->type != DEFAULT_STRING)
-    {
-        return NULL;
-    }
-
-    return *((const char **) variable->location);
-}
-
-float M_GetFloatVariable(char *name)
-{
-    const default_t *variable;
-
-    variable = GetDefaultForName(name);
-
-    if (variable == NULL || !variable->bound || variable->type != DEFAULT_FLOAT)
-    {
-        return 0;
-    }
-
-    return *((float *) variable->location);
 }
 
 // Get the path to the default configuration dir to use, if NULL

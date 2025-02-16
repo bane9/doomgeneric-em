@@ -1029,18 +1029,6 @@ void M_DrawThermo(int x, int y, int thermWidth, int thermDot)
                       W_CacheLumpName(DEH_String("M_THERMO"), PU_CACHE));
 }
 
-void M_DrawEmptyCell(menu_t *menu, int item)
-{
-    V_DrawPatchDirect(menu->x - 10, menu->y + item * LINEHEIGHT - 1,
-                      W_CacheLumpName(DEH_String("M_CELL1"), PU_CACHE));
-}
-
-void M_DrawSelCell(menu_t *menu, int item)
-{
-    V_DrawPatchDirect(menu->x - 10, menu->y + item * LINEHEIGHT - 1,
-                      W_CacheLumpName(DEH_String("M_CELL2"), PU_CACHE));
-}
-
 void M_StartMessage(char *string, void *routine, boolean input)
 {
     messageLastMenuActive = menuactive;
@@ -1050,12 +1038,6 @@ void M_StartMessage(char *string, void *routine, boolean input)
     messageNeedsInput = input;
     menuactive = true;
     return;
-}
-
-void M_StopMessage(void)
-{
-    menuactive = messageLastMenuActive;
-    messageToPrint = 0;
 }
 
 //

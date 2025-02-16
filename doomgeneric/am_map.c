@@ -259,41 +259,6 @@ cheatseq_t cheat_amap = CHEAT("iddt", 0);
 
 static boolean stopped = true;
 
-// Calculates the slope and slope according to the x-axis of a line
-// segment in map coordinates (with the upright y-axis n' all) so
-// that it can be used with the brain-dead drawing stuff.
-
-void AM_getIslope(mline_t *ml, islope_t *is)
-{
-    int dx, dy;
-
-    dy = ml->a.y - ml->b.y;
-    dx = ml->b.x - ml->a.x;
-    if (!dy)
-        is->islp = (dx < 0 ? -INT_MAX : INT_MAX);
-    else
-        is->islp = FixedDiv(dx, dy);
-    if (!dx)
-        is->slp = (dy < 0 ? -INT_MAX : INT_MAX);
-    else
-        is->slp = FixedDiv(dy, dx);
-}
-
-//
-//
-//
-void AM_activateNewScale(void)
-{
-    m_x += m_w / 2;
-    m_y += m_h / 2;
-    m_w = FTOM(f_w);
-    m_h = FTOM(f_h);
-    m_x -= m_w / 2;
-    m_y -= m_h / 2;
-    m_x2 = m_x + m_w;
-    m_y2 = m_y + m_h;
-}
-
 //
 //
 //
@@ -560,7 +525,6 @@ void AM_minOutWindowScale(void)
 {
     scale_mtof = min_scale_mtof;
     scale_ftom = FixedDiv(FRACUNIT, scale_mtof);
-    AM_activateNewScale();
 }
 
 //
@@ -570,7 +534,6 @@ void AM_maxOutWindowScale(void)
 {
     scale_mtof = max_scale_mtof;
     scale_ftom = FixedDiv(FRACUNIT, scale_mtof);
-    AM_activateNewScale();
 }
 
 //
@@ -744,8 +707,6 @@ void AM_changeWindowScale(void)
         AM_minOutWindowScale();
     else if (scale_mtof > max_scale_mtof)
         AM_maxOutWindowScale();
-    else
-        AM_activateNewScale();
 }
 
 //
@@ -762,31 +723,6 @@ void AM_doFollowPlayer(void)
         m_y2 = m_y + m_h;
         f_oldloc.x = plr->mo->x;
         f_oldloc.y = plr->mo->y;
-
-        //  m_x = FTOM(MTOF(plr->mo->x - m_w/2));
-        //  m_y = FTOM(MTOF(plr->mo->y - m_h/2));
-        //  m_x = plr->mo->x - m_w/2;
-        //  m_y = plr->mo->y - m_h/2;
-    }
-}
-
-//
-//
-//
-void AM_updateLightLev(void)
-{
-    static int nexttic = 0;
-    // static int litelevels[] = { 0, 3, 5, 6, 6, 7, 7, 7 };
-    static int litelevels[] = {0, 4, 7, 10, 12, 14, 15, 15};
-    static int litelevelscnt = 0;
-
-    // Change light level
-    if (amclock > nexttic)
-    {
-        lightlev = litelevels[litelevelscnt++];
-        if (litelevelscnt == arrlen(litelevels))
-            litelevelscnt = 0;
-        nexttic = amclock + 6 - (amclock % 6);
     }
 }
 

@@ -42,9 +42,6 @@ extern byte *tinttable;
 typedef boolean (*vpatchclipfunc_t)(patch_t *, int, int);
 void V_SetPatchClipCallback(vpatchclipfunc_t func);
 
-// Allocates buffer screens, call before R_Init.
-void V_Init(void);
-
 // Draw a block from the specified source screen to the screen.
 
 void V_CopyRect(int srcx, int srcy, byte *source, int width, int height,
@@ -52,9 +49,6 @@ void V_CopyRect(int srcx, int srcy, byte *source, int width, int height,
 
 void V_DrawPatch(int x, int y, patch_t *patch);
 void V_DrawPatchFlipped(int x, int y, patch_t *patch);
-void V_DrawTLPatch(int x, int y, patch_t *patch);
-void V_DrawAltTLPatch(int x, int y, patch_t *patch);
-void V_DrawShadowedPatch(int x, int y, patch_t *patch);
 void V_DrawXlaPatch(int x, int y, patch_t *patch); // villsa [STRIFE]
 void V_DrawPatchDirect(int x, int y, patch_t *patch);
 
@@ -68,12 +62,6 @@ void V_DrawFilledBox(int x, int y, int w, int h, int c);
 void V_DrawHorizLine(int x, int y, int w, int c);
 void V_DrawVertLine(int x, int y, int h, int c);
 void V_DrawBox(int x, int y, int w, int h, int c);
-
-// Draw a raw screen lump
-
-void V_DrawRawScreen(byte *raw);
-
-// Temporarily switch to using a different buffer to draw graphics, etc.
 
 void V_UseBuffer(byte *buffer);
 

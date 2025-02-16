@@ -62,16 +62,7 @@ void P_AddThinker(thinker_t *thinker)
 //
 void P_RemoveThinker(thinker_t *thinker)
 {
-    // FIXME: NOP.
     thinker->function.acv = (actionf_v) (-1);
-}
-
-//
-// P_AllocateThinker
-// Allocates memory and adds a new thinker at the end of the list.
-//
-void P_AllocateThinker(thinker_t *thinker)
-{
 }
 
 //

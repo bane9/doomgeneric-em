@@ -218,45 +218,6 @@ void NetUpdate(void)
     }
 }
 
-static void D_Disconnected(void)
-{
-    // disconnected from server
-
-    doomgeneric_printf("Disconnected from server.\n");
-}
-
-//
-// Invoked by the network engine when a complete set of ticcmds is
-// available.
-//
-
-void D_ReceiveTic(ticcmd_t *ticcmds, boolean *players_mask)
-{
-    int i;
-
-    // Disconnected from server?
-
-    if (ticcmds == NULL && players_mask == NULL)
-    {
-        D_Disconnected();
-        return;
-    }
-
-    for (i = 0; i < NET_MAXPLAYERS; ++i)
-    {
-        if (i == localplayer)
-        {
-            // This is us.  Don't overwrite it.
-        }
-        else
-        {
-            ticdata[recvtic % BACKUPTICS].cmds[i] = ticcmds[i];
-            ticdata[recvtic % BACKUPTICS].ingame[i] = players_mask[i];
-        }
-    }
-
-    ++recvtic;
-}
 
 //
 // Start game loop
@@ -317,55 +278,6 @@ static int GetLowTic(void)
 static int frameon;
 static int frameskip[4];
 static int oldnettics;
-
-static void OldNetSync(void)
-{
-    unsigned int i;
-    int keyplayer = -1;
-
-    frameon++;
-
-    // ideally maketic should be 1 - 3 tics above lowtic
-    // if we are consistantly slower, speed up time
-
-    for (i = 0; i < NET_MAXPLAYERS; i++)
-    {
-        if (local_playeringame[i])
-        {
-            keyplayer = i;
-            break;
-        }
-    }
-
-    if (keyplayer < 0)
-    {
-        // If there are no players, we can never advance anyway
-
-        return;
-    }
-
-    if (localplayer == keyplayer)
-    {
-        // the key player does not adapt
-    }
-    else
-    {
-        if (maketic <= recvtic)
-        {
-            lasttime--;
-            // doomgeneric_printf ("-");
-        }
-
-        frameskip[frameon & 3] = oldnettics > recvtic;
-        oldnettics = maketic;
-
-        if (frameskip[0] && frameskip[1] && frameskip[2] && frameskip[3])
-        {
-            skiptics = 1;
-            // doomgeneric_printf ("+");
-        }
-    }
-}
 
 // Returns true if there are players in the game:
 

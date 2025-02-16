@@ -98,13 +98,7 @@ void I_InitGraphics(void)
 
     extern void I_InitInput(void);
     I_InitInput();
-}
-
-void I_ShutdownGraphics(void)
-{
-    Z_Free(I_VideoBuffer);
-}
-
+}\
 void I_StartFrame(void)
 {
 }

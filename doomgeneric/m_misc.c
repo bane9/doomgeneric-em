@@ -72,28 +72,6 @@ boolean M_FileExists(char *filename)
 }
 
 //
-// Determine the length of an open file.
-//
-
-long M_FileLength(FILE *handle)
-{
-    long savedpos;
-    long length;
-
-    // save the current position in the file
-    savedpos = doomgeneric_ftell(handle);
-
-    // jump to the end and find the length
-    doomgeneric_fseek(handle, 0, SEEK_END);
-    length = doomgeneric_ftell(handle);
-
-    // go back to the old location
-    doomgeneric_fseek(handle, savedpos, SEEK_SET);
-
-    return length;
-}
-
-//
 // M_WriteFile
 //
 
@@ -114,36 +92,6 @@ boolean M_WriteFile(char *name, void *source, int length)
         return false;
 
     return true;
-}
-
-//
-// M_ReadFile
-//
-
-int M_ReadFile(char *name, byte **buffer)
-{
-    FILE *handle;
-    int count, length;
-    byte *buf;
-
-    handle = doomgeneric_fopen(name, "rb");
-    if (handle == NULL)
-        I_Error("Couldn't read file %s", name);
-
-    // find the size of the file by seeking to the end and
-    // reading the current position
-
-    length = M_FileLength(handle);
-
-    buf = Z_Malloc(length, PU_STATIC, NULL);
-    count = doomgeneric_fread(buf, 1, length, handle);
-    doomgeneric_fclose(handle);
-
-    if (count < length)
-        I_Error("Couldn't read file %s", name);
-
-    *buffer = buf;
-    return length;
 }
 
 // Returns the path to a temporary file of the given name, stored
@@ -203,142 +151,6 @@ void M_ExtractFileBase(char *path, char *dest)
     }
 }
 
-//---------------------------------------------------------------------------
-//
-// PROC M_ForceUppercase
-//
-// Change string to uppercase.
-//
-//---------------------------------------------------------------------------
-
-void M_ForceUppercase(char *text)
-{
-    char *p;
-
-    for (p = text; *p != '\0'; ++p)
-    {
-        *p = toupper(*p);
-    }
-}
-
-//
-// M_StrCaseStr
-//
-// Case-insensitive version of strstr()
-//
-
-char *M_StrCaseStr(char *haystack, char *needle)
-{
-    unsigned int haystack_len;
-    unsigned int needle_len;
-    unsigned int len;
-    unsigned int i;
-
-    haystack_len = strlen(haystack);
-    needle_len = strlen(needle);
-
-    if (haystack_len < needle_len)
-    {
-        return NULL;
-    }
-
-    len = haystack_len - needle_len;
-
-    for (i = 0; i <= len; ++i)
-    {
-        if (!strncasecmp(haystack + i, needle, needle_len))
-        {
-            return haystack + i;
-        }
-    }
-
-    return NULL;
-}
-
-//
-// Safe version of doomgeneric_strdup() that checks the string was successfully
-// allocated.
-//
-
-char *M_StringDuplicate(const char *orig)
-{
-    char *result;
-
-    result = doomgeneric_strdup(orig);
-
-    if (result == NULL)
-    {
-        I_Error("Failed to duplicate string (length %i)\n", strlen(orig));
-    }
-
-    return result;
-}
-
-//
-// String replace function.
-//
-
-char *M_StringReplace(const char *haystack, const char *needle,
-                      const char *replacement)
-{
-    char *result, *dst;
-    const char *p;
-    size_t needle_len = strlen(needle);
-    size_t result_len, dst_len;
-
-    // Iterate through occurrences of 'needle' and calculate the size of
-    // the new string.
-    result_len = strlen(haystack) + 1;
-    p = haystack;
-
-    for (;;)
-    {
-        p = strstr(p, needle);
-        if (p == NULL)
-        {
-            break;
-        }
-
-        p += needle_len;
-        result_len += strlen(replacement) - needle_len;
-    }
-
-    // Construct new string.
-
-    result = doomgeneric_malloc(result_len);
-    if (result == NULL)
-    {
-        I_Error("M_StringReplace: Failed to allocate new string");
-        return NULL;
-    }
-
-    dst = result;
-    dst_len = result_len;
-    p = haystack;
-
-    while (*p != '\0')
-    {
-        if (!strncmp(p, needle, needle_len))
-        {
-            M_StringCopy(dst, replacement, dst_len);
-            p += needle_len;
-            dst += strlen(replacement);
-            dst_len -= strlen(replacement);
-        }
-        else
-        {
-            *dst = *p;
-            ++dst;
-            --dst_len;
-            ++p;
-        }
-    }
-
-    *dst = '\0';
-
-    return result;
-}
-
 // Safe string copy function that works like OpenBSD's strlcpy().
 // Returns true if the string was not truncated.
 
@@ -374,14 +186,6 @@ boolean M_StringConcat(char *dest, const char *src, size_t dest_size)
     }
 
     return M_StringCopy(dest + offset, src, dest_size - offset);
-}
-
-// Returns true if 's' begins with the specified prefix.
-
-boolean M_StringStartsWith(const char *s, const char *prefix)
-{
-    return strlen(s) > strlen(prefix) &&
-           strncmp(s, prefix, strlen(prefix)) == 0;
 }
 
 // Returns true if 's' ends with the specified suffix.

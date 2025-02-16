@@ -32,11 +32,6 @@ wad_file_t *W_OpenFile(char *path)
     return doomgeneric_wad_file.OpenFile(path);
 }
 
-void W_CloseFile(wad_file_t *wad)
-{
-    wad->file_class->CloseFile(wad);
-}
-
 size_t W_Read(wad_file_t *wad, unsigned int offset, void *buffer,
               size_t buffer_len)
 {

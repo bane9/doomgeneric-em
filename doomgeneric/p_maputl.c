@@ -682,51 +682,6 @@ static intercepts_overrun_t intercepts_overrun[] = {
     {0, NULL, false},
 };
 
-// Overwrite a specific memory location with a value.
-
-static void InterceptsMemoryOverrun(int location, int value)
-{
-    int i, offset;
-    int index;
-    void *addr;
-
-    i = 0;
-    offset = 0;
-
-    // Search down the array until we find the right entry
-
-    while (intercepts_overrun[i].len != 0)
-    {
-        if (offset + intercepts_overrun[i].len > location)
-        {
-            addr = intercepts_overrun[i].addr;
-
-            // Write the value to the memory location.
-            // 16-bit and 32-bit values are written differently.
-
-            if (addr != NULL)
-            {
-                if (intercepts_overrun[i].int16_array)
-                {
-                    index = (location - offset) / 2;
-                    ((short *) addr)[index] = value & 0xffff;
-                    ((short *) addr)[index + 1] = (value >> 16) & 0xffff;
-                }
-                else
-                {
-                    index = (location - offset) / 4;
-                    ((int *) addr)[index] = value;
-                }
-            }
-
-            break;
-        }
-
-        offset += intercepts_overrun[i].len;
-        ++i;
-    }
-}
-
 //
 // P_PathTraverse
 // Traces a line from x1,y1 to x2,y2,
