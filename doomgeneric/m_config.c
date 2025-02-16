@@ -623,8 +623,7 @@ static default_collection_t doom_defaults = {
 };
 
 //! @begin_config_file extended
-
-static default_t extra_defaults_list[] = {
+static const default_t extra_defaults_list[] = {
     //!
     // @game heretic hexen strife
     //
