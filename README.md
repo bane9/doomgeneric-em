@@ -8,13 +8,13 @@ It features:
 - Support for arbitrary resolutions and aspect ratios
 - RGB565 support (along with RGB888)
 - Can set MAXPLAYERS 1-4 (currently set to 2)
-- The large arrays inside info.c can dynamically allocated if needed
-- Switched to CMake
-- Bare file available for porting
-- Sprint always enabled by default
 - A lot of unnecessary code removed
     - Saved around 64 KiB of RAM and 80 KiB of ROM compared to base doomgeneric
     - Sound code is completely removed which changes how ticking works. This breaks demos but gameplay itself works fine.
+- Switched to CMake
+- The large arrays inside info.c can dynamically allocated if needed
+- Bare file available for porting
+- Sprint always enabled by default
 
 And probably more that I forgot.
 
