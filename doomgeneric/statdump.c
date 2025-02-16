@@ -23,7 +23,6 @@ buffer to a file.
 #include <stdlib.h>
 #include <string.h>
 
-#include "d_mode.h"
 #include "d_player.h"
 #include "m_argv.h"
 

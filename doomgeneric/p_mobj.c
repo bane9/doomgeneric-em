@@ -367,17 +367,6 @@ void P_NightmareRespawn(mobj_t *mobj)
     if (!P_CheckPosition(mobj, x, y))
         return; // no respwan
 
-    // spawn a teleport fog at old spot
-    // because of removal of the body?
-    mo = P_SpawnMobj(mobj->x, mobj->y, mobj->subsector->sector->floorheight,
-                     MT_TFOG);
-    // initiate teleport sound
-
-    // spawn a teleport fog at the new spot
-    ss = R_PointInSubsector(x, y);
-
-    mo = P_SpawnMobj(x, y, ss->sector->floorheight, MT_TFOG);
-
     // spawn the new monster
     mthing = &mobj->spawnpoint;
 
@@ -573,10 +562,6 @@ void P_RespawnSpecials(void)
 
     x = mthing->x << FRACBITS;
     y = mthing->y << FRACBITS;
-
-    // spawn a teleport fog at the new spot
-    ss = R_PointInSubsector(x, y);
-    mo = P_SpawnMobj(x, y, ss->sector->floorheight, MT_IFOG);
 
     // find which type to spawn
     for (i = 0; i < NUMMOBJTYPES; i++)

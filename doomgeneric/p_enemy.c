@@ -1613,7 +1613,6 @@ void A_SpawnSound(mobj_t *mo)
 void A_SpawnFly(mobj_t *mo)
 {
     mobj_t *newmobj;
-    mobj_t *fog;
     mobj_t *targ;
     int r;
     mobjtype_t type;
@@ -1622,9 +1621,6 @@ void A_SpawnFly(mobj_t *mo)
         return; // still flying
 
     targ = P_SubstNullMobj(mo->target);
-
-    // First spawn teleport fog.
-    fog = P_SpawnMobj(targ->x, targ->y, targ->z, MT_SPAWNFIRE);
 
     // Randomly select monster to spawn.
     r = P_Random();

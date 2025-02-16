@@ -20,8 +20,6 @@
 #include "doomtype.h"
 #include "i_system.h"
 
-#include "doomgeneric_syscall.h"
-
 //
 // ZONE MEMORY ALLOCATION
 //

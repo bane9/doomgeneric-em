@@ -20,9 +20,6 @@
 
 #include "config.h"
 
-#include "doomtype.h"
-#include "m_argv.h"
-
 #include "w_file.h"
 
 extern wad_file_class_t doomgeneric_wad_file;

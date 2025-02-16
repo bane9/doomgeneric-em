@@ -75,10 +75,6 @@ int EV_Teleport(line_t *line, int side, mobj_t *thing)
                 if (sector - sectors != i)
                     continue;
 
-                oldx = thing->x;
-                oldy = thing->y;
-                oldz = thing->z;
-
                 if (!P_TeleportMove(thing, m->x, m->y))
                     return 0;
 
@@ -93,12 +89,6 @@ int EV_Teleport(line_t *line, int side, mobj_t *thing)
                 if (thing->player)
                     thing->player->viewz = thing->z + thing->player->viewheight;
 
-                // spawn teleport fog at source and destination
-                fog = P_SpawnMobj(oldx, oldy, oldz, MT_TFOG);
-                an = m->angle >> ANGLETOFINESHIFT;
-                fog = P_SpawnMobj(m->x + 20 * finecosine[an],
-                                  m->y + 20 * finesine[an], thing->z, MT_TFOG);
-
                 // don't move for a bit
                 if (thing->player)
                     thing->reactiontime = 18;
@@ -109,5 +99,6 @@ int EV_Teleport(line_t *line, int side, mobj_t *thing)
             }
         }
     }
+
     return 0;
 }

@@ -1132,8 +1132,8 @@ boolean G_CheckSpot(int playernum, mapthing_t *mthing)
                 xa = ya = 0;
                 break;
         }
-        mo = P_SpawnMobj(x + 20 * xa, y + 20 * ya, ss->sector->floorheight,
-                         MT_TFOG);
+
+        P_SpawnMobj(x + 20 * xa, y + 20 * ya, ss->sector->floorheight, MT_TFOG);
     }
 
     return true;

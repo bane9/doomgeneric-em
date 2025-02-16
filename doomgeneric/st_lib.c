@@ -71,10 +71,10 @@ void STlib_drawNum(st_number_t *n, boolean refresh)
 
     int numdigits = n->width;
     int num = *n->num;
+    int x;
 
     int w = SHORT(n->p[0]->width);
     int h = SHORT(n->p[0]->height);
-    int x = n->x;
 
     int neg;
 
