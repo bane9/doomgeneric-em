@@ -59,6 +59,11 @@ void *doomgeneric_calloc(size_t num, size_t size)
     return calloc(num, size);
 }
 
+void *doomgeneric_realloc(void *ptr, size_t new_size)
+{
+    return realloc(ptr, new_size);
+}
+
 void doomgeneric_free(void *mem)
 {
     free(mem);

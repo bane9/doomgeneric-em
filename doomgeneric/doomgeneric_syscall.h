@@ -18,6 +18,7 @@ int doomgeneric_vsnprintf(char *restrict buffer, size_t bufsz,
 void doomgeneric_puts(const char *msg);
 void *doomgeneric_malloc(size_t size);
 void *doomgeneric_calloc(size_t num, size_t size);
+void *doomgeneric_realloc(void *ptr, size_t new_size);
 void doomgeneric_free(void *mem);
 char *doomgeneric_strdup(const char *str1);
 
