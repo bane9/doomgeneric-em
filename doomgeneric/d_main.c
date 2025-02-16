@@ -485,6 +485,10 @@ void D_DoAdvanceDemo(void)
     else
         demosequence = (demosequence + 1) % 6;
 
+    // Disable demos because differences in how ticks work in this
+    // port make previously recorded ones not function properly
+    demosequence = 0;
+
     switch (demosequence)
     {
         case 0:
