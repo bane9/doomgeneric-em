@@ -23,7 +23,7 @@
 
 #include "d_event.h"
 #include "doomtype.h"
-#include "m_cheat.h"
+
 
 // Size of statusbar.
 // Now sensitive for scaling.
@@ -34,9 +34,6 @@
 //
 // STATUS BAR
 //
-
-// Called by main loop.
-boolean ST_Responder(event_t *ev);
 
 // Called by main loop.
 void ST_Ticker(void);
@@ -68,15 +65,5 @@ typedef enum
 } st_chatstateenum_t;
 
 extern byte *st_backing_screen;
-extern cheatseq_t cheat_mus;
-extern cheatseq_t cheat_god;
-extern cheatseq_t cheat_ammo;
-extern cheatseq_t cheat_ammonokey;
-extern cheatseq_t cheat_noclip;
-extern cheatseq_t cheat_commercial_noclip;
-extern cheatseq_t cheat_powerup[7];
-extern cheatseq_t cheat_choppers;
-extern cheatseq_t cheat_clev;
-extern cheatseq_t cheat_mypos;
 
 #endif

@@ -61,10 +61,16 @@ void I_FinishUpdate(void)
     DG_DrawFrame();
 }
 
+// clang-format off
+#define GFX_RGB565(r, g, b)	(((((r) & 0xF8) >> 3) << 11) | \
+                             ((((g) & 0xFC) >> 2) << 5)  | \
+                             (((b) & 0xF8) >> 3))
+
 #define GFX_ARGB(r, g, b, a) (((a) << 24) | ((r) << 16) | ((g) << 8) | (b))
 #define GFX_RGBA(r, g, b, a) (((r) << 24) | ((g) << 16) | ((b) << 8) | (a))
 #define GFX_ABGR(r, g, b, a) (((a) << 24) | ((b) << 16) | ((g) << 8) | (r))
 #define GFX_BGRA(r, g, b, a) (((b) << 24) | ((g) << 16) | ((r) << 8) | (a))
+// clang-format on
 
 void I_SetPalette(byte *palette)
 {

@@ -124,7 +124,7 @@ static void handleKeyInput()
         {
             doomgeneric_puts("Quit requested");
             atexit(SDL_Quit);
-            doomgeneric_exit(1);
+            doomgeneric_exit(0);
         }
         if (e.type == SDL_KEYDOWN)
         {

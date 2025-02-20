@@ -28,7 +28,7 @@
 #include "z_zone.h"
 
 #include "i_system.h"
-#include "m_cheat.h"
+
 #include "m_controls.h"
 #include "m_misc.h"
 
@@ -255,8 +255,6 @@ static int markpointnum = 0;                  // next point to be assigned
 
 static int followplayer = 1; // specifies whether to follow the player around
 
-cheatseq_t cheat_amap = CHEAT("iddt", 0);
-
 static boolean stopped = true;
 
 //
@@ -423,14 +421,8 @@ void AM_initVariables(void)
     old_m_y = m_y;
     old_m_w = m_w;
     old_m_h = m_h;
-
-    // inform the status bar of the change
-    ST_Responder(&st_notify);
 }
 
-//
-//
-//
 void AM_loadPics(void)
 {
     int i;
@@ -494,7 +486,6 @@ void AM_Stop(void)
 
     AM_unloadPics();
     automapactive = false;
-    ST_Responder(&st_notify);
     stopped = true;
 }
 
@@ -650,12 +641,6 @@ boolean AM_Responder(event_t *ev)
         else
         {
             rc = false;
-        }
-
-        if (!deathmatch && cht_CheckCheat(&cheat_amap, ev->data2))
-        {
-            rc = false;
-            cheating = (cheating + 1) % 3;
         }
     }
     else if (ev->type == ev_keyup)
