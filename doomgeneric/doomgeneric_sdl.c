@@ -6,10 +6,11 @@
 #include "m_argv.h"
 
 #include <stdio.h>
-#include <unistd.h>
 
-#include <SDL.h>
 #include <stdbool.h>
+
+#define SDL_MAIN_HANDLED
+#include <SDL.h>
 
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;

@@ -21,8 +21,6 @@
 
 #include <stdarg.h>
 
-#include <unistd.h>
-
 #include "config.h"
 
 #include "deh_str.h"

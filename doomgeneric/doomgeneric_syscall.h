@@ -7,6 +7,12 @@
 #define DG_STRINGIFY(x) #x
 #define DG_EXPAND_AND_STRINGIFY(x) DG_STRINGIFY(x)
 
+#ifdef _WIN32
+    #define strcasecmp _stricmp
+    #define strncasecmp _strnicmp
+#endif
+
+
 void doomgeneric_exit(int status);
 void doomgeneric_printf(const char *fmt, ...);
 void doomgeneric_snprintf(char *restrict buffer, size_t bufsz,

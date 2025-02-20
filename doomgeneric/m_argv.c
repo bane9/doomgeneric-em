@@ -25,6 +25,8 @@
 #include "m_argv.h" // haleyjd 20110212: warning fix
 #include "m_misc.h"
 
+#include "doomgeneric_syscall.h"
+
 int myargc;
 char **myargv;
 

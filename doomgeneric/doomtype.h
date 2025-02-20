@@ -23,7 +23,7 @@
 // #define macros to provide functions missing in Windows.
 // Outside Windows, we use strings.h for str[n]casecmp.
 
-#include <strings.h>
+#include <string.h>
 
 //
 // The packed attribute forces structures to be packed into the minimum
