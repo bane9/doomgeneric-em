@@ -507,14 +507,6 @@ static const default_t doom_defaults_list[] = {
     CONFIG_VARIABLE_INT(detaillevel),
 
     //!
-    // Gamma correction level.  A value of zero disables gamma
-    // correction, while a value in the range 1-4 gives increasing
-    // levels of gamma correction.
-    //
-
-    CONFIG_VARIABLE_INT(usegamma),
-
-    //!
     // @game hexen
     //
     // Directory in which to store savegames.
@@ -704,22 +696,6 @@ static const default_t extra_defaults_list[] = {
     //
 
     CONFIG_VARIABLE_INT(novert),
-
-    //!
-    // Mouse acceleration factor.  When the speed of mouse movement
-    // exceeds the threshold value (mouse_threshold), the speed is
-    // multiplied by this value.
-    //
-
-    CONFIG_VARIABLE_FLOAT(mouse_acceleration),
-
-    //!
-    // Mouse acceleration threshold.  When the speed of mouse movement
-    // exceeds this threshold value, the speed is multiplied by an
-    // acceleration factor (mouse_acceleration).
-    //
-
-    CONFIG_VARIABLE_INT(mouse_threshold),
 
     //!
     // Sound output sample rate, in Hz.  Typical values to use are

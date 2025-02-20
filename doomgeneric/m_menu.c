@@ -1440,15 +1440,6 @@ boolean M_Responder(event_t *ev)
             M_QuitDOOM(0);
             return true;
         }
-        else if (key == key_menu_gamma) // gamma toggle
-        {
-            usegamma++;
-            if (usegamma > 4)
-                usegamma = 0;
-            players[consoleplayer].message = DEH_String(gammamsg[usegamma]);
-            I_SetPalette(W_CacheLumpName(DEH_String("PLAYPAL"), PU_CACHE));
-            return true;
-        }
     }
 
     // Pop-up menu?

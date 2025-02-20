@@ -220,9 +220,6 @@ void D_Display(void)
             break;
     }
 
-    // draw buffered stuff to screen
-    I_UpdateNoBlit();
-
     // draw the view directly
     if (gamestate == GS_LEVEL && !automapactive && gametic)
         R_RenderPlayerView(&players[displayplayer]);
@@ -251,13 +248,6 @@ void D_Display(void)
             R_DrawViewBorder(); // erase old menu stuff
             borderdrawcount--;
         }
-    }
-
-    if (testcontrols)
-    {
-        // Box showing current mouse speed
-
-        V_DrawMouseSpeedBox(testcontrols_mousespeed);
     }
 
     menuactivestate = menuactive;
@@ -304,7 +294,6 @@ void D_Display(void)
         wipestart = nowtime;
         done =
             wipe_ScreenWipe(wipe_Melt, 0, 0, SCREENWIDTH, SCREENHEIGHT, tics);
-        I_UpdateNoBlit();
         M_Drawer();       // menu is drawn even on top of wipes
         I_FinishUpdate(); // page flip or blit buffer
     } while (!done);
@@ -320,7 +309,6 @@ void D_BindVariables(void)
 
     M_ApplyPlatformDefaults();
 
-    I_BindVideoVariables();
     I_BindJoystickVariables();
 
     M_BindBaseControls();
@@ -373,16 +361,9 @@ boolean D_GrabMouseCallback(void)
 
 void doomgeneric_Tick()
 {
-    // frame syncronous IO operations
-    I_StartFrame();
+    TryRunTics();
 
-    TryRunTics(); // will run at least one tic
-
-    // Update display, next frame, with current state.
-    if (screenvisible)
-    {
-        D_Display();
-    }
+    D_Display();
 }
 
 //
@@ -407,10 +388,7 @@ void D_DoomLoop(void)
     TryRunTics();
 
     I_SetWindowTitle(gamedescription);
-    I_GraphicsCheckCommandLine();
-    I_SetGrabMouseCallback(D_GrabMouseCallback);
     I_InitGraphics();
-    I_EnableLoadingDisk();
 
     V_RestoreBuffer();
     R_ExecuteSetViewSize();
@@ -1031,18 +1009,6 @@ void PrintGameVersion(void)
 
 static void D_Endoom(void)
 {
-    byte *endoom;
-
-    // Don't show ENDOOM if we have it disabled, or we're running
-    // in screensaver or control test mode. Only show it once the
-    // game has actually started.
-
-    if (!show_endoom || !main_loop_started || screensaver_mode ||
-        M_CheckParm("-testcontrols") > 0)
-    {
-        return;
-    }
-
     doomgeneric_exit(0);
 }
 
@@ -1096,8 +1062,6 @@ void D_DoomMain(void)
     //
 
     devparm = M_CheckParm("-devparm");
-
-    I_DisplayFPSDots(devparm);
 
     //!
     // @category net
@@ -1350,7 +1314,6 @@ void D_DoomMain(void)
     }
 
     DEH_printf("I_Init: Setting up machine state.\n");
-    I_CheckIsScreensaver();
     I_InitTimer();
     I_InitJoystick();
 
