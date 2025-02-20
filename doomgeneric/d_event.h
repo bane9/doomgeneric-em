@@ -30,7 +30,6 @@ typedef enum
 {
     ev_keydown,
     ev_keyup,
-    ev_mouse,
     ev_joystick,
     ev_quit
 } evtype_t;

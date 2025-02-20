@@ -35,8 +35,6 @@
 
 #define SCREENHEIGHT_4_3 240
 
-#define MAX_MOUSE_BUTTONS 8
-
 typedef struct
 {
     // Screen width and height
@@ -88,8 +86,6 @@ typedef struct
 
     boolean poor_quality;
 } screen_mode_t;
-
-typedef boolean (*grabmouse_callback_t)(void);
 
 // Called by D_DoomMain,
 // determines the hardware configuration

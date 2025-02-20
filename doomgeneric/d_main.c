@@ -322,7 +322,6 @@ void D_BindVariables(void)
     key_multi_msgplayer[2] = HUSTR_KEYBROWN;
     key_multi_msgplayer[3] = HUSTR_KEYRED;
 
-    M_BindVariable("mouse_sensitivity", &mouseSensitivity);
     M_BindVariable("show_messages", &showMessages);
     M_BindVariable("screenblocks", &screenblocks);
     M_BindVariable("detaillevel", &detailLevel);
@@ -339,24 +338,6 @@ void D_BindVariables(void)
         M_snprintf(buf, sizeof(buf), "chatmacro%i", i);
         M_BindVariable(buf, &chat_macros[i]);
     }
-}
-
-//
-// D_GrabMouseCallback
-//
-// Called to determine whether to grab the mouse pointer
-//
-
-boolean D_GrabMouseCallback(void)
-{
-    // when menu is active or game is paused, release the mouse
-
-    if (menuactive || paused)
-        return false;
-
-    // only grab mouse when playing levels (but not demos)
-
-    return (gamestate == GS_LEVEL) && !demoplayback && !advancedemo;
 }
 
 void doomgeneric_Tick()

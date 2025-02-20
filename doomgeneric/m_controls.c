@@ -87,24 +87,6 @@ int key_invend = KEY_END;
 int key_invuse = KEY_ENTER;
 int key_invdrop = KEY_BACKSPACE;
 
-//
-// Mouse controls
-//
-
-int mousebfire = 0;
-int mousebstrafe = 1;
-int mousebforward = 2;
-
-int mousebjump = -1;
-
-int mousebstrafeleft = -1;
-int mousebstraferight = -1;
-int mousebbackward = -1;
-int mousebuse = -1;
-
-int mousebprevweapon = -1;
-int mousebnextweapon = -1;
-
 int key_message_refresh = KEY_ENTER;
 int key_pause = KEY_PAUSE;
 int key_demo_quit = 'q';
@@ -190,11 +172,6 @@ int joybnextweapon = -1;
 
 int joybmenu = -1;
 
-// Control whether if a mouse button is double clicked, it acts like
-// "use" has been pressed
-
-int dclick_use = 1;
-
 //
 // Bind all of the common controls used by Doom and all other games.
 //
@@ -212,10 +189,6 @@ void M_BindBaseControls(void)
     M_BindVariable("key_strafe", &key_strafe);
     M_BindVariable("key_speed", &key_speed);
 
-    M_BindVariable("mouseb_fire", &mousebfire);
-    M_BindVariable("mouseb_strafe", &mousebstrafe);
-    M_BindVariable("mouseb_forward", &mousebforward);
-
     M_BindVariable("joyb_fire", &joybfire);
     M_BindVariable("joyb_strafe", &joybstrafe);
     M_BindVariable("joyb_use", &joybuse);
@@ -227,11 +200,6 @@ void M_BindBaseControls(void)
 
     M_BindVariable("joyb_strafeleft", &joybstrafeleft);
     M_BindVariable("joyb_straferight", &joybstraferight);
-    M_BindVariable("mouseb_strafeleft", &mousebstrafeleft);
-    M_BindVariable("mouseb_straferight", &mousebstraferight);
-    M_BindVariable("mouseb_use", &mousebuse);
-    M_BindVariable("mouseb_backward", &mousebbackward);
-    M_BindVariable("dclick_use", &dclick_use);
     M_BindVariable("key_pause", &key_pause);
     M_BindVariable("key_message_refresh", &key_message_refresh);
 }
@@ -252,9 +220,6 @@ void M_BindWeaponControls(void)
 
     M_BindVariable("joyb_prevweapon", &joybprevweapon);
     M_BindVariable("joyb_nextweapon", &joybnextweapon);
-
-    M_BindVariable("mouseb_prevweapon", &mousebprevweapon);
-    M_BindVariable("mouseb_nextweapon", &mousebnextweapon);
 }
 
 void M_BindMapControls(void)

@@ -122,20 +122,6 @@ extern int key_menu_incscreen;
 extern int key_menu_decscreen;
 extern int key_menu_screenshot;
 
-extern int mousebfire;
-extern int mousebstrafe;
-extern int mousebforward;
-
-extern int mousebjump;
-
-extern int mousebstrafeleft;
-extern int mousebstraferight;
-extern int mousebbackward;
-extern int mousebuse;
-
-extern int mousebprevweapon;
-extern int mousebnextweapon;
-
 extern int joybfire;
 extern int joybstrafe;
 extern int joybuse;
@@ -150,8 +136,6 @@ extern int joybprevweapon;
 extern int joybnextweapon;
 
 extern int joybmenu;
-
-extern int dclick_use;
 
 void M_BindBaseControls(void);
 void M_BindHereticControls(void);

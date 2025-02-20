@@ -39,8 +39,4 @@ int M_CheckParmWithArgs(char *check, int num_args);
 
 boolean M_ParmExists(char *check);
 
-// Get name of executable used to run this program:
-
-char *M_GetExecutableName(void);
-
 #endif

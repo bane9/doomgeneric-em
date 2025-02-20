@@ -136,8 +136,6 @@ boolean singledemo; // quit after playing a demo from cmdline
 boolean precache = true; // if true, load all graphics at start
 
 boolean testcontrols = false; // Invoked by setup to test controls
-int testcontrols_mousespeed;
-
 wbstartstruct_t wminfo; // parms for world map / intermission
 
 byte consistancy[MAXPLAYERS][BACKUPTICS];
@@ -181,20 +179,6 @@ static const struct
 
 static boolean gamekeydown[NUMKEYS];
 static int turnheld; // for accelerative turning
-
-static boolean mousearray[MAX_MOUSE_BUTTONS + 1];
-static boolean *mousebuttons = &mousearray[1]; // allow [-1]
-
-// mouse values are used once
-int mousex;
-int mousey;
-
-static int dclicktime;
-static boolean dclickstate;
-static int dclicks;
-static int dclicktime2;
-static boolean dclickstate2;
-static int dclicks2;
 
 // joystick values are repeated
 static int joyxmove;
@@ -305,8 +289,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 
     cmd->consistancy = consistancy[consoleplayer][maketic % BACKUPTICS];
 
-    strafe = gamekeydown[key_strafe] || mousebuttons[mousebstrafe] ||
-             joybuttons[joybstrafe];
+    strafe = gamekeydown[key_strafe] || joybuttons[joybstrafe];
 
     // fraggle: support the old "joyb_speed = 31" hack which
     // allowed an autorun effect
@@ -380,13 +363,13 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
         forward -= forwardmove[speed];
 
     if (gamekeydown[key_strafeleft] || joybuttons[joybstrafeleft] ||
-        mousebuttons[mousebstrafeleft] || joystrafemove < 0)
+        joystrafemove < 0)
     {
         side -= sidemove[speed];
     }
 
     if (gamekeydown[key_straferight] || joybuttons[joybstraferight] ||
-        mousebuttons[mousebstraferight] || joystrafemove > 0)
+        joystrafemove > 0)
     {
         side += sidemove[speed];
     }
@@ -394,15 +377,12 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     // buttons
     cmd->chatchar = HU_dequeueChatChar();
 
-    if (gamekeydown[key_fire] || mousebuttons[mousebfire] ||
-        joybuttons[joybfire])
+    if (gamekeydown[key_fire] || joybuttons[joybfire])
         cmd->buttons |= BT_ATTACK;
 
-    if (gamekeydown[key_use] || joybuttons[joybuse] || mousebuttons[mousebuse])
+    if (gamekeydown[key_use] || joybuttons[joybuse])
     {
         cmd->buttons |= BT_USE;
-        // clear double clicks if hit use button
-        dclicks = 0;
     }
 
     // If the previous or next weapon button is pressed, the
@@ -433,84 +413,6 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     }
 
     next_weapon = 0;
-
-    // mouse
-    if (mousebuttons[mousebforward])
-    {
-        forward += forwardmove[speed];
-    }
-    if (mousebuttons[mousebbackward])
-    {
-        forward -= forwardmove[speed];
-    }
-
-    if (dclick_use)
-    {
-        // forward double click
-        if (mousebuttons[mousebforward] != dclickstate && dclicktime > 1)
-        {
-            dclickstate = mousebuttons[mousebforward];
-            if (dclickstate)
-                dclicks++;
-            if (dclicks == 2)
-            {
-                cmd->buttons |= BT_USE;
-                dclicks = 0;
-            }
-            else
-                dclicktime = 0;
-        }
-        else
-        {
-            dclicktime += ticdup;
-            if (dclicktime > 20)
-            {
-                dclicks = 0;
-                dclickstate = 0;
-            }
-        }
-
-        // strafe double click
-        bstrafe = mousebuttons[mousebstrafe] || joybuttons[joybstrafe];
-        if (bstrafe != dclickstate2 && dclicktime2 > 1)
-        {
-            dclickstate2 = bstrafe;
-            if (dclickstate2)
-                dclicks2++;
-            if (dclicks2 == 2)
-            {
-                cmd->buttons |= BT_USE;
-                dclicks2 = 0;
-            }
-            else
-                dclicktime2 = 0;
-        }
-        else
-        {
-            dclicktime2 += ticdup;
-            if (dclicktime2 > 20)
-            {
-                dclicks2 = 0;
-                dclickstate2 = 0;
-            }
-        }
-    }
-
-    forward += mousey;
-
-    if (strafe)
-        side += mousex * 2;
-    else
-        cmd->angleturn -= mousex * 0x8;
-
-    if (mousex == 0)
-    {
-        // No movement in the previous frame
-
-        testcontrols_mousespeed = 0;
-    }
-
-    mousex = mousey = 0;
 
     if (forward > MAXPLMOVE)
         forward = MAXPLMOVE;
@@ -623,9 +525,7 @@ void G_DoLoadLevel(void)
 
     memset(gamekeydown, 0, sizeof(gamekeydown));
     joyxmove = joyymove = joystrafemove = 0;
-    mousex = mousey = 0;
     sendpause = sendsave = paused = false;
-    memset(mousearray, 0, sizeof(mousearray));
     memset(joyarray, 0, sizeof(joyarray));
 
     if (testcontrols)
@@ -662,32 +562,6 @@ static void SetJoyButtons(unsigned int buttons_mask)
     }
 }
 
-static void SetMouseButtons(unsigned int buttons_mask)
-{
-    int i;
-
-    for (i = 0; i < MAX_MOUSE_BUTTONS; ++i)
-    {
-        unsigned int button_on = (buttons_mask & (1 << i)) != 0;
-
-        // Detect button press:
-
-        if (!mousebuttons[i] && button_on)
-        {
-            if (i == mousebprevweapon)
-            {
-                next_weapon = -1;
-            }
-            else if (i == mousebnextweapon)
-            {
-                next_weapon = 1;
-            }
-        }
-
-        mousebuttons[i] = button_on;
-    }
-}
-
 //
 // G_Responder
 // Get info needed to make ticcmd_ts for the players.
@@ -713,8 +587,7 @@ boolean G_Responder(event_t *ev)
     if (gameaction == ga_nothing && !singledemo &&
         (demoplayback || gamestate == GS_DEMOSCREEN))
     {
-        if (ev->type == ev_keydown || (ev->type == ev_mouse && ev->data1) ||
-            (ev->type == ev_joystick && ev->data1))
+        if (ev->type == ev_keydown)
         {
             M_StartControlPanel();
             return true;
@@ -736,16 +609,6 @@ boolean G_Responder(event_t *ev)
     {
         if (F_Responder(ev))
             return true; // finale ate the event
-    }
-
-    if (testcontrols && ev->type == ev_mouse)
-    {
-        // If we are invoked by setup to test the controls, save the
-        // mouse speed so that we can display it on-screen.
-        // Perform a low pass filter on this so that the thermometer
-        // appears to move smoothly.
-
-        testcontrols_mousespeed = abs(ev->data2);
     }
 
     // If the next/previous weapon keys are pressed, set the next_weapon
@@ -778,12 +641,6 @@ boolean G_Responder(event_t *ev)
             if (ev->data1 < NUMKEYS)
                 gamekeydown[ev->data1] = false;
             return false; // always let key up events filter down
-
-        case ev_mouse:
-            SetMouseButtons(ev->data1);
-            mousex = ev->data2 * (mouseSensitivity + 5) / 10;
-            mousey = ev->data3 * (mouseSensitivity + 5) / 10;
-            return true; // eat events
 
         case ev_joystick:
             SetJoyButtons(ev->data1);
