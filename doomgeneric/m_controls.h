@@ -109,7 +109,6 @@ extern int key_menu_abort;
 extern int key_menu_help;
 extern int key_menu_save;
 extern int key_menu_load;
-extern int key_menu_volume;
 extern int key_menu_detail;
 extern int key_menu_qsave;
 extern int key_menu_endgame;

@@ -393,21 +393,6 @@ void EV_VerticalDoor(line_t *line, mobj_t *thing)
         }
     }
 
-    // for proper sound
-    switch (line->special)
-    {
-        case 117: // BLAZING DOOR RAISE
-        case 118: // BLAZING DOOR OPEN
-            break;
-
-        case 1: // NORMAL DOOR SOUND
-        case 31:
-            break;
-
-        default: // LOCKED DOOR SOUND
-            break;
-    }
-
     // new door thinker
     door = Z_Malloc(sizeof(*door), PU_LEVSPEC, 0);
     P_AddThinker(&door->thinker);

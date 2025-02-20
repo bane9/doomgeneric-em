@@ -183,25 +183,18 @@ void M_DrawReadThis2(void);
 void M_DrawNewGame(void);
 void M_DrawEpisode(void);
 void M_DrawOptions(void);
-void M_DrawSound(void);
 void M_DrawLoad(void);
 void M_DrawSave(void);
 
 void M_DrawSaveLoadBorder(int x, int y);
 void M_SetupNextMenu(menu_t *menudef);
 void M_DrawThermo(int x, int y, int thermWidth, int thermDot);
-void M_DrawEmptyCell(menu_t *menu, int item);
-void M_DrawSelCell(menu_t *menu, int item);
-void M_WriteText(int x, int y, char *string);
 int M_StringWidth(char *string);
 int M_StringHeight(char *string);
 void M_StartMessage(char *string, void *routine, boolean input);
-void M_StopMessage(void);
 void M_ClearMenus(void);
 
-void M_Sound(int choice);
-void M_SfxVol(int choice);
-void M_MusicVol(int choice);
+void M_WriteText(int x, int y, char *string);
 
 //
 // DOOM MENU
@@ -294,7 +287,6 @@ enum
     scrnsize,
     option_empty1,
     option_empty2,
-    soundvol,
     opt_end
 } options_e;
 
@@ -304,8 +296,7 @@ menuitem_t OptionsMenu[] = {{1, "M_ENDGAM", M_EndGame, 'e'},
                             {2, "M_SCRNSZ", M_SizeDisplay, 's'},
                             {-1, "", 0, '\0'},
                             {2, "M_MSENS", M_ChangeSensitivity, 'm'},
-                            {-1, "", 0, '\0'},
-                            {1, "M_SVOL", M_Sound, 's'}};
+                            {-1, "", 0, '\0'}};
 
 menu_t OptionsDef = {opt_end, &MainDef, OptionsMenu, M_DrawOptions, 60, 37, 0};
 
@@ -333,25 +324,6 @@ menuitem_t ReadMenu2[] = {{1, "", M_FinishReadThis, 0}};
 
 menu_t ReadDef2 = {read2_end, &ReadDef1, ReadMenu2, M_DrawReadThis2,
                    330,       175,       0};
-
-//
-// SOUND VOLUME MENU
-//
-enum
-{
-    sfx_vol,
-    sfx_empty1,
-    music_vol,
-    sfx_empty2,
-    sound_end
-} sound_e;
-
-menuitem_t SoundMenu[] = {{2, "M_SFXVOL", M_SfxVol, 's'},
-                          {-1, "", 0, '\0'},
-                          {2, "M_MUSVOL", M_MusicVol, 'm'},
-                          {-1, "", 0, '\0'}};
-
-menu_t SoundDef = {sound_end, &OptionsDef, SoundMenu, M_DrawSound, 80, 64, 0};
 
 //
 // LOAD GAME MENU
@@ -695,24 +667,6 @@ void M_DrawReadThis2(void)
     V_DrawPatchDirect(0, 0, W_CacheLumpName(DEH_String("HELP1"), PU_CACHE));
 }
 
-//
-// Change Sfx & Music volumes
-//
-void M_DrawSound(void)
-{
-}
-
-void M_Sound(int choice)
-{
-}
-
-void M_SfxVol(int choice)
-{
-}
-
-void M_MusicVol(int choice)
-{
-}
 
 //
 // M_DrawMainMenu
@@ -1283,13 +1237,6 @@ boolean M_Responder(event_t *ev)
         {
             M_StartControlPanel();
             M_LoadGame(0);
-            return true;
-        }
-        else if (key == key_menu_volume) // Sound Volume
-        {
-            M_StartControlPanel();
-            currentMenu = &SoundDef;
-            itemOn = sfx_vol;
             return true;
         }
         else if (key == key_menu_detail) // Detail toggle

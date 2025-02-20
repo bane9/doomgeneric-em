@@ -31,7 +31,6 @@
 enum
 {
     PU_STATIC = 1, // static entire execution time
-    PU_SOUND,      // static while playing
     PU_MUSIC,      // static while playing
     PU_FREE,       // a free block
     PU_LEVEL,      // static until level exited

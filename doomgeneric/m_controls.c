@@ -140,7 +140,6 @@ int key_menu_abort = 'n';
 int key_menu_help = KEY_F1;
 int key_menu_save = KEY_F2;
 int key_menu_load = KEY_F3;
-int key_menu_volume = KEY_F4;
 int key_menu_detail = KEY_F5;
 int key_menu_qsave = KEY_F6;
 int key_menu_endgame = KEY_F7;
@@ -220,7 +219,6 @@ void M_BindMenuControls(void)
     M_BindVariable("key_menu_help", &key_menu_help);
     M_BindVariable("key_menu_save", &key_menu_save);
     M_BindVariable("key_menu_load", &key_menu_load);
-    M_BindVariable("key_menu_volume", &key_menu_volume);
     M_BindVariable("key_menu_detail", &key_menu_detail);
     M_BindVariable("key_menu_qsave", &key_menu_qsave);
     M_BindVariable("key_menu_endgame", &key_menu_endgame);

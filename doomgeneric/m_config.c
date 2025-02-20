@@ -107,29 +107,6 @@ typedef struct
 
 static const default_t doom_defaults_list[] = {
     //!
-    // Volume of sound effects, range 0-15.
-    //
-
-    CONFIG_VARIABLE_INT(sfx_volume),
-
-    //!
-    // @game strife
-    //
-    // If non-zero, dialogue text is displayed over characters' pictures
-    // when engaging actors who have voices.
-    //
-
-    CONFIG_VARIABLE_INT(show_talk),
-
-    //!
-    // @game strife
-    //
-    // Volume of voice sound effects, range 0-15.
-    //
-
-    CONFIG_VARIABLE_INT(voice_volume),
-
-    //!
     // @game doom
     //
     // If non-zero, messages are displayed on the heads-up display
@@ -595,29 +572,6 @@ static const default_t extra_defaults_list[] = {
     CONFIG_VARIABLE_INT(screen_bpp),
 
     //!
-    // Sound output sample rate, in Hz.  Typical values to use are
-    // 11025, 22050, 44100 and 48000.
-    //
-
-    CONFIG_VARIABLE_INT(snd_samplerate),
-
-    //!
-    // Maximum number of bytes to allocate for caching converted sound
-    // effects in memory. If set to zero, there is no limit applied.
-    //
-
-    CONFIG_VARIABLE_INT(snd_cachesize),
-
-    //!
-    // Maximum size of the output sound buffer size in milliseconds.
-    // Sound output is generated periodically in slices. Higher values
-    // might be more efficient but will introduce latency to the
-    // sound output. The default is 28ms (one slice per tic with the
-    // 35fps timer).
-
-    CONFIG_VARIABLE_INT(snd_maxslicetime_ms),
-
-    //!
     // @game doom heretic strife
     //
     // If non-zero, the ENDOOM text screen is displayed when exiting the
@@ -754,12 +708,6 @@ static const default_t extra_defaults_list[] = {
     //
 
     CONFIG_VARIABLE_KEY(key_menu_load),
-
-    //!
-    // Keyboard shortcut to bring up the sound volume menu.
-    //
-
-    CONFIG_VARIABLE_KEY(key_menu_volume),
 
     //!
     // Keyboard shortcut to toggle the detail level.

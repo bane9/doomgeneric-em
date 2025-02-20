@@ -167,7 +167,6 @@ void P_ChangeSwitchTexture(line_t *line, int useAgain)
     int texMid;
     int texBot;
     int i;
-    int sound;
 
     if (!useAgain)
         line->special = 0;
