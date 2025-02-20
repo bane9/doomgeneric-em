@@ -912,10 +912,7 @@ void M_QuitResponse(int key)
 {
     if (key != key_menu_confirm)
         return;
-    if (!netgame)
-    {
-        I_WaitVBL(105);
-    }
+
     I_Quit();
 }
 

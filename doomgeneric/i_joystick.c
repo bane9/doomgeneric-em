@@ -64,10 +64,6 @@ static int joystick_strafe_invert = 0;
 static int joystick_physical_buttons[NUM_VIRTUAL_BUTTONS] = {0, 1, 2, 3, 4,
                                                              5, 6, 7, 8, 9};
 
-void I_InitJoystick(void)
-{
-}
-
 void I_BindJoystickVariables(void)
 {
     int i;

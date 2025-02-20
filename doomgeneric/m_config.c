@@ -1533,30 +1533,12 @@ static const int scantokey[128] = {0,
                                    KEY_PRTSCR,
                                    0};
 
-static void SaveDefaultCollection(default_collection_t *collection)
-{
-}
-
-static void LoadDefaultCollection(default_collection_t *collection)
-{
-}
-
 // Set the default filenames to use for configuration files.
 
 void M_SetConfigFilenames(char *main_config, char *extra_config)
 {
     default_main_config = main_config;
     default_extra_config = extra_config;
-}
-
-//
-// M_SaveDefaults
-//
-
-void M_SaveDefaults(void)
-{
-    SaveDefaultCollection(&doom_defaults);
-    SaveDefaultCollection(&extra_defaults);
 }
 
 //
@@ -1612,9 +1594,6 @@ void M_LoadDefaults(void)
         extra_defaults.filename =
             M_StringJoin(configdir, default_extra_config, NULL);
     }
-
-    LoadDefaultCollection(&doom_defaults);
-    LoadDefaultCollection(&extra_defaults);
 }
 
 //

@@ -71,11 +71,3 @@ void I_Sleep(int ms)
 {
     DG_SleepMs(ms);
 }
-
-void I_WaitVBL(int count)
-{
-}
-
-void I_InitTimer(void)
-{
-}

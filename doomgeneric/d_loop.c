@@ -247,22 +247,7 @@ boolean D_InitNetGame(net_connect_data_t *connect_data)
 {
     boolean result = false;
 
-    // Call D_QuitNetGame on exit:
-
-    I_AtExit(D_QuitNetGame, true);
-
-    player_class = connect_data->player_class;
-
     return result;
-}
-
-//
-// D_QuitNetGame
-// Called before quitting to leave a net game
-// without hanging the other players
-//
-void D_QuitNetGame(void)
-{
 }
 
 static int GetLowTic(void)

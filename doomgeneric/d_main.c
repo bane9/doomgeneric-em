@@ -1127,9 +1127,6 @@ void D_DoomMain(void)
     D_BindVariables();
     M_LoadDefaults();
 
-    // Save configuration at exit.
-    I_AtExit(M_SaveDefaults, false);
-
     // Find main IWAD file and load it.
     iwadfile = D_FindIWAD(IWAD_MASK_DOOM, &gamemission);
 
@@ -1313,10 +1310,6 @@ void D_DoomMain(void)
         I_PrintDivider();
     }
 
-    DEH_printf("I_Init: Setting up machine state.\n");
-    I_InitTimer();
-    I_InitJoystick();
-
     // Initial netgame startup. Connect to server etc.
     D_ConnectNetGame();
 
@@ -1481,12 +1474,6 @@ void D_DoomMain(void)
 
     if (gamemode == commercial && W_CheckNumForName("map01") < 0)
         storedemo = true;
-
-    if (M_CheckParmWithArgs("-statdump", 1))
-    {
-        I_AtExit(StatDump, true);
-        DEH_printf("External statistics registered.\n");
-    }
 
     //!
     // @arg <x>

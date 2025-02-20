@@ -352,13 +352,6 @@ fixed_t R_PointToDist(fixed_t x, fixed_t y)
 }
 
 //
-// R_InitPointToAngle
-//
-void R_InitPointToAngle(void)
-{
-}
-
-//
 // R_ScaleFromGlobalAngle
 // Returns the texture mapping scale
 //  for the current line (horizontal span)
@@ -397,13 +390,6 @@ fixed_t R_ScaleFromGlobalAngle(angle_t visangle)
         scale = 64 * FRACUNIT;
 
     return scale;
-}
-
-//
-// R_InitTables
-//
-void R_InitTables(void)
-{
 }
 
 //
@@ -625,10 +611,6 @@ void R_ExecuteSetViewSize(void)
 void R_Init(void)
 {
     R_InitData();
-    doomgeneric_printf(".");
-    R_InitPointToAngle();
-    doomgeneric_printf(".");
-    R_InitTables();
     // viewwidth / viewheight / detailLevel are set by the defaults
     doomgeneric_printf(".");
 

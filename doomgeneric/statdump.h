@@ -18,6 +18,5 @@ GNU General Public License for more details.
 #define DOOM_STATDUMP_H
 
 void StatCopy(wbstartstruct_t *stats);
-void StatDump(void);
 
 #endif /* #ifndef DOOM_STATDUMP_H */

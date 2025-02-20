@@ -53,7 +53,3 @@ void StatCopy(wbstartstruct_t *stats)
         ++num_captured_stats;
     }
 }
-
-void StatDump(void)
-{
-}
