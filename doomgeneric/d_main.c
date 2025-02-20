@@ -49,7 +49,6 @@
 #include "m_misc.h"
 #include "p_saveg.h"
 
-#include "i_joystick.h"
 #include "i_system.h"
 #include "i_timer.h"
 #include "i_video.h"
@@ -308,8 +307,6 @@ void D_BindVariables(void)
     int i;
 
     M_ApplyPlatformDefaults();
-
-    I_BindJoystickVariables();
 
     M_BindBaseControls();
     M_BindWeaponControls();

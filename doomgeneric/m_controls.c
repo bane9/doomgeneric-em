@@ -154,25 +154,6 @@ int key_menu_decscreen = KEY_MINUS;
 int key_menu_screenshot = 0;
 
 //
-// Joystick controls
-//
-
-int joybfire = 0;
-int joybstrafe = 1;
-int joybuse = 3;
-int joybspeed = 2;
-
-int joybstrafeleft = -1;
-int joybstraferight = -1;
-
-int joybjump = -1;
-
-int joybprevweapon = -1;
-int joybnextweapon = -1;
-
-int joybmenu = -1;
-
-//
 // Bind all of the common controls used by Doom and all other games.
 //
 
@@ -189,17 +170,6 @@ void M_BindBaseControls(void)
     M_BindVariable("key_strafe", &key_strafe);
     M_BindVariable("key_speed", &key_speed);
 
-    M_BindVariable("joyb_fire", &joybfire);
-    M_BindVariable("joyb_strafe", &joybstrafe);
-    M_BindVariable("joyb_use", &joybuse);
-    M_BindVariable("joyb_speed", &joybspeed);
-
-    M_BindVariable("joyb_menu_activate", &joybmenu);
-
-    // Extra controls that are not in the Vanilla versions:
-
-    M_BindVariable("joyb_strafeleft", &joybstrafeleft);
-    M_BindVariable("joyb_straferight", &joybstraferight);
     M_BindVariable("key_pause", &key_pause);
     M_BindVariable("key_message_refresh", &key_message_refresh);
 }
@@ -217,9 +187,6 @@ void M_BindWeaponControls(void)
 
     M_BindVariable("key_prevweapon", &key_prevweapon);
     M_BindVariable("key_nextweapon", &key_nextweapon);
-
-    M_BindVariable("joyb_prevweapon", &joybprevweapon);
-    M_BindVariable("joyb_nextweapon", &joybnextweapon);
 }
 
 void M_BindMapControls(void)

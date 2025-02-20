@@ -175,17 +175,9 @@ static const struct
 #define SLOWTURNTICS 6
 
 #define NUMKEYS 256
-#define MAX_JOY_BUTTONS 20
 
 static boolean gamekeydown[NUMKEYS];
 static int turnheld; // for accelerative turning
-
-// joystick values are repeated
-static int joyxmove;
-static int joyymove;
-static int joystrafemove;
-static boolean joyarray[MAX_JOY_BUTTONS + 1];
-static boolean *joybuttons = &joyarray[1]; // allow [-1]
 
 static int savegameslot;
 static char savedescription[32];
@@ -289,13 +281,9 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 
     cmd->consistancy = consistancy[consoleplayer][maketic % BACKUPTICS];
 
-    strafe = gamekeydown[key_strafe] || joybuttons[joybstrafe];
+    strafe = !!gamekeydown[key_strafe];
 
-    // fraggle: support the old "joyb_speed = 31" hack which
-    // allowed an autorun effect
-
-    speed = key_speed >= NUMKEYS || joybspeed >= MAX_JOY_BUTTONS ||
-            gamekeydown[key_speed] || joybuttons[joybspeed];
+    speed = key_speed >= NUMKEYS || gamekeydown[key_speed];
 
 #if DOOMGENERIC_ALWAYS_RUN
     speed = !speed;
@@ -303,10 +291,7 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
 
     forward = side = 0;
 
-    // use two stage accelerative turning
-    // on the keyboard and joystick
-    if (joyxmove < 0 || joyxmove > 0 || gamekeydown[key_right] ||
-        gamekeydown[key_left])
+    if (gamekeydown[key_right] || gamekeydown[key_left])
         turnheld += ticdup;
     else
         turnheld = 0;
@@ -329,20 +314,12 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
             //	fprintf(stderr, "strafe left\n");
             side -= sidemove[speed];
         }
-        if (joyxmove > 0)
-            side += sidemove[speed];
-        if (joyxmove < 0)
-            side -= sidemove[speed];
     }
     else
     {
         if (gamekeydown[key_right])
             cmd->angleturn -= angleturn[tspeed];
         if (gamekeydown[key_left])
-            cmd->angleturn += angleturn[tspeed];
-        if (joyxmove > 0)
-            cmd->angleturn -= angleturn[tspeed];
-        if (joyxmove < 0)
             cmd->angleturn += angleturn[tspeed];
     }
 
@@ -357,19 +334,13 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
         forward -= forwardmove[speed];
     }
 
-    if (joyymove < 0)
-        forward += forwardmove[speed];
-    if (joyymove > 0)
-        forward -= forwardmove[speed];
 
-    if (gamekeydown[key_strafeleft] || joybuttons[joybstrafeleft] ||
-        joystrafemove < 0)
+    if (gamekeydown[key_strafeleft])
     {
         side -= sidemove[speed];
     }
 
-    if (gamekeydown[key_straferight] || joybuttons[joybstraferight] ||
-        joystrafemove > 0)
+    if (gamekeydown[key_straferight])
     {
         side += sidemove[speed];
     }
@@ -377,10 +348,10 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
     // buttons
     cmd->chatchar = HU_dequeueChatChar();
 
-    if (gamekeydown[key_fire] || joybuttons[joybfire])
+    if (gamekeydown[key_fire])
         cmd->buttons |= BT_ATTACK;
 
-    if (gamekeydown[key_use] || joybuttons[joybuse])
+    if (gamekeydown[key_use])
     {
         cmd->buttons |= BT_USE;
     }
@@ -524,41 +495,11 @@ void G_DoLoadLevel(void)
     // clear cmd building stuff
 
     memset(gamekeydown, 0, sizeof(gamekeydown));
-    joyxmove = joyymove = joystrafemove = 0;
     sendpause = sendsave = paused = false;
-    memset(joyarray, 0, sizeof(joyarray));
 
     if (testcontrols)
     {
         players[consoleplayer].message = "Press escape to quit.";
-    }
-}
-
-static void SetJoyButtons(unsigned int buttons_mask)
-{
-    int i;
-
-    for (i = 0; i < MAX_JOY_BUTTONS; ++i)
-    {
-        int button_on = (buttons_mask & (1 << i)) != 0;
-
-        // Detect button press:
-
-        if (!joybuttons[i] && button_on)
-        {
-            // Weapon cycling:
-
-            if (i == joybprevweapon)
-            {
-                next_weapon = -1;
-            }
-            else if (i == joybnextweapon)
-            {
-                next_weapon = 1;
-            }
-        }
-
-        joybuttons[i] = button_on;
     }
 }
 
@@ -641,13 +582,6 @@ boolean G_Responder(event_t *ev)
             if (ev->data1 < NUMKEYS)
                 gamekeydown[ev->data1] = false;
             return false; // always let key up events filter down
-
-        case ev_joystick:
-            SetJoyButtons(ev->data1);
-            joyxmove = ev->data2;
-            joyymove = ev->data3;
-            joystrafemove = ev->data4;
-            return true; // eat events
 
         default:
             break;

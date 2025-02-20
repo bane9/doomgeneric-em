@@ -25,7 +25,6 @@
 
 #include "deh_str.h"
 #include "doomtype.h"
-#include "i_joystick.h"
 #include "i_timer.h"
 #include "i_video.h"
 #include "m_argv.h"

@@ -122,25 +122,6 @@ extern int key_menu_incscreen;
 extern int key_menu_decscreen;
 extern int key_menu_screenshot;
 
-extern int joybfire;
-extern int joybstrafe;
-extern int joybuse;
-extern int joybspeed;
-
-extern int joybjump;
-
-extern int joybstrafeleft;
-extern int joybstraferight;
-
-extern int joybprevweapon;
-extern int joybnextweapon;
-
-extern int joybmenu;
-
-void M_BindBaseControls(void);
-void M_BindHereticControls(void);
-void M_BindHexenControls(void);
-void M_BindStrifeControls(void);
 void M_BindWeaponControls(void);
 void M_BindMapControls(void);
 void M_BindMenuControls(void);

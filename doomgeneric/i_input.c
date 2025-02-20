@@ -24,7 +24,6 @@
 #include "deh_str.h"
 #include "doomkeys.h"
 #include "doomtype.h"
-#include "i_joystick.h"
 #include "i_swap.h"
 #include "i_system.h"
 #include "i_timer.h"
