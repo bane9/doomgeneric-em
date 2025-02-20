@@ -222,7 +222,7 @@ int main(int argc, char **argv)
 {
     doomgeneric_Create(argc, argv);
 
-    for (int i = 0;; i++)
+    while (1)
     {
         doomgeneric_Tick();
     }

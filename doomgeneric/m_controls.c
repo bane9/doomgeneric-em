@@ -247,13 +247,3 @@ void M_BindChatControls(unsigned int num_players)
         M_BindVariable(name, &key_multi_msgplayer[i]);
     }
 }
-
-//
-// Apply custom patches to the default values depending on the
-// platform we are running on.
-//
-
-void M_ApplyPlatformDefaults(void)
-{
-    // no-op. Add your platform-specific patches here.
-}

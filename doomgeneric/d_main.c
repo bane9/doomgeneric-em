@@ -306,8 +306,6 @@ void D_BindVariables(void)
 {
     int i;
 
-    M_ApplyPlatformDefaults();
-
     M_BindBaseControls();
     M_BindWeaponControls();
     M_BindMapControls();

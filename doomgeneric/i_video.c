@@ -40,15 +40,15 @@ void I_InitGraphics(void)
 
 void I_FinishUpdate(void)
 {
-    const int x_ratio = (SCREENWIDTH << 16) / DOOMGENERIC_RESX;
-    const int y_ratio = (SCREENHEIGHT << 16) / DOOMGENERIC_RESY;
+    const int x_ratio = (SCREENWIDTH << 16) / (DOOMGENERIC_RESX);
+    const int y_ratio = (SCREENHEIGHT << 16) / (DOOMGENERIC_RESY);
 
-    for (int y = 0; y < DOOMGENERIC_RESY; y++)
+    for (int y = 0; y < (DOOMGENERIC_RESY); y++)
     {
         const int y2_xsource = ((y * y_ratio) >> 16) * SCREENWIDTH;
-        const int i_xdest = y * DOOMGENERIC_RESX;
+        const int i_xdest = y * (DOOMGENERIC_RESX);
 
-        for (int x = 0; x < DOOMGENERIC_RESX; x++)
+        for (int x = 0; x < (DOOMGENERIC_RESX); x++)
         {
             const int x2 = ((x * x_ratio) >> 16);
             const int y2_x2_colors = y2_xsource + x2;
