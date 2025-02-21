@@ -1,5 +1,6 @@
 #include "doomgeneric_syscall.h"
 #include "w_file.h"
+#include <ctype.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -109,4 +110,55 @@ size_t doomgeneric_fwrite(const void *restrict buffer, size_t size,
                           size_t count, FILE *restrict stream)
 {
     return fwrite(buffer, size, count, stream);
+}
+
+int doomgeneric_strcasecmp(const char *s1, const char *s2)
+{
+    while (1)
+    {
+        int c1 = tolower(*(unsigned char *) s1);
+        int c2 = tolower(*(unsigned char *) s2);
+
+        if (c1 != c2)
+        {
+            return c1 - c2;
+        }
+
+        if (c1 == '\0')
+        {
+            return 0;
+        }
+
+        s1++;
+        s2++;
+    }
+}
+
+int doomgeneric_strncasecmp(const char *s1, const char *s2, size_t n)
+{
+    if (n == 0)
+    {
+        return 0;
+    }
+
+    while (n-- > 0)
+    {
+        int c1 = tolower(*(unsigned char *) s1);
+        int c2 = tolower(*(unsigned char *) s2);
+
+        if (c1 != c2)
+        {
+            return c1 - c2;
+        }
+
+        if (c1 == '\0')
+        {
+            break;
+        }
+
+        s1++;
+        s2++;
+    }
+
+    return 0;
 }

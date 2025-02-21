@@ -43,7 +43,6 @@
 
 #include "am_map.h"
 
-
 // Needs access to LFB.
 #include "v_video.h"
 

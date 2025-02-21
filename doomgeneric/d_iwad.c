@@ -89,7 +89,7 @@ static boolean DirIsFile(char *path, char *filename)
 
     return path_len >= filename_len + 1 &&
            path[path_len - filename_len - 1] == DIR_SEPARATOR &&
-           !strcasecmp(&path[path_len - filename_len], filename);
+           !doomgeneric_strcasecmp(&path[path_len - filename_len], filename);
 }
 
 // Check if the specified directory contains the specified IWAD
@@ -189,7 +189,7 @@ static GameMission_t IdentifyIWADByName(char *name, int mask)
 
         // Check if it ends in this IWAD name.
 
-        if (!strcasecmp(name, iwads[i].name))
+        if (!doomgeneric_strcasecmp(name, iwads[i].name))
         {
             mission = iwads[i].mission;
             break;

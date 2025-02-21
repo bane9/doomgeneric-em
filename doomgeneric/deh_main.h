@@ -23,5 +23,4 @@
 #include "doomtype.h"
 #include "sha1.h"
 
-
 #endif /* #ifndef DEH_MAIN_H */

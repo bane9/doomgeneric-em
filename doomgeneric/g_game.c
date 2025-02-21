@@ -136,7 +136,7 @@ boolean singledemo; // quit after playing a demo from cmdline
 boolean precache = true; // if true, load all graphics at start
 
 boolean testcontrols = false; // Invoked by setup to test controls
-wbstartstruct_t wminfo; // parms for world map / intermission
+wbstartstruct_t wminfo;       // parms for world map / intermission
 
 byte consistancy[MAXPLAYERS][BACKUPTICS];
 
@@ -333,7 +333,6 @@ void G_BuildTiccmd(ticcmd_t *cmd, int maketic)
         // fprintf(stderr, "down\n");
         forward -= forwardmove[speed];
     }
-
 
     if (gamekeydown[key_strafeleft])
     {

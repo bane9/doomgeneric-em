@@ -667,7 +667,6 @@ void M_DrawReadThis2(void)
     V_DrawPatchDirect(0, 0, W_CacheLumpName(DEH_String("HELP1"), PU_CACHE));
 }
 
-
 //
 // M_DrawMainMenu
 //

@@ -125,5 +125,6 @@ void M_BindWeaponControls(void);
 void M_BindMapControls(void);
 void M_BindMenuControls(void);
 void M_BindChatControls(unsigned int num_players);
+void M_BindBaseControls(void);
 
 #endif /* #ifndef __M_CONTROLS_H__ */

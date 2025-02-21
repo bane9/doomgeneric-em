@@ -362,7 +362,6 @@ static const default_t doom_defaults_list[] = {
 
     CONFIG_VARIABLE_KEY(key_speed),
 
-
     //!
     // @game doom heretic hexen
     //
