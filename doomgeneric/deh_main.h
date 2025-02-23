@@ -21,6 +21,5 @@
 #include "deh_str.h"
 #include "doomfeatures.h"
 #include "doomtype.h"
-#include "sha1.h"
 
 #endif /* #ifndef DEH_MAIN_H */
