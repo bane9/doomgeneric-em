@@ -514,7 +514,7 @@ void D_StartTitle(void)
 // These are from the original source: some of them are perhaps
 // not used in any dehacked patches
 
-static char *banners[] = {
+static const char *banners[] = {
     // doom2.wad
     "                         "
     "DOOM 2: Hell on Earth v%i.%i"
@@ -553,7 +553,7 @@ static char *banners[] = {
 static char *GetGameName(char *gamename)
 {
     size_t i;
-    char *deh_sub;
+    const char *deh_sub;
 
     for (i = 0; i < arrlen(banners); ++i)
     {
@@ -843,7 +843,7 @@ void PrintDehackedBanners(void)
     }
 }
 
-static struct
+static const struct
 {
     char *description;
     char *cmdline;

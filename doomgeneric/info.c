@@ -126,7 +126,7 @@ void A_BrainExplode();
 #ifdef DOOMGENERIC_INFO_DYN
 const
 #endif
-    state_t states_arr[NUMSTATES] = {
+    static state_t states_arr[NUMSTATES] = {
         {SPR_TROO, 0, -1, {NULL}, S_NULL, 0, 0},               // S_NULL
         {SPR_SHTG, 4, 0, {A_Light0}, S_NULL, 0, 0},            // S_LIGHTDONE
         {SPR_PUNG, 0, 1, {A_WeaponReady}, S_PUNCH, 0, 0},      // S_PUNCH
@@ -1147,7 +1147,7 @@ const
 #ifdef DOOMGENERIC_INFO_DYN
 const
 #endif
-    mobjinfo_t mobjinfo_arr[NUMMOBJTYPES] = {
+    static mobjinfo_t mobjinfo_arr[NUMMOBJTYPES] = {
         {
             // MT_PLAYER
             -1,            // doomednum
