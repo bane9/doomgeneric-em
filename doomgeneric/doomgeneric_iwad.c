@@ -1,9 +1,7 @@
 #include "doomgeneric_syscall.h"
 #include "w_file.h"
 
-#ifdef DOOMGENERC_IWAD_MEMMAPPED
-#include "dg_iwad_serized.h"
-#endif
+#include "doomgeneric.h"
 
 static wad_file_t *dg_wad_openfile(char *path);
 static void dg_wad_closefile(wad_file_t *path);
@@ -84,7 +82,7 @@ static wad_file_t *dg_wad_openfile_mem(char *path)
 
 #ifdef DOOMGENERC_IWAD_MEMMAPPED
     wad_file.mapped = (byte *) doom_iwad_ptr;
-    wad_file.length = DOOM_SIZE;
+    wad_file.length = DOOM_IWAD_SIZE;
 #endif
 
     return &wad_file;

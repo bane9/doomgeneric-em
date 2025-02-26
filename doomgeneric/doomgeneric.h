@@ -22,6 +22,11 @@ typedef uint32_t pixel_t;
 #define DOOMGENERIC_ALWAYS_RUN 1
 #endif
 
+#if __has_include("dg_iwad_serialized.h")
+#define DOOMGENERC_IWAD_MEMMAPPED
+#include "dg_iwad_serialized.h"
+#endif
+
 extern pixel_t *DG_ScreenBuffer;
 
 void doomgeneric_Create(int argc, char **argv);

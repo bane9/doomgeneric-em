@@ -38,3 +38,17 @@ else()
     target_link_libraries(${PROJECT_NAME} PRIVATE SDL2::SDL2)
     target_include_directories(${PROJECT_NAME} PRIVATE ${SDL2_INCLUDE_DIRS} doomgeneric/)
 endif()
+
+get_filename_component(IWAD_NAME "${CMAKE_SOURCE_DIR}/*.wad" NAME)
+
+set(COMPILE_EXE ${CMAKE_BINARY_DIR}/bin_to_c${CMAKE_EXECUTABLE_SUFFIX})
+set(COMPILE_COMMAND ${CMAKE_C_COMPILER} ${CMAKE_SOURCE_DIR}/bin_to_c.c -o ${COMPILE_EXE})
+set(RUN_COMMAND ${COMPILE_EXE} ${IWAD_NAME})
+
+add_custom_target(serialize_iwad
+    COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target clean
+    COMMAND ${COMPILE_COMMAND}
+    COMMAND ${RUN_COMMAND}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Serializing IWAD file"
+)

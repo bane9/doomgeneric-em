@@ -24,25 +24,15 @@
 #include "doomdef.h"
 #include "doomtype.h"
 
-// Absolute maximum number of "nodes" in the game.  This is different to
-// NET_MAXPLAYERS, as there may be observers that are not participating
-// (eg. left/right monitors)
-
-#define MAXNETNODES 16
-
 // The maximum number of players, multiplayer/networking.
 // This is the maximum supported by the networking code; individual games
 // have their own values for MAXPLAYERS that can be smaller.
 
-#define NET_MAXPLAYERS (MAXPLAYERS * 2)
-
-// Maximum length of a player's name.
-
-#define MAXPLAYERNAME 30
+#define NET_MAXPLAYERS 1
 
 // Networking and tick handling related.
 
-#define BACKUPTICS 128
+#define BACKUPTICS 1
 
 typedef struct _net_module_s net_module_t;
 typedef struct _net_packet_s net_packet_t;
@@ -97,51 +87,6 @@ struct _net_addr_s
     net_module_t *module;
     void *handle;
 };
-
-// magic number sent when connecting to check this is a valid client
-
-#define NET_MAGIC_NUMBER 3436803284U
-
-// header field value indicating that the packet is a reliable packet
-
-#define NET_RELIABLE_PACKET (1 << 15)
-
-// packet types
-
-typedef enum
-{
-    NET_PACKET_TYPE_SYN,
-    NET_PACKET_TYPE_ACK,
-    NET_PACKET_TYPE_REJECTED,
-    NET_PACKET_TYPE_KEEPALIVE,
-    NET_PACKET_TYPE_WAITING_DATA,
-    NET_PACKET_TYPE_GAMESTART,
-    NET_PACKET_TYPE_GAMEDATA,
-    NET_PACKET_TYPE_GAMEDATA_ACK,
-    NET_PACKET_TYPE_DISCONNECT,
-    NET_PACKET_TYPE_DISCONNECT_ACK,
-    NET_PACKET_TYPE_RELIABLE_ACK,
-    NET_PACKET_TYPE_GAMEDATA_RESEND,
-    NET_PACKET_TYPE_CONSOLE_MESSAGE,
-    NET_PACKET_TYPE_QUERY,
-    NET_PACKET_TYPE_QUERY_RESPONSE,
-    NET_PACKET_TYPE_LAUNCH,
-} net_packet_type_t;
-
-typedef enum
-{
-    NET_MASTER_PACKET_TYPE_ADD,
-    NET_MASTER_PACKET_TYPE_ADD_RESPONSE,
-    NET_MASTER_PACKET_TYPE_QUERY,
-    NET_MASTER_PACKET_TYPE_QUERY_RESPONSE,
-    NET_MASTER_PACKET_TYPE_GET_METADATA,
-    NET_MASTER_PACKET_TYPE_GET_METADATA_RESPONSE,
-    NET_MASTER_PACKET_TYPE_SIGN_START,
-    NET_MASTER_PACKET_TYPE_SIGN_START_RESPONSE,
-    NET_MASTER_PACKET_TYPE_SIGN_END,
-    NET_MASTER_PACKET_TYPE_SIGN_END_RESPONSE,
-} net_master_packet_type_t;
-
 // Settings specified when the client connects to the server.
 
 typedef struct
@@ -186,57 +131,5 @@ typedef struct
     int player_classes[NET_MAXPLAYERS];
 
 } net_gamesettings_t;
-
-#define NET_TICDIFF_FORWARD (1 << 0)
-#define NET_TICDIFF_SIDE (1 << 1)
-#define NET_TICDIFF_TURN (1 << 2)
-#define NET_TICDIFF_BUTTONS (1 << 3)
-#define NET_TICDIFF_CONSISTANCY (1 << 4)
-#define NET_TICDIFF_CHATCHAR (1 << 5)
-#define NET_TICDIFF_RAVEN (1 << 6)
-#define NET_TICDIFF_STRIFE (1 << 7)
-
-typedef struct
-{
-    unsigned int diff;
-    ticcmd_t cmd;
-} net_ticdiff_t;
-
-// Complete set of ticcmds from all players
-
-typedef struct
-{
-    signed int latency;
-    unsigned int seq;
-    boolean playeringame[NET_MAXPLAYERS];
-    net_ticdiff_t cmds[NET_MAXPLAYERS];
-} net_full_ticcmd_t;
-
-// Data sent in response to server queries
-
-typedef struct
-{
-    char *version;
-    int server_state;
-    int num_players;
-    int max_players;
-    int gamemode;
-    int gamemission;
-    char *description;
-} net_querydata_t;
-
-// Data sent by the server while waiting for the game to start.
-
-typedef struct
-{
-    int num_players;
-    int ready_players;
-    int max_players;
-    int is_controller;
-    int consoleplayer;
-    char player_names[NET_MAXPLAYERS][MAXPLAYERNAME];
-    char player_addrs[NET_MAXPLAYERS][MAXPLAYERNAME];
-    int is_freedoom;
-} net_waitdata_t;
 
 #endif /* #ifndef NET_DEFS_H */

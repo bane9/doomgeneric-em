@@ -32,11 +32,8 @@
 #include "w_wad.h"
 #include "z_zone.h"
 
+#include "doomgeneric.h"
 #include "doomgeneric_syscall.h"
-
-#ifdef DOOMGENERC_IWAD_MEMMAPPED
-#include "dg_iwad_serized.h"
-#endif
 
 static const iwad_t iwads[] = {
     {"doom2.wad", doom2, commercial, "Doom II"},

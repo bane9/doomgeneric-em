@@ -30,17 +30,13 @@ I won't give detailed guide into port friendly defines, instead check out the fo
 
 ## Serializing IWAD files
 
-To serialize an IWAD file, first compile `bin_to_c`:
-```bash
-gcc -O3 bin_to_c.c -o bin_to_c.o
-```
-Then, serialize your iwad file via:
-```bash
-./bin_to_c.o doom.iwad
-```
-Make sure both `bin_to_c.o` and your iwad file are at the root of this git directory.
+To serialize an IWAD file, put a single .wad file at the root of this git directory.
 
-At the end, make sure to globally define `DOOMGENERC_IWAD_MEMMAPPED`
+Then, run the following command:
+```bash
+cmake -b build/ --target serialize_iwad 
+cmake -b build/ -j
+```
 _____
 # doomgeneric
 The purpose of doomgeneric is to make porting Doom easier.
@@ -71,7 +67,7 @@ At start, call doomgeneric_Create().
 In a loop, call doomgeneric_Tick().
 
 In simplest form:
-```
+```c
 int main(int argc, char **argv)
 {
     doomgeneric_Create(argc, argv);
